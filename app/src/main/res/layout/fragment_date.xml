@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/fragment_date_side_padding"
+    android:paddingRight="@dimen/fragment_date_side_padding">
+
+    <com.simmorsal.library.ConcealerNestedScrollView
+        android:id="@+id/fragment_date_nestedscrollview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/fragment_date_top_bottom_padding">
+
+            <CalendarView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></CalendarView>
+
+        </RelativeLayout>
+
+    </com.simmorsal.library.ConcealerNestedScrollView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/fragment_date_searchbar"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="5dp"
+        app:cardCornerRadius="@dimen/fragment_date_searchbar_radius"
+        app:cardElevation="10dp">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/ic_search_black_24dp"
+            android:translationZ="11dp" />
+
+        <TextView
+            fontPath="@string/NanumBarunGothic_path"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="40dp"
+            android:gravity="center"
+            android:text="검색하기"
+            android:translationZ="11dp"
+            tools:ignore="MissingPrefix" />
+
+        <ImageView
+            android:id="@+id/textView01"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/rounded_search_bar" />
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

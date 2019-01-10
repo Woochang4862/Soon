@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/fragment_genre_side_padding"
+    android:paddingRight="@dimen/fragment_genre_side_padding">
+
+    <com.simmorsal.library.ConcealerNestedScrollView
+        android:id="@+id/fragment_genre_nestedscrollview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/fragment_genre_top_bottom_padding">
+
+            <RelativeLayout
+                android:id="@+id/fragment_genre_title_group"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="100dp">
+
+                <TextView
+                    android:id="@+id/fragment_genre_title_text"
+                    fontPath="@string/NanumBarunGothicBold_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="27dp"
+                    android:gravity="left|bottom"
+                    android:includeFontPadding="false"
+                    android:paddingBottom="5dp"
+                    android:text="장르선택"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
+                    tools:ignore="MissingPrefix" />
+
+                <View
+                    android:layout_width="70dp"
+                    android:layout_height="3dp"
+                    android:layout_below="@+id/fragment_genre_title_text"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/black" />
+
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fragment_genre_genre_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/fragment_genre_title_group"></androidx.recyclerview.widget.RecyclerView>
+
+        </RelativeLayout>
+
+    </com.simmorsal.library.ConcealerNestedScrollView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/fragment_genre_searchbar"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="5dp"
+        app:cardCornerRadius="@dimen/fragment_genre_searchbar_radius"
+        app:cardElevation="10dp">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/ic_search_black_24dp"
+            android:translationZ="11dp" />
+
+        <TextView
+            fontPath="@string/NanumBarunGothic_path"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="40dp"
+            android:gravity="center"
+            android:text="검색하기"
+            android:translationZ="11dp"
+            tools:ignore="MissingPrefix" />
+
+        <ImageView
+            android:id="@+id/textView01"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/rounded_search_bar" />
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

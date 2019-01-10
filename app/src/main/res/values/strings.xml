@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Soon</string>
+    <string name="activity_main_recommand_string">이번 달에 \n개봉하는 \n영화</string>
+    <string name="activity_main_detail"><![CDATA[더 알아보기 >]]></string>
+    <string name="BMHANNAProOTF_path">fonts/BMHANNAProOTF.otf</string>
+    <string name="NanumBarunGothic_path">fonts/NanumBarunGothic.otf</string>
+    <string name="NanumBarunGothicBold_path">fonts/NanumBarunGothicBold.otf</string>
+    <string name="NanumBarunGothicUltraLight_path">fonts/NanumBarunGothicUltraLight.otf</string>
+    <string name="tab_name_1">제작사별</string>
+    <string name="tab_name_2">장르별</string>
+    <string name="tab_name_3">날짜순</string>
+    <string name="previout_btn_string"><![CDATA[<이전]]></string>
+</resources>

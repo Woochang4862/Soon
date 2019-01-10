@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SearchCompanyActivity">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/fragment_company_side_padding"
+            android:paddingTop="@dimen/fragment_company_top_bottom_padding"
+            android:paddingRight="@dimen/fragment_company_side_padding"
+            android:paddingBottom="@dimen/fragment_company_top_bottom_padding"
+            android:weightSum="10">
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/activity_search_company_searchview"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:focusable="true"
+                android:focusedByDefault="true"
+                app:iconifiedByDefault="false"
+                app:queryHint="제작사를 검색해 보세요"></androidx.appcompat.widget.SearchView>
+
+            <CheckBox
+                android:id="@+id/activity_search_company_checkbox_all"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="전체 선택" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/activity_search_company_company_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></androidx.recyclerview.widget.RecyclerView>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/activity_search_company_empty_img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleX="4"
+            android:scaleY="4"
+            android:src="@drawable/ic_inbox_black_24dp" />
+
+        <TextView
+            fontPath="@string/BMHANNAProOTF_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="아무 것도 없음"
+            tools:ignore="MissingPrefix" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="bottom"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/activity_search_company_back_btn"
+            fontPath="@string/BMHANNAProOTF_path"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/previout_btn_string"
+            tools:ignore="MissingPrefix" />
+
+        <TextView
+            android:id="@+id/activity_search_company_forward_btn"
+            fontPath="@string/BMHANNAProOTF_path"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:text="완료"
+            tools:ignore="MissingPrefix" />
+
+    </RelativeLayout>
+
+</FrameLayout>

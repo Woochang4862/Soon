@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- needs this container to work with the Tablayout -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tabName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="2"
+        app:fontPath="@string/NanumBarunGothic_path"
+        tools:ignore="MissingPrefix"
+        android:text="날짜순" />
+
+    <View
+        android:id="@+id/underline"
+        android:layout_below="@+id/tabName"
+        android:layout_width="40dp"
+        android:layout_height="3dp"
+        android:background="@color/colorAccent" />
+</LinearLayout>

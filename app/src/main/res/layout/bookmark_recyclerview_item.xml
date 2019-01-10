@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/bookmark_recyclerview_item_company_name"
+        fontPath="@string/NanumBarunGothicUltraLight_path"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_below="@id/fragment_company_horizental_line"
+        android:background="@drawable/fragment_company_rounded_name"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="#마블"
+        android:textColor="@color/white"
+        android:layout_margin="5dp"
+        tools:ignore="MissingPrefix" />
+
+</LinearLayout>
