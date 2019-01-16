@@ -2,12 +2,15 @@ package com.lusle.soon.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.captain_miao.optroundcardview.OptRoundCardView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.lusle.soon.Adapter.FragmentCompanyBookMarkRecyclerViewAdapter;
 import com.lusle.soon.Adapter.FragmentCompanyResultRecyclerViewAdapter;
@@ -25,6 +28,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,7 +40,9 @@ public class CompanyFragment extends Fragment {
     private TextView companyName, mMoreBtn;
     private RecyclerView mFavorite;
     private ConcealerNestedScrollView mConcealerNSV;
-    private CardView mSearchView;
+    private OptRoundCardView mSearchView;
+    private RelativeLayout mSearchBar;
+    private static View viewgroup;
     public RecyclerView resultList;
 
     final private int requestCode = 666;
@@ -49,11 +55,17 @@ public class CompanyFragment extends Fragment {
         return fragment;
     }
 
+    public static void getNestedScrollingEnabled() {
+        if(viewgroup!=null){
+            Log.d("Company", String.valueOf(viewgroup.isNestedScrollingEnabled()));
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_company, container, false);
-
+        viewgroup = view;
 
         companyName = view.findViewById(R.id.fragment_company_name);
 
@@ -82,6 +94,7 @@ public class CompanyFragment extends Fragment {
 
 
         resultList = view.findViewById(R.id.fragment_company_recyclerview_result);
+        resultList.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(getContext());
         resultList.setLayoutManager(linearLayoutManager1);
         FragmentCompanyResultRecyclerViewAdapter resultRecyclerViewAdapter = new FragmentCompanyResultRecyclerViewAdapter(getContext());
@@ -99,14 +112,17 @@ public class CompanyFragment extends Fragment {
 
 
         mConcealerNSV = view.findViewById(R.id.fragment_company_nestedscrollview);
-        mSearchView = view.findViewById(R.id.fragment_company_searchbar);
+        mSearchView = view.findViewById(R.id.fragment_searchbar);
         mSearchView.post(new Runnable() {
             @Override
             public void run() {
                 mConcealerNSV.setFooterView(mSearchView, 50);
             }
         });
-        mSearchView.setOnClickListener(new View.OnClickListener() {
+
+
+        mSearchBar = view.findViewById(R.id.fragment_common_searchbar);
+        mSearchBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), SearchCompanyActivity.class);
@@ -119,11 +135,11 @@ public class CompanyFragment extends Fragment {
         mMoreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mMoreBtn.getText().toString().equalsIgnoreCase("more")) {
-                    mMoreBtn.setText("close");
+                if (mMoreBtn.getText().toString().equalsIgnoreCase("더보기")) {
+                    mMoreBtn.setText("닫기");
                     mFavorite.setLayoutManager(flowLayoutManager);
                 } else {
-                    mMoreBtn.setText("more");
+                    mMoreBtn.setText("더보기");
                     mFavorite.setLayoutManager(linearLayoutManager);
                 }
             }

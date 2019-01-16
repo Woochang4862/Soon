@@ -2,13 +2,7 @@ package com.lusle.soon;
 
 import android.content.res.Resources;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.tabs.TabLayout;
-
-import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
-
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -16,39 +10,51 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.lusle.soon.Adapter.MainViewPagerAdapter;
+import com.google.android.material.tabs.TabLayout;
+import com.lusle.soon.Adapter.TempMainViewPagerAdapter;
 import com.lusle.soon.Fragment.CompanyFragment;
 import com.lusle.soon.Fragment.DateFragment;
 import com.lusle.soon.Fragment.GenreFragment;
+import com.lusle.soon.ViewPagerBottomSheet.BottomSheetUtils;
+import com.lusle.soon.ViewPagerBottomSheet.ViewPagerBottomSheetBehavior;
 import com.squareup.picasso.Picasso;
 
+import androidx.annotation.NonNull;
+import androidx.viewpager.widget.ViewPager;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import uk.co.chrisjenx.calligraphy.CalligraphyUtils;
 import uk.co.chrisjenx.calligraphy.TypefaceUtils;
 
 public class MainActivity extends BaseActivity {
 
-    private static final String TAG = "MainActivity";
-    private static BottomSheetBehavior bottomSheetBehavior;
-    private Button detail_btn;
-    private ViewPager viewPager;
-    private TabLayout tabLayout;
-    private ImageView poster;
-    private View handle;
+    @BindView(R.id.activity_main_detail)
+    Button detail_btn;
+    @BindView(R.id.activity_main_viewpager)
+    ViewPager viewPager;
+    @BindView(R.id.activity_main_tablayout)
+    TabLayout tabLayout;
+    @BindView(R.id.activity_main_poster)
+    ImageView poster;
+    @BindView(R.id.activity_main_handle)
+    View handle;
+    private static ViewPagerBottomSheetBehavior bottomSheetBehavior;
 
-    private int previousState = BottomSheetBehavior.STATE_COLLAPSED;
+    private static final String TAG = "MainActivity";
+    private int previousState = ViewPagerBottomSheetBehavior.STATE_COLLAPSED;
     private double screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
-    private int[] tabName = new int[]{R.string.tab_name_1, R.string.tab_name_2, R.string.tab_name_3};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
         init();
     }
 
     private void init() {
-        poster = findViewById(R.id.activity_main_poster);
+        //TODO:get Poster from API server
         Picasso
                 .get()
                 .load("https://image.tmdb.org/t/p/w500/wsVseA7i3FqX24m26Z2gD3EtH4l.jpg")
@@ -57,62 +63,81 @@ public class MainActivity extends BaseActivity {
                 .into(poster);
 
 
-        handle = findViewById(R.id.activity_main_handle);
-
-
-        tabLayout = findViewById(R.id.activity_main_tablayout);
-        viewPager = findViewById(R.id.activity_main_viewpager);
-        viewPager.setAdapter(new MainViewPagerAdapter(getSupportFragmentManager()));
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         viewPager.setOffscreenPageLimit(2);
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        viewPager.setAdapter(new TempMainViewPagerAdapter(getSupportFragmentManager(), this, TempMainViewPagerAdapter.TabItem.COMPANY, TempMainViewPagerAdapter.TabItem.GENRE, TempMainViewPagerAdapter.TabItem.DATE));
+        tabLayout.setupWithViewPager(viewPager);
+        BottomSheetUtils.setupViewPager(viewPager);
 
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                viewPager.setCurrentItem(tab.getPosition());
-                CalligraphyUtils.applyFontToTextView((TextView) tab.getCustomView().findViewById(R.id.tabName), TypefaceUtils.load(getAssets(), getResources().getString(R.string.NanumBarunGothic_path)));
+                bottomSheetBehavior.setState(ViewPagerBottomSheetBehavior.STATE_EXPANDED);
+                CalligraphyUtils.applyFontToTextView(tab.getCustomView().findViewById(R.id.tabName), TypefaceUtils.load(getAssets(), getResources().getString(R.string.NanumBarunGothic_path)));
                 tab.getCustomView().findViewById(R.id.underline).setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                CalligraphyUtils.applyFontToTextView((TextView) tab.getCustomView().findViewById(R.id.tabName), TypefaceUtils.load(getAssets(), getResources().getString(R.string.NanumBarunGothicUltraLight_path)));
+                CalligraphyUtils.applyFontToTextView(tab.getCustomView().findViewById(R.id.tabName), TypefaceUtils.load(getAssets(), getResources().getString(R.string.NanumBarunGothicUltraLight_path)));
                 tab.getCustomView().findViewById(R.id.underline).setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
+                if (bottomSheetBehavior.getState() == ViewPagerBottomSheetBehavior.STATE_COLLAPSED)
+                    bottomSheetBehavior.setState(ViewPagerBottomSheetBehavior.STATE_EXPANDED);
             }
         });
-        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+        for (int i = 0; i < tabLayout.getTabCount(); i++) { //TODO: Tab Setting not pragmatically -> XML Code
             TabLayout.Tab tab = tabLayout.getTabAt(i);
             tab.setCustomView(R.layout.tab_text);
-            TextView tempTextView = tab.getCustomView().findViewById(R.id.tabName);
-            tempTextView.setText(tabName[i]);
             if (tab.isSelected()) {
-                CalligraphyUtils.applyFontToTextView((TextView) tab.getCustomView().findViewById(R.id.tabName), TypefaceUtils.load(getAssets(), getResources().getString(R.string.NanumBarunGothic_path)));
+                CalligraphyUtils.applyFontToTextView(tab.getCustomView().findViewById(R.id.tabName), TypefaceUtils.load(getAssets(), getResources().getString(R.string.NanumBarunGothic_path)));
                 tab.getCustomView().findViewById(R.id.underline).setVisibility(View.VISIBLE);
             } else {
-                CalligraphyUtils.applyFontToTextView((TextView) tab.getCustomView().findViewById(R.id.tabName), TypefaceUtils.load(getAssets(), getResources().getString(R.string.NanumBarunGothicUltraLight_path)));
+                CalligraphyUtils.applyFontToTextView(tab.getCustomView().findViewById(R.id.tabName), TypefaceUtils.load(getAssets(), getResources().getString(R.string.NanumBarunGothicUltraLight_path)));
                 tab.getCustomView().findViewById(R.id.underline).setVisibility(View.INVISIBLE);
             }
         }
 
 
-        detail_btn = findViewById(R.id.activity_main_detail);
-        detail_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO:Show more
-            }
+        detail_btn.setOnClickListener(v -> {
+            //TODO:Moving activity to Show More
         });
 
 
-        bottomSheetBehavior = BottomSheetBehavior.from(findViewById(R.id.activity_main_main));
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        final ViewTreeObserver observer = tabLayout.getViewTreeObserver();
-        observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        bottomSheetBehavior = ViewPagerBottomSheetBehavior.from(findViewById(R.id.activity_main_main));
+        bottomSheetBehavior.setState(ViewPagerBottomSheetBehavior.STATE_COLLAPSED);
+        bottomSheetBehavior.setBottomSheetCallback(new ViewPagerBottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View view, int i) {
+
+                if (ViewPagerBottomSheetBehavior.STATE_DRAGGING == i) {
+                    if (previousState == ViewPagerBottomSheetBehavior.STATE_EXPANDED) {
+                        setVisibilityOfHandle(View.VISIBLE);
+                        findViewById(R.id.activity_main_handle_background).setBackgroundResource(R.drawable.activiry_main_rounded_background_white);
+                    }
+                } else if (ViewPagerBottomSheetBehavior.STATE_EXPANDED == i) {
+                    setVisibilityOfHandle(View.INVISIBLE);
+                    findViewById(R.id.activity_main_handle_background).setBackgroundResource(R.color.white);
+                }
+
+                checkingState(i);
+                CompanyFragment.getNestedScrollingEnabled();
+                GenreFragment.getNestedScrollingEnabled();
+                DateFragment.getNestedScrollingEnabled();
+
+                previousState = i;
+            }
+
+            @Override
+            public void onSlide(@NonNull View view, float v) {
+            }
+        });
+
+        //Setting Size using Observer
+        tabLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
 
@@ -133,35 +158,29 @@ public class MainActivity extends BaseActivity {
                 );
             }
         });
-        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View view, int i) {
-                if (BottomSheetBehavior.STATE_DRAGGING == i) {
-                    if (previousState == BottomSheetBehavior.STATE_EXPANDED) {
-                        setVisibilityOfHandle(View.VISIBLE);
-                        findViewById(R.id.activity_main_handle_background).setBackgroundResource(R.drawable.activiry_main_rounded_background_white);
-                    }
-                } else if (BottomSheetBehavior.STATE_EXPANDED == i) {
-                    setVisibilityOfHandle(View.INVISIBLE);
-                    findViewById(R.id.activity_main_handle_background).setBackgroundResource(R.color.white);
-                }
-                if(BottomSheetBehavior.STATE_COLLAPSED == i){
-                    setVisibilityOfHandle(View.VISIBLE);
-                    findViewById(R.id.activity_main_handle_background).setBackgroundResource(R.drawable.activiry_main_rounded_background_white);
-                }
-
-                previousState = i;
-            }
-
-            @Override
-            public void onSlide(@NonNull View view, float v) {
-            }
-        });
-
-
     }
 
-    private void setVisibilityOfHandle(int visibility){
+    private void checkingState(int state) {
+        switch (state) {
+            case ViewPagerBottomSheetBehavior.STATE_DRAGGING:
+                Log.d(TAG, "STATE_DRAGGING");
+                break;
+            case ViewPagerBottomSheetBehavior.STATE_SETTLING:
+                Log.d(TAG, "STATE_SETTLING");
+                break;
+            case ViewPagerBottomSheetBehavior.STATE_EXPANDED:
+                Log.d(TAG, "STATE_EXPANDED");
+                break;
+            case ViewPagerBottomSheetBehavior.STATE_COLLAPSED:
+                Log.d(TAG, "STATE_COLLAPSED");
+                break;
+            case ViewPagerBottomSheetBehavior.STATE_HIDDEN:
+                Log.d(TAG, "STATE_HIDDEN");
+                break;
+        }
+    }
+
+    private void setVisibilityOfHandle(int visibility) {
         handle.setVisibility(visibility);
     }
 

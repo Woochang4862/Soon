@@ -6,9 +6,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -44,18 +46,20 @@ public class FragmentCompanyResultRecyclerViewAdapter extends RecyclerView.Adapt
                 .fit()
                 .into(((ResultViewHolder) viewHolder).imageView);
         String text = mList.get(i).getTitle() + "\n"
-                +mList.get(i).getCertification() + "\n"
-                +"평점: "+mList.get(i).getVoteAverage();
+                +"평점: "+mList.get(i).getVoteAverage() + "\n"
+                +mList.get(i).getCertification();
         Spannable spannable = new SpannableString(text);
 
         spannable.setSpan(
-                new ForegroundColorSpan(mContext.getResources().getColor(R.color.colorAccent)),
+                new StyleSpan(android.graphics.Typeface.BOLD),
                 text.indexOf(mList.get(i).getTitle()),
                 text.indexOf(mList.get(i).getTitle())+mList.get(i).getTitle().length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         );
 
         ((ResultViewHolder) viewHolder).textView.setText(spannable, TextView.BufferType.SPANNABLE);
+
+        //TODO:Book Button Listener
     }
 
     @Override
@@ -69,6 +73,7 @@ public class FragmentCompanyResultRecyclerViewAdapter extends RecyclerView.Adapt
 
         public ImageView imageView;
         public TextView textView;
+        public Button bookBtn;
 
         public ResultViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -76,6 +81,7 @@ public class FragmentCompanyResultRecyclerViewAdapter extends RecyclerView.Adapt
             itemView.setOnLongClickListener(this);
             imageView = itemView.findViewById(R.id.result_recyclerview_poster);
             textView = itemView.findViewById(R.id.result_recyclerview_summary);
+            bookBtn = itemView.findViewById(R.id.result_recyclerview_book_btn);
         }
 
         @Override

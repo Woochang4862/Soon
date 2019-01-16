@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.github.captain_miao.optroundcardview.OptRoundCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fragment_searchbar"
+    android:layout_width="match_parent"
+    android:layout_height="54dp"
+    android:layout_alignParentBottom="true"
+    app:optRoundCardBottomEdges="false"
+    app:optRoundCardCornerRadius="@dimen/fragment_company_searchbar_radius"
+    app:optRoundCardElevation="10dp"
+    app:optRoundCardLeftBottomCorner="false"
+    app:optRoundCardLeftTopCorner="true"
+    app:optRoundCardRightBottomCorner="false"
+    app:optRoundCardRightTopCorner="true">
+
+    <RelativeLayout
+        android:id="@+id/fragment_common_searchbar"
+        android:layout_width="224dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/ic_search_black_24dp"
+            android:translationZ="11dp" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/rounded_search_bar" />
+    </RelativeLayout>
+</com.github.captain_miao.optroundcardview.OptRoundCardView>

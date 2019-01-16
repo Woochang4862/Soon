@@ -1,5 +1,6 @@
 package com.lusle.soon.Adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,8 +52,9 @@ public class FragmentGenreGenreRecyclerViewAdapter extends RecyclerView.Adapter<
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         //TODO:Binding View
+        Log.d("Genre","onBindViewHolder");
         Picasso.get()
-                .load(mList.get(position).getIcon())
+                .load("https://image.tmdb.org/t/p/w500"+mList.get(position).getIcon())
                 .centerCrop()
                 .fit()
                 .into(((GenreViewHolder)holder).genreIcon);

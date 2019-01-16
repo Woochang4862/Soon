@@ -5,15 +5,19 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.github.captain_miao.optroundcardview.OptRoundCardView;
 import com.lusle.soon.Adapter.FragmentGenreGenreRecyclerViewAdapter;
 import com.lusle.soon.Model.Genre;
 import com.lusle.soon.R;
@@ -25,8 +29,10 @@ import java.util.ArrayList;
 public class GenreFragment extends Fragment {
 
     private ConcealerNestedScrollView mConcealerNSV;
-    private CardView mSearchView;
+    private OptRoundCardView mSearchView;
     private RecyclerView mRecyclerView;
+    private RelativeLayout mSearchBar;
+    private static View viewgroup;
 
     final private int requestCode = 666;
 
@@ -38,19 +44,29 @@ public class GenreFragment extends Fragment {
         return fragment;
     }
 
+    public static void getNestedScrollingEnabled() {
+        if(viewgroup!=null){
+            Log.d("Genre", String.valueOf(viewgroup.isNestedScrollingEnabled()));
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_genre, container, false);
+        viewgroup = view;
 
-        mSearchView = view.findViewById(R.id.fragment_genre_searchbar);
+        mSearchView = view.findViewById(R.id.fragment_searchbar);
         mSearchView.post(new Runnable() {
             @Override
             public void run() {
                 mConcealerNSV.setFooterView(mSearchView, 50);
             }
         });
-        mSearchView.setOnClickListener(new View.OnClickListener() {
+
+
+        mSearchBar = view.findViewById(R.id.fragment_common_searchbar);
+        mSearchBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), SearchCompanyActivity.class);
@@ -81,8 +97,8 @@ public class GenreFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                ArrayList<Genre> list = new ArrayList<>();
-                for (Genre company :
+                final ArrayList<Genre> list = new ArrayList<>();
+                for (Genre genre :
                         new Genre[]{
                                 new Genre(420, "/hUzeosd33nzE5MCNsZxCGEKTXaQ.png", "Marvel Studios"),
                                 new Genre(19551, "/2WpWp9b108hizjHKdA107hFmvQ5.png", "Marvel Enterprises"),
@@ -90,7 +106,7 @@ public class GenreFragment extends Fragment {
                                 new Genre(11106, "/nhI2D6OlNSrvNS18cf7m7b7N9vz.png", "Marvel Knights"),
                                 new Genre(2301, null, "Marvel Productions")
                         }) {
-                    list.add(company);
+                    list.add(genre);
                 } //TODO:LOAD DATA
                 adapter.setmList(list);
                 getActivity().runOnUiThread(new Runnable() {
@@ -101,6 +117,6 @@ public class GenreFragment extends Fragment {
                     }
                 });
             }
-        });
+        }).start();
     }
 }
