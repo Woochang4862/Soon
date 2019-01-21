@@ -1,6 +1,8 @@
 package com.lusle.soon.Model;
 
-public class Company {
+import java.io.Serializable;
+
+public class Company implements Serializable {
     private Integer id;
     private String logo_path;
     private String name;

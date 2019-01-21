@@ -1,10 +1,14 @@
 package com.lusle.soon.Adapter;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
+import android.util.Log;
 
-import com.lusle.soon.Fragment.CompanyFragment;
-import com.lusle.soon.Fragment.DateFragment;
-import com.lusle.soon.Fragment.GenreFragment;
+import com.lusle.soon.Fragments.CompanyFragment;
+import com.lusle.soon.Fragments.DateFragment;
+import com.lusle.soon.Fragments.GenreFragment;
 import com.lusle.soon.R;
 
 import androidx.annotation.StringRes;
@@ -42,10 +46,11 @@ public class TempMainViewPagerAdapter extends FragmentPagerAdapter {
         return newInstance(tabItems[position].fragmentClass);
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     private Fragment newInstance(Class<? extends Fragment> fragmentClass) {
         try {
             return fragmentClass.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
+        } catch (@SuppressLint("NewApi") InstantiationException | IllegalAccessException e) {
             throw new RuntimeException("fragment must have public no-arg constructor: " + fragmentClass.getName(), e);
         }
     }

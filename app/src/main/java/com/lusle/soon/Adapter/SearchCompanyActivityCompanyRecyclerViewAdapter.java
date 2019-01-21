@@ -17,12 +17,18 @@ import java.util.ArrayList;
 
 public class SearchCompanyActivityCompanyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private ArrayList<Company> mList;
-    private ArrayList<Integer> result, tempBookmark;
+    private ArrayList<Company> result, tempBookmark;
 
     public SearchCompanyActivityCompanyRecyclerViewAdapter() {
         mList = new ArrayList<>();
         result = new ArrayList<>();
         tempBookmark = new ArrayList<>();
+    }
+
+    public void clear() {
+        mList.clear();
+        result.clear();
+        tempBookmark.clear();
     }
 
     public class CompanyViewHolder extends RecyclerView.ViewHolder {
@@ -46,38 +52,32 @@ public class SearchCompanyActivityCompanyRecyclerViewAdapter extends RecyclerVie
 
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, final int i) {
-        ((CompanyViewHolder) viewHolder).mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    result.add(mList.get(i).getId());
-                } else {
-                    result.remove(mList.get(i).getId());
-                }
-                SearchCompanyActivity.setAllCheckBox(isAllChecked());
-
-                if (result.size() > 0)
-                    SearchCompanyActivity.setActivation();
-                else
-                    SearchCompanyActivity.setDeactivation();
+        ((CompanyViewHolder) viewHolder).mCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                result.add(mList.get(i));
+            } else {
+                result.remove(mList.get(i));
             }
+            SearchCompanyActivity.setAllCheckBox(isAllChecked());
+
+            if (result.size() > 0)
+                SearchCompanyActivity.setActivation();
+            else
+                SearchCompanyActivity.setDeactivation();
         });
         ((CompanyViewHolder) viewHolder).mCheckBox.setText(mList.get(i).getName());
 
 
-        ((CompanyViewHolder) viewHolder).mLottieAnimationView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!((CompanyViewHolder) viewHolder).mLottieAnimationView.isAnimating()) {
-                    if (tempBookmark.contains(mList.get(i).getId())) {
-                        tempBookmark.remove(mList.get(i).getId());
-                        ((LottieAnimationView) v).setSpeed(-2);
-                        ((LottieAnimationView) v).playAnimation();
-                    } else {
-                        tempBookmark.add(mList.get(i).getId());
-                        ((LottieAnimationView) v).setSpeed(2);
-                        ((LottieAnimationView) v).playAnimation();
-                    }
+        ((CompanyViewHolder) viewHolder).mLottieAnimationView.setOnClickListener(v -> {
+            if (!((CompanyViewHolder) viewHolder).mLottieAnimationView.isAnimating()) {
+                if (tempBookmark.contains(mList.get(i))) {
+                    tempBookmark.remove(mList.get(i));
+                    ((LottieAnimationView) v).setSpeed(-2);
+                    ((LottieAnimationView) v).playAnimation();
+                } else {
+                    tempBookmark.add(mList.get(i));
+                    ((LottieAnimationView) v).setSpeed(2);
+                    ((LottieAnimationView) v).playAnimation();
                 }
             }
         });
@@ -93,17 +93,15 @@ public class SearchCompanyActivityCompanyRecyclerViewAdapter extends RecyclerVie
         return mList.size() == result.size();
     }
 
-    public ArrayList<Integer> getResult() {
+    public ArrayList<Company> getResult() {
         return result;
     }
 
     public void addItems(ArrayList<Company> list) {
         mList.addAll(list);
-        notifyDataSetChanged();
     }
 
     public void addItem(Company item) {
         mList.add(item);
-        notifyDataSetChanged();
     }
 }

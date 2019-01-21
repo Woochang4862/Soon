@@ -1,8 +1,8 @@
 package com.lusle.soon.Adapter;
 
-import com.lusle.soon.Fragment.CompanyFragment;
-import com.lusle.soon.Fragment.DateFragment;
-import com.lusle.soon.Fragment.GenreFragment;
+import com.lusle.soon.Fragments.CompanyFragment;
+import com.lusle.soon.Fragments.DateFragment;
+import com.lusle.soon.Fragments.GenreFragment;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;

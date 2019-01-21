@@ -20,6 +20,7 @@ public class FragmentGenreGenreRecyclerViewAdapter extends RecyclerView.Adapter<
 
     private ArrayList<Genre> mList;
     private OnItemClickListener onItemClickListener;
+    private String baseUrl = "";
 
     private class GenreViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -53,11 +54,12 @@ public class FragmentGenreGenreRecyclerViewAdapter extends RecyclerView.Adapter<
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         //TODO:Binding View
         Log.d("Genre","onBindViewHolder");
-        Picasso.get()
-                .load("https://image.tmdb.org/t/p/w500"+mList.get(position).getIcon())
+        /*Picasso.get()
+                .load(baseUrl+mList.get(position).getIcon())
                 .centerCrop()
                 .fit()
-                .into(((GenreViewHolder)holder).genreIcon);
+                .into(((GenreViewHolder)holder).genreIcon);*/
+        ((GenreViewHolder)holder).genreIcon.setImageResource(Integer.parseInt(mList.get(position).getIcon()));
         ((GenreViewHolder)holder).genreText.setText(mList.get(position).getName());
     }
 
@@ -85,5 +87,9 @@ public class FragmentGenreGenreRecyclerViewAdapter extends RecyclerView.Adapter<
 
     public void addDatas(ArrayList<Genre> items){
         mList.addAll(items);
+    }
+
+    public Genre getItem(int position){
+        return mList.get(position);
     }
 }

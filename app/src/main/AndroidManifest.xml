@@ -19,7 +19,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SearchCompanyActivity"></activity>
+        <activity
+            android:name=".SearchCompanyActivity"
+            android:theme="@style/AppSubTheme" />
+        <activity
+            android:name=".ContentResultGenreActivity"
+            android:theme="@style/AppSubTheme"></activity>
     </application>
 
 </manifest>

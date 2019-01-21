@@ -39,7 +39,7 @@
             fontPath="@string/NanumBarunGothic_path"
             android:layout_width="87.3dp"
             android:layout_height="24.3dp"
-            android:background="@color/colorAccent"
+            android:background="@color/colorPrimary"
             android:includeFontPadding="false"
             android:text="@string/book_button_string"
             android:textColor="@color/white"

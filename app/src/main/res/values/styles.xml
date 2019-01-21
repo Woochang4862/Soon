@@ -10,4 +10,15 @@
         <item name="android:statusBarColor" tools:ignore="NewApi">@color/transparent</item>
         <item name="android:windowTranslucentStatus" tools:ignore="NewApi">true</item>
     </style>
+
+    <style name="AppSubTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppSearchView" parent="Widget.AppCompat.SearchView" >
+        <item name="android:textSize">11sp</item>
+        <item name="android:keyTextSize">11sp</item>
+    </style>
 </resources>

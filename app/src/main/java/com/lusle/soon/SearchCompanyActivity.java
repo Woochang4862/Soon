@@ -2,25 +2,32 @@ package com.lusle.soon;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.SearchView;
+
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.lusle.soon.Adapter.SearchCompanyActivityCompanyRecyclerViewAdapter;
 import com.lusle.soon.Model.Company;
+import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
 import java.util.ArrayList;
 
 public class SearchCompanyActivity extends BaseActivity {
 
     private SearchView mSearchView;
-    private static TextView mTextViewBack, mTextViewForward;
+    private ImageView mBackBtn, mSearchBtn;
+    private static TextView mTextViewForward;
     private static CheckBox mCheckBoxAll;
     private LinearLayout mLinearLayout;
+    private LottieAnimationView empty;
     private RecyclerView mRecyclerView;
     private ArrayList<String> companyList;
 
@@ -33,6 +40,7 @@ public class SearchCompanyActivity extends BaseActivity {
     }
 
     private void init() {
+
         companyList = new ArrayList<>();
 
         mRecyclerView = findViewById(R.id.activity_search_company_company_list);
@@ -43,26 +51,19 @@ public class SearchCompanyActivity extends BaseActivity {
 
 
         mLinearLayout = findViewById(R.id.activity_search_company_empty_img);
+        empty = findViewById(R.id.activity_search_company_empty);
+        empty.playAnimation();
+        empty.loop(true);
 
 
         mSearchView = findViewById(R.id.activity_search_company_searchview);
         mSearchView.requestFocusFromTouch();
-        mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                return true;
-            }
-        });
+        mSearchView.setOnCloseListener(() -> true);
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                //TODO:API from server
-                ArrayList<Company> temp = new ArrayList<>();
-                for (Company company : new Company[]{new Company(420, "/hUzeosd33nzE5MCNsZxCGEKTXaQ.png", "Marvel Studios"), new Company(19551, "/2WpWp9b108hizjHKdA107hFmvQ5.png", "Marvel Enterprises")}) {
-                    temp.add(company);
-                }
-                activityCompanyRecyclerViewAdapter.addItems(temp);
-                ItIsEmpty(activityCompanyRecyclerViewAdapter.getItemCount() <= 0);
+                activityCompanyRecyclerViewAdapter.clear();
+                setDateIntoResult(activityCompanyRecyclerViewAdapter, s);
                 return false;
             }
 
@@ -74,53 +75,81 @@ public class SearchCompanyActivity extends BaseActivity {
 
 
         mCheckBoxAll = findViewById(R.id.activity_search_company_checkbox_all);
-        mCheckBoxAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean isChecked = ((CheckBox) v).isChecked();
-                for (int i = 0; i < activityCompanyRecyclerViewAdapter.getItemCount(); i++) {
-                    ((CheckBox) layoutManager.findViewByPosition(i).findViewById(R.id.company_recyclerview_checkbox)).setChecked(isChecked);
-                }
+        mCheckBoxAll.setOnClickListener(v -> {
+            boolean isChecked = ((CheckBox) v).isChecked();
+            for (int i = 0; i < activityCompanyRecyclerViewAdapter.getItemCount(); i++) {
+                ((CheckBox) layoutManager.findViewByPosition(i).findViewById(R.id.company_recyclerview_checkbox)).setChecked(isChecked);
             }
         });
 
 
-        mTextViewBack = findViewById(R.id.activity_search_company_back_btn);
-        mTextViewBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
+        mBackBtn = findViewById(R.id.activity_search_company_back_btn);
+        mBackBtn.setOnClickListener(v -> finish());
+
+
+        mSearchBtn = findViewById(R.id.activity_search_company_search_btn);
+        mSearchBtn.setOnClickListener(v -> {
+            if (mSearchView.getQuery().toString().equals("")) {
+                DynamicToast.makeWarning(this, "검색어를 넣어 주세요").show();
+            } else {
+                mSearchView.setQuery(mSearchView.getQuery(), true);
             }
         });
-
 
         mTextViewForward = findViewById(R.id.activity_search_company_forward_btn);
         setDeactivation();
-        mTextViewForward.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SearchCompanyActivity.this, MainActivity.class);
-                intent.putExtra("company_list", activityCompanyRecyclerViewAdapter.getResult().toString()); //temporary
-                setResult(RESULT_OK, intent);
-                finish();
-            }
+        mTextViewForward.setOnClickListener(v -> {
+            Intent intent = new Intent(SearchCompanyActivity.this, MainActivity.class);
+            intent.putExtra("company_list", activityCompanyRecyclerViewAdapter.getResult());
+            setResult(RESULT_OK, intent);
+            finish();
         });
+
+        ItIsEmpty(true);
+    }
+
+    private void setDateIntoResult(SearchCompanyActivityCompanyRecyclerViewAdapter adapter, String query) {
+        new Thread(()->{
+            ArrayList<Company> temp = new ArrayList<>();
+            for (Company company : new Company[]{
+                    new Company(420, "/hUzeosd33nzE5MCNsZxCGEKTXaQ.png", "Marvel Studios"),
+                    new Company(19551, "/2WpWp9b108hizjHKdA107hFmvQ5.png", "Marvel Enterprises"),
+                    new Company(38679, "/7sD79XoadVfcgOVCjuEgQduob68.png", "Marvel Television"),
+                    new Company(2301, null, "Marvel Productions"),
+                    new Company(13252, "/fR0wNyLTP6cexkfwSf49J24dlES.png", "Marvel Animation"),
+                    new Company(108634, null, "Marvel Films"),
+                    new Company(7505, "/837VMM4wOkODc1idNxGT0KQJlej.png", "Marvel Entertainment"),
+                    new Company(11106, "/h4XR8uTNylVX9hJTiN50e76booZ.png", "Marvel Knights")
+            }) {
+                temp.add(company);
+            }//TODO:API from server
+            adapter.addItems(temp);
+            runOnUiThread(()->{
+                ItIsEmpty(adapter.getItemCount() <= 0);
+                DynamicToast.makeSuccess(getApplicationContext(), mSearchView.getQuery() + "에 대한 검색 결과입니다").show();
+            });
+        }).start();
     }
 
     private void ItIsEmpty(boolean state) {
         mLinearLayout.setVisibility(state ? View.VISIBLE : View.GONE);
+        if (state) empty.playAnimation();
+        empty.loop(state);
+
+        mCheckBoxAll.setVisibility(state ? View.GONE : View.VISIBLE);
+        mRecyclerView.setVisibility(state ? View.GONE : View.VISIBLE);
     }
 
     public static void setDeactivation() {
         if (mTextViewForward != null) {
-            mTextViewForward.setBackgroundColor(0x80FFFFFF);
+            mTextViewForward.setBackgroundColor(0x80f95a70);
             mTextViewForward.setEnabled(false);
         }
     }
 
     public static void setActivation() {
         if (mTextViewForward != null) {
-            mTextViewForward.setBackgroundColor(0xFFFFFFFF);
+            mTextViewForward.setBackgroundColor(0xfff95a70);
             mTextViewForward.setEnabled(true);
         }
     }

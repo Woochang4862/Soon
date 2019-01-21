@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.lusle.soon.Model.Company;
 import com.lusle.soon.R;
 
 import java.util.ArrayList;
@@ -27,7 +26,7 @@ public class FragmentCompanyBookMarkRecyclerViewAdapter extends RecyclerView.Ada
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.bookmark_recyclerview_item, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.favorite_company_recyclerview_item, viewGroup, false);
         return new BookMarkViewHolder(view);
     }
 
@@ -81,10 +80,8 @@ public class FragmentCompanyBookMarkRecyclerViewAdapter extends RecyclerView.Ada
 
 
 
-    public int setDatas(ArrayList<String> datas){
-        if(mList!=null) return -1;
-        mList=datas;
-        return 0;
+    public void setList(ArrayList<String> list){
+        mList=list;
     }
 
     public void setOnItemClickListener(final FragmentCompanyBookMarkRecyclerViewAdapter.OnItemClickListener mItemClickListener) {

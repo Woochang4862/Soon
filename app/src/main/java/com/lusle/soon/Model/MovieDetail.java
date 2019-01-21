@@ -94,6 +94,13 @@ public class MovieDetail {
         this.voteAverage = voteAverage;
     }
 
+    public MovieDetail(String title, String certification, List<Genre> genres, String releaseDate) {
+        this.title = title;
+        this.certification = certification;
+        this.genres = genres;
+        this.releaseDate = releaseDate;
+    }
+
     public Boolean getAdult() {
         return adult;
     }

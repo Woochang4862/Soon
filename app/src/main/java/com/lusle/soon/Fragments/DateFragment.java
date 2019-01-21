@@ -1,4 +1,4 @@
-package com.lusle.soon.Fragment;
+package com.lusle.soon.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,7 +15,6 @@ import com.simmorsal.library.ConcealerNestedScrollView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 public class DateFragment extends Fragment {

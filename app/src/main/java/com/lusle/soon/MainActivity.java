@@ -2,19 +2,14 @@ package com.lusle.soon;
 
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.lusle.soon.Adapter.TempMainViewPagerAdapter;
-import com.lusle.soon.Fragment.CompanyFragment;
-import com.lusle.soon.Fragment.DateFragment;
-import com.lusle.soon.Fragment.GenreFragment;
 import com.lusle.soon.ViewPagerBottomSheet.BottomSheetUtils;
 import com.lusle.soon.ViewPagerBottomSheet.ViewPagerBottomSheetBehavior;
 import com.squareup.picasso.Picasso;
@@ -92,6 +87,7 @@ public class MainActivity extends BaseActivity {
         for (int i = 0; i < tabLayout.getTabCount(); i++) { //TODO: Tab Setting not pragmatically -> XML Code
             TabLayout.Tab tab = tabLayout.getTabAt(i);
             tab.setCustomView(R.layout.tab_text);
+            ((TextView)tab.getCustomView().findViewById(R.id.tabName)).setText(viewPager.getAdapter().getPageTitle(i));
             if (tab.isSelected()) {
                 CalligraphyUtils.applyFontToTextView(tab.getCustomView().findViewById(R.id.tabName), TypefaceUtils.load(getAssets(), getResources().getString(R.string.NanumBarunGothic_path)));
                 tab.getCustomView().findViewById(R.id.underline).setVisibility(View.VISIBLE);
@@ -123,11 +119,6 @@ public class MainActivity extends BaseActivity {
                     findViewById(R.id.activity_main_handle_background).setBackgroundResource(R.color.white);
                 }
 
-                checkingState(i);
-                CompanyFragment.getNestedScrollingEnabled();
-                GenreFragment.getNestedScrollingEnabled();
-                DateFragment.getNestedScrollingEnabled();
-
                 previousState = i;
             }
 
@@ -137,47 +128,24 @@ public class MainActivity extends BaseActivity {
         });
 
         //Setting Size using Observer
-        tabLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
+        tabLayout.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
 
-                final float scale = getResources().getDisplayMetrics().density;
+            final float scale = getResources().getDisplayMetrics().density;
 
 
-                int posterHeight = (int) Math.round(screenHeight) - bottomSheetBehavior.getPeekHeight() / 2;
-                poster.setMinimumHeight(posterHeight);
-                poster.setMaxHeight(posterHeight);
+            int posterHeight = (int) Math.round(screenHeight) - bottomSheetBehavior.getPeekHeight() / 2;
+            poster.setMinimumHeight(posterHeight);
+            poster.setMaxHeight(posterHeight);
 
 
-                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) detail_btn.getLayoutParams();
-                params.bottomMargin = Math.round((40 * scale + 0.5f) + bottomSheetBehavior.getPeekHeight());
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) detail_btn.getLayoutParams();
+            params.bottomMargin = Math.round((40 * scale + 0.5f) + bottomSheetBehavior.getPeekHeight());
 
 
-                bottomSheetBehavior.setPeekHeight(
-                        Math.round(getDimen(R.dimen.activity_main_tabLayout_height) + getDimen(R.dimen.fragment_company_handle_margin) * 2 + getDimen(R.dimen.fragment_company_handle_height))
-                );
-            }
+            bottomSheetBehavior.setPeekHeight(
+                    Math.round(getDimen(R.dimen.activity_main_tabLayout_height) + getDimen(R.dimen.fragment_company_handle_margin) * 2 + getDimen(R.dimen.fragment_company_handle_height))
+            );
         });
-    }
-
-    private void checkingState(int state) {
-        switch (state) {
-            case ViewPagerBottomSheetBehavior.STATE_DRAGGING:
-                Log.d(TAG, "STATE_DRAGGING");
-                break;
-            case ViewPagerBottomSheetBehavior.STATE_SETTLING:
-                Log.d(TAG, "STATE_SETTLING");
-                break;
-            case ViewPagerBottomSheetBehavior.STATE_EXPANDED:
-                Log.d(TAG, "STATE_EXPANDED");
-                break;
-            case ViewPagerBottomSheetBehavior.STATE_COLLAPSED:
-                Log.d(TAG, "STATE_COLLAPSED");
-                break;
-            case ViewPagerBottomSheetBehavior.STATE_HIDDEN:
-                Log.d(TAG, "STATE_HIDDEN");
-                break;
-        }
     }
 
     private void setVisibilityOfHandle(int visibility) {

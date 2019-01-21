@@ -3,28 +3,107 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark">
 
     <com.simmorsal.library.ConcealerNestedScrollView
         android:id="@+id/fragment_date_nestedscrollview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/fragment_common_side_padding"
-        android:paddingRight="@dimen/fragment_common_side_padding">
+        android:layout_height="wrap_content">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/fragment_date_top_bottom_padding">
 
-            <CalendarView
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/fragment_date_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></CalendarView>
+                android:layout_height="60dp"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/fragment_date_toolbar_title"
+                    fontPath="@string/BerlinSansFB_Reg_path"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="Calender"
+                    android:layout_marginRight="12dp"
+                    android:textColor="@color/black"
+                    android:textSize="18.7sp"
+                    tools:ignore="MissingPrefix" />
+
+            </androidx.appcompat.widget.Toolbar>
+
+            <CalendarView
+                android:id="@+id/fragment_date_picker"
+                android:layout_width="match_parent"
+                android:layout_height="264dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/fragment_date_toolbar"
+                android:background="@color/white"></CalendarView>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/fragment_date_picker"
+                android:layout_marginTop="12dp"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/fragment_date_calender"
+                    fontPath="@string/NanumBarunGothic_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10.7dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_toLeftOf="@+id/fragment_date_contour"
+                    android:includeFontPadding="false"
+                    android:text="날짜순"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="9.3sp"
+                    tools:ignore="MissingPrefix" />
+
+                <TextView
+                    android:id="@+id/fragment_date_contour"
+                    fontPath="@string/NanumBarunGothic_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10.7dp"
+                    android:layout_toLeftOf="@+id/fragment_date_listview"
+                    android:includeFontPadding="false"
+                    android:text="|"
+                    android:textSize="9.3sp"
+                    tools:ignore="MissingPrefix" />
+
+                <TextView
+                    android:id="@+id/fragment_date_listview"
+                    fontPath="@string/NanumBarunGothic_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10.7dp"
+                    android:layout_marginRight="23.7dp"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/defaultTextColor"
+                    android:text="인기순"
+                    android:textSize="9.3sp"
+                    tools:ignore="MissingPrefix" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/fragment_date_calender_movie_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/fragment_date_listview"></androidx.recyclerview.widget.RecyclerView>
+
+            </RelativeLayout>
 
         </RelativeLayout>
 
     </com.simmorsal.library.ConcealerNestedScrollView>
 
-    <include layout="@layout/fragment_common_search_bar"/>
+    <include layout="@layout/fragment_common_search_bar" />
 
 </RelativeLayout>

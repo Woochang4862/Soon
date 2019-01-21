@@ -1,11 +1,9 @@
 package com.lusle.soon.Adapter;
 
-import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,17 +21,15 @@ import java.util.ArrayList;
 public class FragmentCompanyResultRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     ArrayList<MovieDetail> mList;
-    private Context mContext;
     private FragmentCompanyResultRecyclerViewAdapter.OnItemClickListener mItemClickListener;
 
-    public FragmentCompanyResultRecyclerViewAdapter(Context mContext){
-        this.mContext = mContext;
+    public FragmentCompanyResultRecyclerViewAdapter(){
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.result_recyclerview_item, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.company_result_recyclerview_item, viewGroup, false);
         return new ResultViewHolder(view);
     }
 
@@ -106,7 +102,7 @@ public class FragmentCompanyResultRecyclerViewAdapter extends RecyclerView.Adapt
         notifyDataSetChanged();
     }
 
-    public void setmList(ArrayList<MovieDetail> mList){
+    public void setList(ArrayList<MovieDetail> mList){
         this.mList = mList;
     }
 

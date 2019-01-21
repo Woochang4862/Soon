@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="bookmark_item_height">20dp</dimen>
+    <dimen name="favorite_company_item_height">26.7dp</dimen>
+    <dimen name="favorite_company_name_height">16.7dp</dimen>
     <dimen name="fragment_company_top_bottom_padding">30dp</dimen>
-    <dimen name="fragment_common_side_padding">60dp</dimen>
+    <dimen name="fragment_common_side_padding">61dp</dimen>
     <dimen name="fragment_common_side_padding_child">85dp</dimen>
     <dimen name="fragment_company_handle_margin">20dp</dimen>
     <dimen name="fragment_company_searchbar_radius">15dp</dimen>
     <dimen name="activity_main_tabLayout_height">50dp</dimen>
     <dimen name="fragment_company_handle_height">3dp</dimen>
-    <dimen name="fragment_genre_top_bottom_padding">30dp</dimen>
+    <dimen name="fragment_genre_top_bottom_padding">90dp</dimen>
     <dimen name="fragment_genre_handle_height">3dp</dimen>
     <dimen name="fragment_genre_handle_margin">20dp</dimen>
     <dimen name="fragment_genre_searchbar_radius">15dp</dimen>
@@ -16,4 +17,5 @@
     <dimen name="fragment_date_handle_height">3dp</dimen>
     <dimen name="fragment_date_handle_margin">20dp</dimen>
     <dimen name="fragment_date_searchbar_radius">15dp</dimen>
+    <dimen name="toolbar_height">50dp</dimen>
 </resources>

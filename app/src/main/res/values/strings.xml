@@ -6,10 +6,13 @@
     <string name="NanumBarunGothic_path">fonts/NanumBarunGothic.otf</string>
     <string name="NanumBarunGothicBold_path">fonts/NanumBarunGothicBold.otf</string>
     <string name="NanumBarunGothicUltraLight_path">fonts/NanumBarunGothicUltraLight.otf</string>
+    <string name="BerlinSansFB_Reg_path">fonts/BerlinSansFB-Reg.ttf</string>
     <string name="tab_name_1">제작사별</string>
     <string name="tab_name_2">장르별</string>
     <string name="tab_name_3">날짜순</string>
     <string name="previout_btn_string"><![CDATA[<이전]]></string>
     <string name="book_button_string">예매하기</string>
     <string name="view_pager_bottom_sheet_behavior">com.lusle.soon.ViewPagerBottomSheet.ViewPagerBottomSheetBehavior</string>
+    <string name="activity_content_result_genre_label"><![CDATA[장르 >]]></string>
+    <string name="empty_text">아무 것도 없음</string>
 </resources>
