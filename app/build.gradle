@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.lusle.soon"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -26,22 +26,33 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha3'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0-alpha1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
-
     implementation 'com.google.android.material:material:1.1.0-alpha02'
-    implementation 'uk.co.chrisjenx:calligraphy:2.2.0'
-    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    //Network Dependencies
+    implementation('com.squareup.retrofit2:retrofit:2.5.0') {
+        exclude module: 'okhttp'
+    }
+    implementation 'com.google.code.gson:gson:2.8.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.9.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
     implementation "com.squareup.okhttp3:okhttp:3.12.0"
+
+    //UI Dependencies Library
     implementation 'com.airbnb.android:lottie:2.1.0'
-    implementation 'com.simmorsal.library:concealer_nested_scroll_view:2.0.0'
     implementation 'com.google.android.material:material:1.0.0'
-    implementation 'com.xiaofeng.android:flowlayoutmanager:1.2.3.2'
-    implementation 'com.google.code.gson:gson:2.2.4'
-    implementation 'com.github.captain-miao:optroundcardview:1.0.0'
     implementation 'com.jakewharton:butterknife:9.0.0-SNAPSHOT'
     implementation 'com.pranavpandey.android:dynamic-toasts:2.2.0'
+    implementation 'com.github.hugocastelani:waterfall-toolbar:0.4.0'
+    implementation 'com.skyfishjy.ripplebackground:library:1.0.1'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'uk.co.chrisjenx:calligraphy:2.2.0'
+    implementation 'com.github.sundeepk:compact-calendar-view:2.0.2.2'
+    implementation 'com.github.davidmigloz:youtube-android-player-api-gradle:1.2.2.1'
 
     annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-SNAPSHOT'
 }

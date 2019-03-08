@@ -16,11 +16,11 @@ import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class FragmentGenreGenreRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class FragmentGenreGenreRecyclerViewAdapter extends BaseRecyclerAdapter<RecyclerView.ViewHolder> {
 
     private ArrayList<Genre> mList;
     private OnItemClickListener onItemClickListener;
-    private String baseUrl = "";
+    private String baseUrl = "http://ec2-18-216-177-252.us-east-2.compute.amazonaws.com:3000";
 
     private class GenreViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -46,20 +46,19 @@ public class FragmentGenreGenreRecyclerViewAdapter extends RecyclerView.Adapter<
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.genre_recyclerview_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_genre_recyclerview, parent, false);
         return new GenreViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        //TODO:Binding View
         Log.d("Genre","onBindViewHolder");
-        /*Picasso.get()
-                .load(baseUrl+mList.get(position).getIcon())
-                .centerCrop()
+        Picasso.get()
+                .load(baseUrl+mList.get(position).getIcon_path())
+                .centerInside()
                 .fit()
-                .into(((GenreViewHolder)holder).genreIcon);*/
-        ((GenreViewHolder)holder).genreIcon.setImageResource(Integer.parseInt(mList.get(position).getIcon()));
+                .error(R.drawable.ic_broken_image)
+                .into(((GenreViewHolder)holder).genreIcon);
         ((GenreViewHolder)holder).genreText.setText(mList.get(position).getName());
     }
 
@@ -77,7 +76,7 @@ public class FragmentGenreGenreRecyclerViewAdapter extends RecyclerView.Adapter<
         this.onItemClickListener = onItemClickListener;
     }
 
-    public void setmList(ArrayList<Genre> mList){
+    public void setList(ArrayList<Genre> mList){
         this.mList = mList;
     }
 

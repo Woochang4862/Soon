@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="17.3dp"
+    android:orientation="vertical"
+    app:cardElevation="10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/title"
+            fontPath="@string/NanumBarunGothic_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="11dp"
+            android:lineSpacingExtra="2.7sp"
+            android:includeFontPadding="false"
+            android:text="@string/relative_company"
+            android:textColor="#000000"
+            android:textSize="12sp"
+            tools:ignore="MissingPrefix" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/company_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:layout_marginTop="3dp"></androidx.recyclerview.widget.RecyclerView>
+
+        <RelativeLayout
+            android:id="@+id/more"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/company_recyclerView"
+            android:background="?attr/selectableItemBackground"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="29.7dp"
+                android:src="@drawable/ic_expand_more" />
+
+            <TextView
+                fontPath="@string/NanumBarunGothic_path"
+                android:includeFontPadding="false"
+                android:layout_width="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/more"
+                tools:ignore="MissingPrefix" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

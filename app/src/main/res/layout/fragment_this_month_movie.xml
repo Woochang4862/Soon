@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MovieListActivity">
+
+    <com.hugocastelani.waterfalltoolbar.WaterfallToolbar
+        android:id="@+id/waterfallToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:contentInsetStart="0dp"
+            android:contentInsetLeft="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp">
+
+            <TextView
+                fontPath="@string/NanumBarunGothicBold_path"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="12.3dp"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:text="#이번 달"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp"
+                tools:ignore="MissingPrefix" />
+
+            <TextView
+                fontPath="@string/NanumBarunGothicUltraLight_path"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:text="에 개봉하는 영화"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                tools:ignore="MissingPrefix" />
+        </androidx.appcompat.widget.Toolbar>
+    </com.hugocastelani.waterfalltoolbar.WaterfallToolbar>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/waterfallToolbar"
+        android:background="@color/white">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/movie_list_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></androidx.recyclerview.widget.RecyclerView>
+
+        <FrameLayout
+            android:id="@+id/list_empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/list_empty_anim"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:lottie_fileName="lottie/not_found.json"
+                app:lottie_loop="true"
+                app:lottie_scale="0.2" />
+
+            <TextView
+                fontPath="@string/NanumBarunGothicBold_path"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:text="@string/empty_text"
+                tools:ignore="MissingPrefix" />
+        </FrameLayout>
+
+    </FrameLayout>
+
+</LinearLayout>

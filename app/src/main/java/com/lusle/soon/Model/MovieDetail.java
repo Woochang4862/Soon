@@ -1,6 +1,7 @@
 
 package com.lusle.soon.Model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.annotations.Expose;
@@ -10,7 +11,7 @@ public class MovieDetail {
 
     @SerializedName("adult")
     @Expose
-    private Boolean adult;
+    private boolean adult;
     @SerializedName("backdrop_path")
     @Expose
     private String backdropPath;
@@ -22,7 +23,7 @@ public class MovieDetail {
     private Integer budget;
     @SerializedName("genres")
     @Expose
-    private List<Genre> genres = null;
+    private List<Genre> genres;
     @SerializedName("homepage")
     @Expose
     private String homepage;
@@ -46,7 +47,7 @@ public class MovieDetail {
     private Double popularity;
     @SerializedName("poster_path")
     @Expose
-    private Object posterPath;
+    private String posterPath;
     @SerializedName("production_companies")
     @Expose
     private List<ProductionCompany> productionCompanies = null;
@@ -64,7 +65,7 @@ public class MovieDetail {
     private Integer runtime;
     @SerializedName("spoken_languages")
     @Expose
-    private List<SpokenLanguage> spokenLanguages = null;
+    private ArrayList<SpokenLanguage> spokenLanguages = null;
     @SerializedName("status")
     @Expose
     private String status;
@@ -83,29 +84,18 @@ public class MovieDetail {
     @SerializedName("vote_count")
     @Expose
     private Integer voteCount;
-
-    @SerializedName("certification")
+    @SerializedName("videos")
     @Expose
-    private String certification;
+    private Videos videos;
+    @SerializedName("images")
+    @Expose
+    private Images images;
 
-    public MovieDetail(String title, String certification, Double voteAverage) {
-        this.title = title;
-        this.certification = certification;
-        this.voteAverage = voteAverage;
-    }
-
-    public MovieDetail(String title, String certification, List<Genre> genres, String releaseDate) {
-        this.title = title;
-        this.certification = certification;
-        this.genres = genres;
-        this.releaseDate = releaseDate;
-    }
-
-    public Boolean getAdult() {
+    public boolean getAdult() {
         return adult;
     }
 
-    public void setAdult(Boolean adult) {
+    public void setAdult(boolean adult) {
         this.adult = adult;
     }
 
@@ -197,11 +187,11 @@ public class MovieDetail {
         this.popularity = popularity;
     }
 
-    public Object getPosterPath() {
+    public String getPosterPath() {
         return posterPath;
     }
 
-    public void setPosterPath(Object posterPath) {
+    public void setPosterPath(String posterPath) {
         this.posterPath = posterPath;
     }
 
@@ -245,11 +235,11 @@ public class MovieDetail {
         this.runtime = runtime;
     }
 
-    public List<SpokenLanguage> getSpokenLanguages() {
+    public ArrayList<SpokenLanguage> getSpokenLanguages() {
         return spokenLanguages;
     }
 
-    public void setSpokenLanguages(List<SpokenLanguage> spokenLanguages) {
+    public void setSpokenLanguages(ArrayList<SpokenLanguage> spokenLanguages) {
         this.spokenLanguages = spokenLanguages;
     }
 
@@ -301,12 +291,50 @@ public class MovieDetail {
         this.voteCount = voteCount;
     }
 
-    public String getCertification() {
-        return certification;
+    public Videos getVideos() {
+        return videos;
     }
 
-    public void setCertification(String certification) {
-        this.certification = certification;
+    public void setVideos(Videos videos) {
+        this.videos = videos;
     }
 
+    public Images getImages() {
+        return images;
+    }
+
+    public void setImages(Images images) {
+        this.images = images;
+    }
+
+    @Override
+    public String toString() {
+        return "MovieDetail{" +
+                "adult=" + adult +
+                ", backdropPath='" + backdropPath + '\'' +
+                ", belongsToCollection=" + belongsToCollection +
+                ", budget=" + budget +
+                ", genres=" + genres +
+                ", homepage='" + homepage + '\'' +
+                ", id=" + id +
+                ", imdbId='" + imdbId + '\'' +
+                ", originalLanguage='" + originalLanguage + '\'' +
+                ", originalTitle='" + originalTitle + '\'' +
+                ", overview='" + overview + '\'' +
+                ", popularity=" + popularity +
+                ", posterPath='" + posterPath + '\'' +
+                ", productionCompanies=" + productionCompanies +
+                ", productionCountries=" + productionCountries +
+                ", releaseDate='" + releaseDate + '\'' +
+                ", revenue=" + revenue +
+                ", runtime=" + runtime +
+                ", spokenLanguages=" + spokenLanguages +
+                ", status='" + status + '\'' +
+                ", tagline='" + tagline + '\'' +
+                ", title='" + title + '\'' +
+                ", video=" + video +
+                ", voteAverage=" + voteAverage +
+                ", voteCount=" + voteCount +
+                '}';
+    }
 }

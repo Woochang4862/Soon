@@ -11,16 +11,16 @@ public class Genre implements Serializable {
     @SerializedName("id")
     @Expose
     private Integer id;
-    @SerializedName("icon")
+    @SerializedName("icon_path")
     @Expose
-    private String icon;
+    private String icon_path;
     @SerializedName("name")
     @Expose
     private String name;
 
-    public Genre(Integer id, String icon, String name) {
+    public Genre(Integer id, String icon_path, String name) {
         this.id = id;
-        this.icon = icon;
+        this.icon_path = icon_path;
         this.name = name;
     }
 
@@ -40,11 +40,20 @@ public class Genre implements Serializable {
         this.name = name;
     }
 
-    public String getIcon() {
-        return icon;
+    public String getIcon_path() {
+        return icon_path;
     }
 
-    public void setIcon(String icon) {
-        this.icon = icon;
+    public void setIcon_path(String icon_path) {
+        this.icon_path = icon_path;
+    }
+
+    @Override
+    public String toString() {
+        return "Genre{" +
+                "id=" + id +
+                ", icon_path='" + icon_path + '\'' +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

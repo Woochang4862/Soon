@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/ic_home"
+        android:title="홈"/>
+    <item
+        android:id="@+id/company"
+        android:icon="@drawable/ic_domain"
+        android:title="제작사별"/>
+    <item
+        android:id="@+id/genre"
+        android:icon="@drawable/ic_local_movies_black_24dp"
+        android:title="장르별"/>
+    <item
+        android:id="@+id/date"
+        android:icon="@drawable/ic_date_range"
+        android:title="날짜별"/>
+    <item
+        android:id="@+id/settings"
+        android:icon="@drawable/ic_settings"
+        android:title="설정"/>
+</menu>

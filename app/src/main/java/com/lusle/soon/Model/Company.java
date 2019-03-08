@@ -2,16 +2,12 @@ package com.lusle.soon.Model;
 
 import java.io.Serializable;
 
+import androidx.annotation.Nullable;
+
 public class Company implements Serializable {
     private Integer id;
     private String logo_path;
     private String name;
-
-    public Company(Integer id, String logo_path, String name) {
-        this.id = id;
-        this.logo_path = logo_path;
-        this.name = name;
-    }
 
     public Integer getId() {
         return id;
@@ -35,5 +31,15 @@ public class Company implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        boolean isT = false;
+        Company cm = (Company) obj;
+        if(id.equals(cm.getId())){
+            isT = true;
+        }
+        return isT;
     }
 }

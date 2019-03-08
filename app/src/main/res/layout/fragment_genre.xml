@@ -1,29 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
-    <com.simmorsal.library.ConcealerNestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/fragment_genre_nestedscrollview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/fragment_common_side_padding"
-        android:paddingRight="@dimen/fragment_common_side_padding">
+        android:layout_height="wrap_content">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/fragment_genre_top_bottom_padding">
+            android:focusableInTouchMode="true">
 
             <RelativeLayout
                 android:id="@+id/fragment_genre_title_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
+                android:layout_marginLeft="50dp"
                 android:layout_marginTop="50dp"
-                android:layout_marginBottom="100dp">
+                android:layout_marginBottom="56.3dp">
 
                 <TextView
                     android:id="@+id/fragment_genre_title_text"
@@ -55,7 +53,5 @@
 
         </RelativeLayout>
 
-    </com.simmorsal.library.ConcealerNestedScrollView>
-
-    <include layout="@layout/fragment_common_search_bar" />
+    </androidx.core.widget.NestedScrollView>
 </RelativeLayout>

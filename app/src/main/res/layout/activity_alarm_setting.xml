@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/defaultBackground">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#ffffff"
+        android:contentInsetStart="0dp"
+        android:contentInsetLeft="0dp"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/close_btn"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_close_black_24dp" />
+
+            <TextView
+                fontPath="@string/NanumBarunGothicUltraLight_path"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="알림"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                tools:ignore="MissingPrefix" />
+
+            <Button
+                android:id="@+id/save_btn"
+                fontPath="@string/NanumBarunGothic_path"
+                android:layout_width="50dp"
+                android:layout_height="35dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:includeFontPadding="false"
+                android:text="@string/save"
+                android:textColor="@color/white"
+                android:textSize="12dp"
+                tools:ignore="MissingPrefix" />
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolBar"
+        android:layout_marginTop="5dp"
+        android:background="#ffffff">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+
+            <RelativeLayout
+                android:id="@+id/hidden_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/delete_btn"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_delete_white" />
+
+                <Switch
+                    android:id="@+id/alarm_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="13dp"
+                    android:layout_marginBottom="10dp" />
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/poster"
+                android:layout_width="140dp"
+                android:layout_height="200dp"
+                android:layout_below="@id/hidden_section"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="30dp"
+                android:src="#848484" />
+
+            <TextView
+                android:id="@+id/title"
+                fontPath="@string/NanumBarunGothicUltraLight_path"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/hidden_section"
+                android:layout_toRightOf="@id/poster"
+                android:includeFontPadding="false"
+                android:text="제목"
+                android:textColor="@color/black"
+                android:textSize="28dp"
+                tools:ignore="MissingPrefix" />
+
+            <TextView
+                android:id="@+id/release_date"
+                fontPath="@string/NanumBarunGothic_path"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/title"
+                android:layout_toRightOf="@id/poster"
+                android:includeFontPadding="false"
+                android:text="개봉일"
+                android:textColor="@color/defaultTextColor"
+                android:textSize="20dp"
+                tools:ignore="MissingPrefix" />
+
+            <RelativeLayout
+                android:id="@+id/alarm_date_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/poster"
+                android:layout_marginBottom="10dp"
+                android:background="?attr/selectableItemBackground">
+
+                <TextView
+                    android:id="@+id/alarm_date_label"
+                    fontPath="@string/NanumBarunGothic_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:includeFontPadding="false"
+                    android:text="몇일에 알려 드릴까요?"
+                    android:textColor="@color/black"
+                    android:textSize="13dp"
+                    tools:ignore="MissingPrefix" />
+
+                <TextView
+                    android:id="@+id/alarm_date"
+                    fontPath="@string/NanumBarunGothicBold_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/alarm_date_label"
+                    android:includeFontPadding="false"
+                    android:text="2019년 01월 01일"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
+                    tools:ignore="MissingPrefix" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/date_util"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@id/alarm_date_section"
+                android:layout_marginBottom="30dp">
+
+                <Button
+                    android:id="@+id/weekBtn"
+                    fontPath="@string/NanumBarunGothicUltraLight_path"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/fragment_company_rounded_name"
+                    android:includeFontPadding="false"
+                    android:text="- 7 D"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    tools:ignore="MissingPrefix" />
+
+                <Button
+                    android:id="@+id/mTenDayBtn"
+                    fontPath="@string/NanumBarunGothicUltraLight_path"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/fragment_company_rounded_name"
+                    android:includeFontPadding="false"
+                    android:text="- 10 D"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    tools:ignore="MissingPrefix" />
+
+                <Button
+                    android:id="@+id/pTenDayBtn"
+                    fontPath="@string/NanumBarunGothicUltraLight_path"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/fragment_company_rounded_name"
+                    android:includeFontPadding="false"
+                    android:text="+ 10 D"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    tools:ignore="MissingPrefix" />
+
+                <Button
+                    android:id="@+id/mOneDayBtn"
+                    fontPath="@string/NanumBarunGothicUltraLight_path"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/fragment_company_rounded_name"
+                    android:includeFontPadding="false"
+                    android:text="- 1 D"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    tools:ignore="MissingPrefix" />
+
+                <Button
+                    android:id="@+id/pOneDayBtn"
+                    fontPath="@string/NanumBarunGothicUltraLight_path"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/fragment_company_rounded_name"
+                    android:includeFontPadding="false"
+                    android:text="+ 1 D"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    tools:ignore="MissingPrefix" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/alarm_time_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/date_util"
+                android:layout_marginBottom="10dp"
+                android:background="?attr/selectableItemBackground">
+
+                <TextView
+                    android:id="@+id/alarm_time_label"
+                    fontPath="@string/NanumBarunGothic_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:includeFontPadding="false"
+                    android:text="몇시에 알려 드릴까요?"
+                    android:textColor="@color/black"
+                    android:textSize="13dp"
+                    tools:ignore="MissingPrefix" />
+
+                <TextView
+                    android:id="@+id/alarm_time"
+                    fontPath="@string/NanumBarunGothicBold_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/alarm_time_label"
+                    android:includeFontPadding="false"
+                    android:text="9:00 AM"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
+                    tools:ignore="MissingPrefix" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/time_util"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@id/alarm_time_section"
+                android:layout_marginBottom="30dp">
+
+                <Button
+                    android:id="@+id/mOneHourBtn"
+                    fontPath="@string/NanumBarunGothicUltraLight_path"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/fragment_company_rounded_name"
+                    android:includeFontPadding="false"
+                    android:text="- 1 H"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    tools:ignore="MissingPrefix" />
+
+                <Button
+                    android:id="@+id/pOneHourBtn"
+                    fontPath="@string/NanumBarunGothicUltraLight_path"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/fragment_company_rounded_name"
+                    android:includeFontPadding="false"
+                    android:text="+ 1 H"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    tools:ignore="MissingPrefix" />
+
+                <Button
+                    android:id="@+id/mOneMinBtn"
+                    fontPath="@string/NanumBarunGothicUltraLight_path"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/fragment_company_rounded_name"
+                    android:includeFontPadding="false"
+                    android:text="- 1 M"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    tools:ignore="MissingPrefix" />
+
+                <Button
+                    android:id="@+id/pOneMinBtn"
+                    fontPath="@string/NanumBarunGothicUltraLight_path"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/fragment_company_rounded_name"
+                    android:includeFontPadding="false"
+                    android:text="+ 1 M"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    tools:ignore="MissingPrefix" />
+
+                <Button
+                    android:id="@+id/AMPMBtn"
+                    fontPath="@string/NanumBarunGothicUltraLight_path"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/fragment_company_rounded_name"
+                    android:includeFontPadding="false"
+                    android:text="A/P"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    tools:ignore="MissingPrefix" />
+
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

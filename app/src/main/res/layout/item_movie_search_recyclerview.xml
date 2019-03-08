@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="213.3dp"
+    android:layout_marginLeft="30dp"
+    android:layout_marginRight="30dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    app:cardCornerRadius="7dp"
+    app:cardElevation="7dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/selectableItemBackground">
+
+        <ImageView
+            android:id="@+id/movie_list_recyclerview_poster"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:transitionName="poster"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="17dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingLeft="5dp">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/movie_list_recyclerView_title"
+                    fontPath="@string/NanumBarunGothicBold_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:includeFontPadding="false"
+                    android:transitionName="title"
+                    android:text="보헤미안 렙소디"
+                    android:textSize="13dp"
+                    tools:ignore="MissingPrefix" />
+
+                <TextView
+                    android:id="@+id/movie_list_recyclerview_adult"
+                    fontPath="@string/NanumBarunGothic_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/movie_list_recyclerView_title"
+                    android:includeFontPadding="false"
+                    android:text="(청불)"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:textSize="13dp"
+                    android:visibility="gone"
+                    tools:ignore="MissingPrefix" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/movie_list_recyclerview_genre"
+                fontPath="@string/NanumBarunGothic_path"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:text="액션, 애니메이션"
+                android:textSize="13dp"
+                tools:ignore="MissingPrefix" />
+
+            <TextView
+                android:id="@+id/movie_list_recyclerview_overview"
+                fontPath="@string/NanumBarunGothic_path"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:includeFontPadding="false"
+                android:text="줄거리..."
+                android:textSize="13dp"
+                android:visibility="visible"
+                tools:ignore="MissingPrefix" />
+
+            <TextView
+                android:id="@+id/movie_list_recyclerview_release"
+                fontPath="@string/NanumBarunGothic_path"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:text="개봉일 : 2020-02-14"
+                android:textSize="13dp"
+                tools:ignore="MissingPrefix" />
+
+            <Button
+                android:id="@+id/movie_list_recyclerview_d_day"
+                fontPath="@string/NanumBarunGothic_path"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:includeFontPadding="false"
+                android:text="Day-13"
+                android:textColor="@color/white"
+                android:textSize="13dp"
+                tools:ignore="MissingPrefix" />
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

@@ -5,100 +5,85 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.simmorsal.library.ConcealerNestedScrollView
-        android:id="@+id/fragment_company_nestedscrollview"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/fragment_company_bookmark_text"
+            fontPath="@string/NanumBarunGothicBold_path"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/fragment_company_top_bottom_padding">
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            android:includeFontPadding="false"
+            android:text="제작사별"
+            android:textColor="@color/black"
+            android:textSize="18dp"
 
-            <TextView
-                android:id="@+id/fragment_company_bookmark_text"
-                fontPath="@string/NanumBarunGothicBold_path"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="20dp"
-                android:gravity="center_vertical"
-                android:includeFontPadding="false"
-                android:text="즐겨찾기"
-                android:textColor="@color/black"
-                android:textSize="18dp"
-                tools:ignore="MissingPrefix" />
+            tools:ignore="MissingPrefix" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/fragment_company_favorite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_below="@id/fragment_company_bookmark_text"
-                android:layout_marginTop="13dp" />
+        <TextView
+            android:id="@+id/fragment_company_favorite_more"
+            fontPath="@string/NanumBarunGothicUltraLight_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fragment_company_bookmark_text"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="14dp"
+            android:background="?attr/selectableItemBackground"
+            android:includeFontPadding="false"
+            android:text="전체보기"
+            android:textSize="10.2sp"
+            android:visibility="gone"
+            tools:ignore="MissingPrefix" />
 
-            <TextView
-                android:id="@+id/fragment_company_bookmark_more"
-                fontPath="@string/NanumBarunGothicUltraLight_path"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/fragment_company_favorite"
-                android:layout_marginLeft="25dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="30.3dp"
-                android:includeFontPadding="false"
-                android:text="더보기"
-                android:textSize="9.5dp"
-                tools:ignore="MissingPrefix" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/fragment_company_favorite"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_below="@id/fragment_company_favorite_more"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="10dp"
+            android:nestedScrollingEnabled="false" />
 
-            <RelativeLayout
-                android:id="@+id/fragment_company_name_text_group"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/fragment_company_bookmark_more"
-                android:layout_marginLeft="@dimen/fragment_common_side_padding"
-                android:layout_marginBottom="29.3dp">
+    </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/fragment_company_name"
-                    fontPath="@string/NanumBarunGothicUltraLight_path"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/favorite_company_name_height"
-                    android:background="@drawable/fragment_company_rounded_name"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:text="      "
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="10.3sp"
-                    tools:ignore="MissingPrefix" />
 
-                <TextView
-                    android:id="@+id/fragment_company_textView"
-                    fontPath="@string/NanumBarunGothicBold_path"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/fragment_company_name"
-                    android:layout_marginTop="11dp"
-                    android:includeFontPadding="false"
-                    android:text="팬들이\n많이 찾은\n영화"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    tools:ignore="MissingPrefix" />
+    <com.skyfishjy.library.RippleBackground
+        android:id="@+id/rippleBackground"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginBottom="0dp"
+        app:rb_color="@color/colorAccent"
+        app:rb_duration="2000"
+        app:rb_radius="32dp"
+        app:rb_rippleAmount="2"
+        app:rb_scale="1.5">
 
-            </RelativeLayout>
+    </com.skyfishjy.library.RippleBackground>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/fragment_company_recyclerview_result"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/fragment_company_name_text_group"
-                android:layoutAnimation="@anim/layout_animation_fall_down"></androidx.recyclerview.widget.RecyclerView>
-
-        </RelativeLayout>
-
-    </com.simmorsal.library.ConcealerNestedScrollView>
-
-    <include layout="@layout/fragment_common_search_bar" />
+    <TextView
+        android:id="@+id/fragment_company_empty_text"
+        fontPath="@string/NanumBarunGothicBold_path"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="-1dp"
+        android:layout_marginBottom="38dp"
+        android:layout_toLeftOf="@+id/rippleBackground"
+        android:includeFontPadding="false"
+        android:text="당신의 제작사를 등록해주세요"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        tools:ignore="MissingPrefix" />
 
 </RelativeLayout>

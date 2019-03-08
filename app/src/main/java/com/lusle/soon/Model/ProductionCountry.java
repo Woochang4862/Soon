@@ -29,4 +29,11 @@ public class ProductionCountry {
         this.name = name;
     }
 
+    @Override
+    public String toString() {
+        return "ProductionCountry{" +
+                "iso31661='" + iso31661 + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

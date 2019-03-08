@@ -1,43 +1,45 @@
 package com.lusle.soon;
 
-import android.content.res.Resources;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.google.android.material.tabs.TabLayout;
-import com.lusle.soon.Adapter.TempMainViewPagerAdapter;
-import com.lusle.soon.ViewPagerBottomSheet.BottomSheetUtils;
-import com.lusle.soon.ViewPagerBottomSheet.ViewPagerBottomSheetBehavior;
-import com.squareup.picasso.Picasso;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.lusle.soon.Fragments.CompanyFragment;
+import com.lusle.soon.Fragments.DateFragment;
+import com.lusle.soon.Fragments.GenreFragment;
+import com.lusle.soon.Fragments.SettingFragment;
+import com.lusle.soon.Fragments.ThisMonthMovieFragment;
+import com.lusle.soon.Model.Alarm;
+import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
-import androidx.annotation.NonNull;
-import androidx.viewpager.widget.ViewPager;
-import butterknife.BindView;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import butterknife.ButterKnife;
-import uk.co.chrisjenx.calligraphy.CalligraphyUtils;
-import uk.co.chrisjenx.calligraphy.TypefaceUtils;
 
 public class MainActivity extends BaseActivity {
 
-    @BindView(R.id.activity_main_detail)
-    Button detail_btn;
-    @BindView(R.id.activity_main_viewpager)
-    ViewPager viewPager;
-    @BindView(R.id.activity_main_tablayout)
-    TabLayout tabLayout;
-    @BindView(R.id.activity_main_poster)
-    ImageView poster;
-    @BindView(R.id.activity_main_handle)
-    View handle;
-    private static ViewPagerBottomSheetBehavior bottomSheetBehavior;
+    private BottomNavigationView bottomNavigationView;
+    private FloatingActionButton mSearchFab;
 
-    private static final String TAG = "MainActivity";
-    private int previousState = ViewPagerBottomSheetBehavior.STATE_COLLAPSED;
-    private double screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+    private final long FINISH_INTERVAL_TIME = 2000;
+    private long backPressedTime = 0;
+
+    final private int requestCode = 666;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,118 +47,88 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        /*SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        Type type = new TypeToken<ArrayList<Alarm>>() {
+        }.getType();
+        String json = sp.getString("alarms", "");
+        ArrayList<Alarm> alarms = new Gson().fromJson(json, type);
+
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        for (Alarm alarm : alarms) {
+
+            Intent updateServiceIntent = new Intent("com.lusle.soon.ALARM_START");
+            PendingIntent pendingUpdateIntent = PendingIntent.getService(this, alarm.getPendingIntentID(), updateServiceIntent, 0);
+            // Cancel alarms
+            try {
+                alarmManager.cancel(pendingUpdateIntent);
+            } catch (Exception e) {
+                Log.e("####", "AlarmManager update was not canceled. " + e.toString());
+            }
+        }*/
         init();
     }
 
     private void init() {
-        //TODO:get Poster from API server
-        Picasso
-                .get()
-                .load("https://image.tmdb.org/t/p/w500/wsVseA7i3FqX24m26Z2gD3EtH4l.jpg")
-                .centerCrop()
-                .fit()
-                .into(poster);
+        mSearchFab = findViewById(R.id.floatingActionButton);
+        mSearchFab.setOnClickListener(v -> presentActivity(v));
 
-
-        viewPager.setOffscreenPageLimit(2);
-        viewPager.setAdapter(new TempMainViewPagerAdapter(getSupportFragmentManager(), this, TempMainViewPagerAdapter.TabItem.COMPANY, TempMainViewPagerAdapter.TabItem.GENRE, TempMainViewPagerAdapter.TabItem.DATE));
-        tabLayout.setupWithViewPager(viewPager);
-        BottomSheetUtils.setupViewPager(viewPager);
-
-
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                bottomSheetBehavior.setState(ViewPagerBottomSheetBehavior.STATE_EXPANDED);
-                CalligraphyUtils.applyFontToTextView(tab.getCustomView().findViewById(R.id.tabName), TypefaceUtils.load(getAssets(), getResources().getString(R.string.NanumBarunGothic_path)));
-                tab.getCustomView().findViewById(R.id.underline).setVisibility(View.VISIBLE);
+        bottomNavigationView = findViewById(R.id.navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
+            switch (item.getItemId()) {
+                case R.id.home:
+                    selectedFragment = ThisMonthMovieFragment.newInstance();
+                    break;
+                case R.id.company:
+                    selectedFragment = CompanyFragment.newInstance();
+                    break;
+                case R.id.genre:
+                    selectedFragment = GenreFragment.newInstance();
+                    break;
+                case R.id.date:
+                    selectedFragment = DateFragment.newInstance();
+                    break;
+                case R.id.settings:
+                    selectedFragment = SettingFragment.newInstance();
+                    break;
             }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                CalligraphyUtils.applyFontToTextView(tab.getCustomView().findViewById(R.id.tabName), TypefaceUtils.load(getAssets(), getResources().getString(R.string.NanumBarunGothicUltraLight_path)));
-                tab.getCustomView().findViewById(R.id.underline).setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-                if (bottomSheetBehavior.getState() == ViewPagerBottomSheetBehavior.STATE_COLLAPSED)
-                    bottomSheetBehavior.setState(ViewPagerBottomSheetBehavior.STATE_EXPANDED);
-            }
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.frame_layout, selectedFragment);
+            transaction.commit();
+            return true;
         });
-        for (int i = 0; i < tabLayout.getTabCount(); i++) { //TODO: Tab Setting not pragmatically -> XML Code
-            TabLayout.Tab tab = tabLayout.getTabAt(i);
-            tab.setCustomView(R.layout.tab_text);
-            ((TextView)tab.getCustomView().findViewById(R.id.tabName)).setText(viewPager.getAdapter().getPageTitle(i));
-            if (tab.isSelected()) {
-                CalligraphyUtils.applyFontToTextView(tab.getCustomView().findViewById(R.id.tabName), TypefaceUtils.load(getAssets(), getResources().getString(R.string.NanumBarunGothic_path)));
-                tab.getCustomView().findViewById(R.id.underline).setVisibility(View.VISIBLE);
-            } else {
-                CalligraphyUtils.applyFontToTextView(tab.getCustomView().findViewById(R.id.tabName), TypefaceUtils.load(getAssets(), getResources().getString(R.string.NanumBarunGothicUltraLight_path)));
-                tab.getCustomView().findViewById(R.id.underline).setVisibility(View.INVISIBLE);
-            }
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_layout, ThisMonthMovieFragment.newInstance());
+        transaction.commit();
+
+        bottomNavigationView.getMenu().getItem(0).setChecked(true);
+    }
+
+    @Override
+    public void onBackPressed() {
+        long tempTime = System.currentTimeMillis();
+        long intervalTime = tempTime - backPressedTime;
+
+        if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime) {
+            super.onBackPressed();
+        } else {
+            backPressedTime = tempTime;
+            DynamicToast.make(this, "종료하고 싶다면 한 번더 눌러주세요").show();
         }
-
-
-        detail_btn.setOnClickListener(v -> {
-            //TODO:Moving activity to Show More
-        });
-
-
-        bottomSheetBehavior = ViewPagerBottomSheetBehavior.from(findViewById(R.id.activity_main_main));
-        bottomSheetBehavior.setState(ViewPagerBottomSheetBehavior.STATE_COLLAPSED);
-        bottomSheetBehavior.setBottomSheetCallback(new ViewPagerBottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View view, int i) {
-
-                if (ViewPagerBottomSheetBehavior.STATE_DRAGGING == i) {
-                    if (previousState == ViewPagerBottomSheetBehavior.STATE_EXPANDED) {
-                        setVisibilityOfHandle(View.VISIBLE);
-                        findViewById(R.id.activity_main_handle_background).setBackgroundResource(R.drawable.activiry_main_rounded_background_white);
-                    }
-                } else if (ViewPagerBottomSheetBehavior.STATE_EXPANDED == i) {
-                    setVisibilityOfHandle(View.INVISIBLE);
-                    findViewById(R.id.activity_main_handle_background).setBackgroundResource(R.color.white);
-                }
-
-                previousState = i;
-            }
-
-            @Override
-            public void onSlide(@NonNull View view, float v) {
-            }
-        });
-
-        //Setting Size using Observer
-        tabLayout.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
-
-            final float scale = getResources().getDisplayMetrics().density;
-
-
-            int posterHeight = (int) Math.round(screenHeight) - bottomSheetBehavior.getPeekHeight() / 2;
-            poster.setMinimumHeight(posterHeight);
-            poster.setMaxHeight(posterHeight);
-
-
-            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) detail_btn.getLayoutParams();
-            params.bottomMargin = Math.round((40 * scale + 0.5f) + bottomSheetBehavior.getPeekHeight());
-
-
-            bottomSheetBehavior.setPeekHeight(
-                    Math.round(getDimen(R.dimen.activity_main_tabLayout_height) + getDimen(R.dimen.fragment_company_handle_margin) * 2 + getDimen(R.dimen.fragment_company_handle_height))
-            );
-        });
     }
 
-    private void setVisibilityOfHandle(int visibility) {
-        handle.setVisibility(visibility);
-    }
+    public void presentActivity(View view) {
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, view, "transition");
+        int revealX = (int) (view.getX() + view.getWidth() / 2);
+        int revealY = (int) (view.getY() + view.getHeight() / 2);
 
-    private float getDimen(int d) {
-        return getResources().getDimension(d);
-    }
+        Intent intent = new Intent(this, SearchActivity.class);
+        intent.putExtra(SearchActivity.EXTRA_CIRCULAR_REVEAL_X, revealX);
+        intent.putExtra(SearchActivity.EXTRA_CIRCULAR_REVEAL_Y, revealY);
 
-    public static void setBottomSheetBehaviorState(int state) {
-        bottomSheetBehavior.setState(state);
+        ActivityCompat.startActivityForResult(this, intent, requestCode, options.toBundle());
     }
 }

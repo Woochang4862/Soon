@@ -51,4 +51,13 @@ public class ProductionCompany {
         this.originCountry = originCountry;
     }
 
+    @Override
+    public String toString() {
+        return "ProductionCompany{" +
+                "id=" + id +
+                ", logoPath='" + logoPath + '\'' +
+                ", name='" + name + '\'' +
+                ", originCountry='" + originCountry + '\'' +
+                '}';
+    }
 }

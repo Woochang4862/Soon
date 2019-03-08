@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="favorite_company_item_height">26.7dp</dimen>
+    <dimen name="favorite_company_item_width">266.3dp</dimen>
+    <dimen name="favorite_company_item_height">608.3dp</dimen>
     <dimen name="favorite_company_name_height">16.7dp</dimen>
     <dimen name="fragment_company_top_bottom_padding">30dp</dimen>
-    <dimen name="fragment_common_side_padding">61dp</dimen>
+    <dimen name="fragment_common_side_padding">50dp</dimen>
     <dimen name="fragment_common_side_padding_child">85dp</dimen>
     <dimen name="fragment_company_handle_margin">20dp</dimen>
     <dimen name="fragment_company_searchbar_radius">15dp</dimen>

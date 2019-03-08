@@ -1,107 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            fontPath="@string/BMHANNAProOTF_path"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="40dp"
-            android:includeFontPadding="false"
-            android:text="@string/activity_main_recommand_string"
-            android:textColor="@color/white"
-            android:textSize="50dp"
-            android:translationZ="10dp"
-            tools:ignore="MissingPrefix" />
-
-        <ImageView
-            android:id="@+id/activity_main_poster"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:contentDescription="poster"
-            android:src="@color/colorAccent" />
-
-    </RelativeLayout>
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/activity_main_tablayout"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/activity_main_tabLayout_height"
-        android:layout_gravity="bottom"
-        android:background="@drawable/activiry_main_background_gray"
-        android:translationZ="12dp"
-        app:tabIndicatorHeight="0dp">
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </com.google.android.material.tabs.TabLayout>
-
-    <Button
-        android:id="@+id/activity_main_detail"
-        fontPath="@string/NanumBarunGothicBold_path"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:layout_gravity="right|bottom"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/activiry_main_rounded_detail"
-        android:text="@string/activity_main_detail"
-        android:textSize="12dp"
-        android:translationZ="0dp"
-        tools:ignore="MissingPrefix" />
-
-    <!-- Bottom Sheet -->
-
-    <LinearLayout
-        android:id="@+id/activity_main_main"
+    <FrameLayout
+        android:id="@+id/frame_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:elevation="10dp"
-        android:orientation="vertical"
-        app:layout_behavior="@string/view_pager_bottom_sheet_behavior">
+        android:layout_above="@+id/navigation"
+        android:animateLayoutChanges="true">
 
-        <FrameLayout
-            android:id="@+id/activity_main_handle_background"
-            android:layout_width="match_parent"
-            android:layout_height="43dp"
-            android:background="@drawable/activiry_main_rounded_background_white">
+    </FrameLayout>
 
-            <View
-                android:id="@+id/activity_main_handle"
-                android:layout_width="35dp"
-                android:layout_height="@dimen/fragment_genre_handle_height"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/fragment_genre_handle_margin"
-                android:layout_marginBottom="@dimen/fragment_genre_handle_margin"
-                android:background="#ababab" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/navigation"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="23dp"
+        android:layout_marginRight="23dp"
+        android:layout_marginBottom="23dp"
+        android:clickable="true"
+        app:backgroundTint="@color/colorPrimary"
+        app:srcCompat="@drawable/ic_search_white"
+        tools:ignore="VectorDrawableCompat" />
 
-        </FrameLayout>
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:translationZ="10dp"
+        app:itemIconTint="@color/nav_item_state_list"
+        app:itemTextColor="@color/nav_item_state_list"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/menu_navigation" />
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/activity_main_viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white"></androidx.viewpager.widget.ViewPager>
+</RelativeLayout>
 
-    </LinearLayout>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>

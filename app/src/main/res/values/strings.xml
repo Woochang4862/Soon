@@ -14,5 +14,15 @@
     <string name="book_button_string">예매하기</string>
     <string name="view_pager_bottom_sheet_behavior">com.lusle.soon.ViewPagerBottomSheet.ViewPagerBottomSheetBehavior</string>
     <string name="activity_content_result_genre_label"><![CDATA[장르 >]]></string>
-    <string name="empty_text">아무 것도 없음</string>
+    <string name="empty_text">텅 비었습니다...</string>
+    <string name="all">전체</string>
+    <string name="company">제작사</string>
+    <string name="movie">영화</string>
+    <string name="genre">장르</string>
+    <string name="server_error_msg">서버에 문제가 생겨, 영화 정보를 불러올 수 없습니다.  불편을 끼치게 되어 죄송합니다.</string>
+    <string name="please_input_query">검색어를 넣어 주세요</string>
+    <string name="relative_company">관련 제작사</string>
+    <string name="more">더 알아보기</string>
+    <string name="relative_movie">관련 영화</string>
+    <string name="save">저장</string>
 </resources>
