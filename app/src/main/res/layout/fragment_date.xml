@@ -15,7 +15,7 @@
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay"
         app:expanded="true"
-        app:layout_behavior="com.lusle.soon.Utils.ScrollingCalendarBehavior">
+        app:layout_behavior="com.lusle.android.soon.Utils.ScrollingCalendarBehavior">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/collapsingToolbarLayout"

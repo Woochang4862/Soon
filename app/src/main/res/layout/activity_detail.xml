@@ -13,7 +13,7 @@
 
         <!--  app:contentScrim : The Toolbar color when the
               collapsing toolbar is collapsed. -->
-        <com.lusle.soon.SubtitleCollapsingToolbarLayout.SubtitleCollapsingToolbarLayout
+        <com.lusle.android.soon.SubtitleCollapsingToolbarLayout.SubtitleCollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar_layout"
             fontPath="@string/NanumBarunGothic_path"
             android:layout_width="match_parent"
@@ -79,7 +79,7 @@
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-        </com.lusle.soon.SubtitleCollapsingToolbarLayout.SubtitleCollapsingToolbarLayout>
+        </com.lusle.android.soon.SubtitleCollapsingToolbarLayout.SubtitleCollapsingToolbarLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -91,8 +91,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="10dp">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -155,6 +155,22 @@
                         android:layout_marginBottom="10dp"
                         android:isIndicator="true"
                         android:numStars="10" />
+
+                    <TextView
+                        android:id="@+id/vote_average_text"
+                        fontPath="@string/NanumBarunGothic_path"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/vote_label"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_toRightOf="@id/vote_average"
+                        android:includeFontPadding="false"
+                        android:text="0/10"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        tools:ignore="MissingPrefix" />
 
                     <TextView
                         android:id="@+id/genre_label"
@@ -250,7 +266,7 @@
                         android:layout_marginRight="5dp"
                         android:layout_marginBottom="10dp"
                         android:includeFontPadding="false"
-                        android:text="인기도 : "
+                        android:text="우선 순위 : "
                         android:textColor="@color/black"
                         android:textSize="12sp"
                         tools:ignore="MissingPrefix" />
@@ -267,6 +283,19 @@
                         android:text=""
                         android:textColor="@color/black"
                         android:textSize="12sp"
+                        tools:ignore="MissingPrefix" />
+
+                    <TextView
+                        fontPath="@string/NanumBarunGothic_path"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/popularity_label"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:includeFontPadding="false"
+                        android:text="우선 순위란?\n하루 투표 수, 하루 조회수, 좋아요를 누른 사람 수, 재생목록에 담은 사람 수, 개봉일, 전체 투표 수, 어제 점수를 총 집계한 점수"
+                        android:textColor="@color/black"
+                        android:textSize="8sp"
                         tools:ignore="MissingPrefix" />
 
                 </RelativeLayout>
@@ -311,10 +340,10 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/videoTitle"
                         android:includeFontPadding="false"
+                        android:text="해당 정보 없음"
                         android:textColor="@color/defaultTextColor"
                         android:textSize="12sp"
                         android:visibility="gone"
-                        android:text="해당 정보 없음"
                         tools:ignore="MissingPrefix" />
 
                 </RelativeLayout>
@@ -387,7 +416,6 @@
                         tools:ignore="MissingPrefix" />
 
 
-
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/preview_image_recyclerView"
                         android:layout_width="wrap_content"
@@ -400,10 +428,10 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/preview_image_title"
                         android:includeFontPadding="false"
+                        android:text="해당 정보 없음"
                         android:textColor="@color/defaultTextColor"
                         android:textSize="12sp"
                         android:visibility="gone"
-                        android:text="해당 정보 없음"
                         tools:ignore="MissingPrefix" />
 
                 </RelativeLayout>
