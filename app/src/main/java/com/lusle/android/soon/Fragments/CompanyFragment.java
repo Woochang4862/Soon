@@ -9,8 +9,8 @@ import android.widget.TextView;
 
 import com.lusle.android.soon.Adapter.BaseRecyclerAdapter;
 import com.lusle.android.soon.Adapter.FragmentCompanyFavoriteRecyclerViewAdapter;
-import com.lusle.android.soon.FavoriteListActivity;
-import com.lusle.android.soon.MovieListActivity;
+import com.lusle.android.soon.Activity.FavoriteListActivity;
+import com.lusle.android.soon.Activity.MovieListActivity;
 import com.lusle.android.soon.MovieProgressDialog;
 import com.lusle.android.soon.R;
 import com.lusle.android.soon.Utils.Utils;

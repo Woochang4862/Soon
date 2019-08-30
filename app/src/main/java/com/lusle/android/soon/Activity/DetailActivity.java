@@ -1,4 +1,4 @@
-package com.lusle.android.soon;
+package com.lusle.android.soon.Activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -20,6 +20,7 @@ import com.lusle.android.soon.Model.Backdrop;
 import com.lusle.android.soon.Model.Genre;
 import com.lusle.android.soon.Model.MovieDetail;
 import com.lusle.android.soon.Model.Poster;
+import com.lusle.android.soon.R;
 import com.lusle.android.soon.SubtitleCollapsingToolbarLayout.SubtitleCollapsingToolbarLayout;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;

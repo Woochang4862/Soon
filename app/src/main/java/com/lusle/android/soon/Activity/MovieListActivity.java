@@ -1,4 +1,4 @@
-package com.lusle.android.soon;
+package com.lusle.android.soon.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +17,8 @@ import com.lusle.android.soon.Model.Company;
 import com.lusle.android.soon.Model.Genre;
 import com.lusle.android.soon.Model.GenreResult;
 import com.lusle.android.soon.Model.MovieResult;
+import com.lusle.android.soon.MovieProgressDialog;
+import com.lusle.android.soon.R;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
 import androidx.core.app.ActivityOptionsCompat;

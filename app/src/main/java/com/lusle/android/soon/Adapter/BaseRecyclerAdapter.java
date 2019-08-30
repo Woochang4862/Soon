@@ -19,6 +19,7 @@ public abstract class BaseRecyclerAdapter<ViewHolder extends RecyclerView.ViewHo
     protected boolean loading;
     protected final int VIEW_ITEM = 1;
     protected final int VIEW_PROG = 0;
+    protected final int VIEW_AD = 2;
     protected int limit = -1;
 
     public BaseRecyclerAdapter() {

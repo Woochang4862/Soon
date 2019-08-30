@@ -1,4 +1,4 @@
-package com.lusle.android.soon;
+package com.lusle.android.soon.Activity;
 
 import android.content.Context;
 import androidx.appcompat.app.AppCompatActivity;

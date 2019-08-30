@@ -1,4 +1,4 @@
-package com.lusle.android.soon;
+package com.lusle.android.soon.Service;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
@@ -7,7 +7,6 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,7 +17,9 @@ import android.util.Pair;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.lusle.android.soon.Activity.DetailActivity;
 import com.lusle.android.soon.Model.Alarm;
+import com.lusle.android.soon.R;
 import com.lusle.android.soon.Utils.Utils;
 
 import java.lang.reflect.Type;
@@ -27,7 +28,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Set;
 
 import androidx.core.app.NotificationCompat;
 

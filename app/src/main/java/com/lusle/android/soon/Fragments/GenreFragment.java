@@ -14,7 +14,7 @@ import com.lusle.android.soon.API.APIInterface;
 import com.lusle.android.soon.Adapter.FragmentGenreGenreRecyclerViewAdapter;
 import com.lusle.android.soon.Model.Genre;
 import com.lusle.android.soon.Model.GenreResult;
-import com.lusle.android.soon.MovieListActivity;
+import com.lusle.android.soon.Activity.MovieListActivity;
 import com.lusle.android.soon.MovieProgressDialog;
 import com.lusle.android.soon.R;
 import com.lusle.android.soon.Utils.GridSpacingItemDecoration;

@@ -19,7 +19,7 @@ import com.lusle.android.soon.Model.Company;
 import com.lusle.android.soon.Model.CompanyResult;
 import com.lusle.android.soon.MovieProgressDialog;
 import com.lusle.android.soon.R;
-import com.lusle.android.soon.SearchActivity;
+import com.lusle.android.soon.Activity.SearchActivity;
 import com.lusle.android.soon.Utils.Utils;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 

@@ -1,4 +1,4 @@
-package com.lusle.android.soon;
+package com.lusle.android.soon.Activity;
 
 import android.app.AlarmManager;
 import android.app.AlertDialog;
@@ -24,6 +24,8 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.lusle.android.soon.Model.Alarm;
 import com.lusle.android.soon.Model.Movie;
+import com.lusle.android.soon.R;
+import com.lusle.android.soon.Receiver.AlarmReceiver;
 import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Type;
@@ -112,7 +114,6 @@ public class AlarmSettingActivity extends BaseActivity implements DatePickerDial
 
         IntentFilter intentFilter = new IntentFilter("com.lusle.android.soon.ALARM_START");
         registerReceiver(new AlarmReceiver(), intentFilter);
-        //Intent intent = new Intent("com.lusle.android.soon.ALARM_START");
         Intent intent = new Intent(this, AlarmReceiver.class);
         Bundle args = new Bundle();
         args.putSerializable("DATA", alarmData);
@@ -141,7 +142,7 @@ public class AlarmSettingActivity extends BaseActivity implements DatePickerDial
         SharedPreferences.Editor prefsEditor = mPrefs.edit();
         String _json = new Gson().toJson(alarms, type);
         prefsEditor.putString("alarms", _json);
-        prefsEditor.commit();
+        prefsEditor.apply();
 
         Toast.makeText(this, "알림이 설정되었습니다", Toast.LENGTH_SHORT).show();
         finish();

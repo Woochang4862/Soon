@@ -1,4 +1,4 @@
-package com.lusle.android.soon;
+package com.lusle.android.soon.Activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -16,6 +16,8 @@ import android.widget.ImageView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.lusle.android.soon.Adapter.SearchActivityPagerAdapter;
+import com.lusle.android.soon.MySuggestionProvider;
+import com.lusle.android.soon.R;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
 import java.util.ArrayList;

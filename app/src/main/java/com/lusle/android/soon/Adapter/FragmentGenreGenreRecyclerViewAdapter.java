@@ -20,7 +20,7 @@ public class FragmentGenreGenreRecyclerViewAdapter extends BaseRecyclerAdapter<R
 
     private ArrayList<Genre> mList;
     private OnItemClickListener onItemClickListener;
-    private String baseUrl = "http://ec2-18-216-177-252.us-east-2.compute.amazonaws.com:3000";
+    private String baseUrl = "https://soon-image-server.s3.ap-northeast-2.amazonaws.com";
 
     private class GenreViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 

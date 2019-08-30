@@ -1,9 +1,15 @@
-package com.lusle.android.soon;
+package com.lusle.android.soon.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.lusle.android.soon.Fragments.CompanyFragment;
@@ -11,6 +17,7 @@ import com.lusle.android.soon.Fragments.DateFragment;
 import com.lusle.android.soon.Fragments.GenreFragment;
 import com.lusle.android.soon.Fragments.SettingFragment;
 import com.lusle.android.soon.Fragments.ThisMonthMovieFragment;
+import com.lusle.android.soon.R;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
 import androidx.core.app.ActivityCompat;
@@ -23,11 +30,14 @@ public class MainActivity extends BaseActivity {
 
     private BottomNavigationView bottomNavigationView;
     private FloatingActionButton mSearchFab;
+    private AdView adView;
 
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
 
     final private int requestCode = 666;
+    
+    private String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +48,55 @@ public class MainActivity extends BaseActivity {
     }
 
     private void init() {
+        //MobileAds.initialize(this, "ca-app-pub-2329923322434251~4419072683");
+
+        adView = findViewById(R.id.adView);
+        adView.setAdListener(new AdListener(){
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+                Log.d(TAG, "onAdClosed: ");
+            }
+
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+                Log.d(TAG, "onAdFailedToLoad: ");
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                super.onAdLeftApplication();
+                Log.d(TAG, "onAdLeftApplication: ");
+            }
+
+            @Override
+            public void onAdOpened() {
+                super.onAdOpened();
+                Log.d(TAG, "onAdOpened: ");
+            }
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                Log.d(TAG, "onAdLoaded: ");
+            }
+
+            @Override
+            public void onAdClicked() {
+                super.onAdClicked();
+                Log.d(TAG, "onAdClicked: ");
+            }
+
+            @Override
+            public void onAdImpression() {
+                super.onAdImpression();
+                Log.d(TAG, "onAdImpression: ");
+            }
+        });
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+
         mSearchFab = findViewById(R.id.floatingActionButton);
         mSearchFab.setOnClickListener(v -> presentActivity(v));
 

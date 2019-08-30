@@ -1,4 +1,4 @@
-package com.lusle.android.soon;
+package com.lusle.android.soon.Activity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,6 +13,8 @@ import com.hugocastelani.waterfalltoolbar.WaterfallToolbar;
 import com.lusle.android.soon.Adapter.FavoriteListActivityRecyclerAdapter;
 import com.lusle.android.soon.ItemTouchHelper.SimpleItemTouchHelperCallback;
 import com.lusle.android.soon.Model.Company;
+import com.lusle.android.soon.MovieProgressDialog;
+import com.lusle.android.soon.R;
 import com.lusle.android.soon.Utils.Utils;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 

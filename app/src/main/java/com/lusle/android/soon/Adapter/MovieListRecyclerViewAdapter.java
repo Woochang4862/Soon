@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.lusle.android.soon.Model.Genre;
 import com.lusle.android.soon.Model.Movie;
 import com.lusle.android.soon.R;
@@ -45,6 +47,7 @@ public class MovieListRecyclerViewAdapter extends BaseRecyclerAdapter<RecyclerVi
 
         public TextView title, adult, genre, overview, release;
         public Button bookBtn;
+
         public MovieViewHolder(@NonNull View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
@@ -66,6 +69,7 @@ public class MovieListRecyclerViewAdapter extends BaseRecyclerAdapter<RecyclerVi
 
 
     }
+
     @Override
     public int getItemViewType(int position) {
         return (position < mList.size()) ? VIEW_ITEM : VIEW_PROG;
@@ -76,9 +80,11 @@ public class MovieListRecyclerViewAdapter extends BaseRecyclerAdapter<RecyclerVi
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder vh;
         if (viewType == VIEW_PROG) {
+            Log.d("Ads", "onCreateViewHolder: VIEW_PROG");
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.progressbar_recyclerview_load_more, parent, false);
             vh = new ProgressViewHolder(v);
         } else {
+            Log.d("Ads", "onCreateViewHolder: VIEW_etc");
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_movie_recyclerview, parent, false);
             vh = new MovieViewHolder(view);
         }
@@ -129,7 +135,7 @@ public class MovieListRecyclerViewAdapter extends BaseRecyclerAdapter<RecyclerVi
                     ((MovieViewHolder) holder).bookBtn.setEnabled(true);
                     ((MovieViewHolder) holder).bookBtn.setText("DAY - " + day);
                     ((MovieViewHolder) holder).bookBtn.setOnClickListener(v -> {
-                        if(onBookButtonClickListener != null)
+                        if (onBookButtonClickListener != null)
                             onBookButtonClickListener.onBookButtonClicked(mList.get(position));
                     });
                 }
@@ -156,6 +162,7 @@ public class MovieListRecyclerViewAdapter extends BaseRecyclerAdapter<RecyclerVi
         void OnItemClick(View v, int pos);
 
     }
+
     public void setList(ArrayList<Movie> list) {
         mList = list;
     }
@@ -174,7 +181,7 @@ public class MovieListRecyclerViewAdapter extends BaseRecyclerAdapter<RecyclerVi
         this.mList.addAll(list);
     }
 
-    public Movie getItem(int i){
+    public Movie getItem(int i) {
         return mList.get(i);
     }
 

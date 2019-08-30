@@ -17,7 +17,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.lusle.android.soon.Adapter.AlarmSettingsAdapter;
 import com.lusle.android.soon.Adapter.BaseRecyclerAdapter;
-import com.lusle.android.soon.AlarmSettingActivity;
+import com.lusle.android.soon.Activity.AlarmSettingActivity;
 import com.lusle.android.soon.Model.Alarm;
 import com.lusle.android.soon.R;
 import com.lusle.android.soon.Utils.Utils;

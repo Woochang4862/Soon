@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.lusle.android.soon.FavoriteListActivity;
+import com.lusle.android.soon.Activity.FavoriteListActivity;
 import com.lusle.android.soon.ItemTouchHelper.ItemTouchHelperAdapter;
 import com.lusle.android.soon.ItemTouchHelper.ItemTouchHelperViewHolder;
 import com.lusle.android.soon.Model.Company;

@@ -4,11 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".Activity.MainActivity">
+
+    <com.google.android.gms.ads.AdView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:adUnitId="ca-app-pub-2329923322434251/4193773604"
+        app:adSize="BANNER">
+    </com.google.android.gms.ads.AdView>
+
 
     <FrameLayout
         android:id="@+id/frame_layout"
         android:layout_width="match_parent"
+        android:layout_below="@id/adView"
         android:layout_height="match_parent"
         android:layout_above="@+id/navigation"
         android:animateLayoutChanges="true">
