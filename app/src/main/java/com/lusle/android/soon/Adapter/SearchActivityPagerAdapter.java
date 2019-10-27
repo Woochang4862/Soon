@@ -5,9 +5,9 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 
-import com.lusle.android.soon.Fragments.AllSearchFragment;
-import com.lusle.android.soon.Fragments.CompanySearchFragment;
-import com.lusle.android.soon.Fragments.MovieSearchFragment;
+import com.lusle.android.soon.View.Search.AllSearchFragment;
+import com.lusle.android.soon.View.Search.CompanySearchFragment;
+import com.lusle.android.soon.View.Search.MovieSearchFragment;
 import com.lusle.android.soon.R;
 
 import androidx.annotation.StringRes;

@@ -7,7 +7,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.lusle.android.soon.Model.Genre;
+import com.lusle.android.soon.Adapter.Contract.FragmentGenreAdapterContract;
+import com.lusle.android.soon.Adapter.Holder.GenreViewHolder;
+import com.lusle.android.soon.Adapter.Listener.OnItemClickListener;
+import com.lusle.android.soon.Model.Schema.Genre;
 import com.lusle.android.soon.R;
 import com.squareup.picasso.Picasso;
 
@@ -16,79 +19,49 @@ import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class FragmentGenreGenreRecyclerViewAdapter extends BaseRecyclerAdapter<RecyclerView.ViewHolder> {
+public class FragmentGenreGenreRecyclerViewAdapter extends BaseRecyclerAdapter<RecyclerView.ViewHolder> implements FragmentGenreAdapterContract.View, FragmentGenreAdapterContract.Model {
 
     private ArrayList<Genre> mList;
     private OnItemClickListener onItemClickListener;
     private String baseUrl = "https://soon-image-server.s3.ap-northeast-2.amazonaws.com";
 
-    private class GenreViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
-        public ImageView genreIcon;
-        public TextView genreText;
-
-        public GenreViewHolder(@NonNull View itemView) {
-            super(itemView);
-            itemView.setOnClickListener(this);
-
-            genreIcon = itemView.findViewById(R.id.genre_icon);
-            genreText = itemView.findViewById(R.id.genre_text);
-        }
-
-        @Override
-        public void onClick(View v) {
-            if(onItemClickListener!=null){
-                onItemClickListener.OnItemClick(v, getLayoutPosition());
-            }
-        }
-    }
-
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_genre_recyclerview, parent, false);
-        return new GenreViewHolder(view);
+        return new GenreViewHolder(view, onItemClickListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Log.d("Genre","onBindViewHolder");
+        Log.d("Genre", "onBindViewHolder");
         Picasso.get()
-                .load(baseUrl+mList.get(position).getIcon_path())
+                .load(baseUrl + mList.get(position).getIcon_path())
                 .centerInside()
                 .fit()
                 .error(R.drawable.ic_broken_image)
-                .into(((GenreViewHolder)holder).genreIcon);
-        ((GenreViewHolder)holder).genreText.setText(mList.get(position).getName());
+                .into(((GenreViewHolder) holder).genreIcon);
+        ((GenreViewHolder) holder).genreText.setText(mList.get(position).getName());
     }
 
     @Override
     public int getItemCount() {
-        if(mList==null) return 0;
+        if (mList == null) return 0;
         return mList.size();
     }
 
-    public interface OnItemClickListener{
-        void OnItemClick(View view, int position);
-    }
-
-    public void SetOnClickLister(OnItemClickListener onItemClickListener){
+    @Override
+    public void setOnItemClickListener(com.lusle.android.soon.Adapter.Listener.OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
 
-    public void setList(ArrayList<Genre> mList){
+    @Override
+    public void setList(ArrayList<Genre> mList) {
         this.mList = mList;
     }
 
-    public void addData(Genre item){
-        mList.add(item);
-    }
-
-    public void addDatas(ArrayList<Genre> items){
-        mList.addAll(items);
-    }
-
-    public Genre getItem(int position){
+    @Override
+    public Genre getItem(int position) {
         return mList.get(position);
     }
 }

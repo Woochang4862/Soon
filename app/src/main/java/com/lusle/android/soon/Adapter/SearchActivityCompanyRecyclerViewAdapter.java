@@ -7,9 +7,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.lusle.android.soon.Model.Company;
+import com.lusle.android.soon.Adapter.Holder.ProgressViewHolder;
+import com.lusle.android.soon.Model.Schema.Company;
 import com.lusle.android.soon.R;
-import com.lusle.android.soon.Utils.CircleTransform;
+import com.lusle.android.soon.Util.CircleTransform;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -21,11 +22,6 @@ public class SearchActivityCompanyRecyclerViewAdapter extends BaseRecyclerAdapte
     private ArrayList<Company> mList;
     private ArrayList<Company> tempFavorite;
     private OnClickFavoriteListener onClickFavoriteListener;
-
-    public SearchActivityCompanyRecyclerViewAdapter() {
-        mList = new ArrayList<>();
-        tempFavorite = new ArrayList<>();
-    }
 
     public SearchActivityCompanyRecyclerViewAdapter(RecyclerView recyclerView) {
         super(recyclerView);
@@ -39,6 +35,7 @@ public class SearchActivityCompanyRecyclerViewAdapter extends BaseRecyclerAdapte
 
         public TextView textView;
         public LottieAnimationView mLottieAnimationView;
+
         public CompanyViewHolder(@NonNull View itemView) {
             super(itemView);
             logo = itemView.findViewById(R.id.logo);
@@ -92,12 +89,12 @@ public class SearchActivityCompanyRecyclerViewAdapter extends BaseRecyclerAdapte
                         tempFavorite.remove(mList.get(i));
                         ((LottieAnimationView) v).setSpeed(-2);
                         ((LottieAnimationView) v).playAnimation();
-                        onClickFavoriteListener.OnClickFavorite(tempFavorite);
+                        onClickFavoriteListener.onClickFavorite(tempFavorite);
                     } else { //추가
                         tempFavorite.add(mList.get(i));
                         ((LottieAnimationView) v).setSpeed(2);
                         ((LottieAnimationView) v).playAnimation();
-                        onClickFavoriteListener.OnClickFavorite(tempFavorite);
+                        onClickFavoriteListener.onClickFavorite(tempFavorite);
                     }
                 }
             });
@@ -112,7 +109,7 @@ public class SearchActivityCompanyRecyclerViewAdapter extends BaseRecyclerAdapte
 
     @Override
     public int getItemCount() {
-        if(mList.size() == 0 ) return 0;
+        if (mList.size() == 0) return 0;
         return mList.size() + 1;
     }
 
@@ -126,14 +123,15 @@ public class SearchActivityCompanyRecyclerViewAdapter extends BaseRecyclerAdapte
 
     public interface OnClickFavoriteListener {
 
-        void OnClickFavorite(ArrayList<Company> listTobeSaved);
+        void onClickFavorite(ArrayList<Company> listTobeSaved);
     }
+
     public void setOnClickFavoriteListener(OnClickFavoriteListener onClickFavoriteListener) {
         this.onClickFavoriteListener = onClickFavoriteListener;
     }
 
     public void clear() {
-        if(mList!=null)
+        if (mList != null)
             mList.clear();
     }
 

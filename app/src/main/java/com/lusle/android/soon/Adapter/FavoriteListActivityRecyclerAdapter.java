@@ -8,10 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.lusle.android.soon.Activity.FavoriteListActivity;
-import com.lusle.android.soon.ItemTouchHelper.ItemTouchHelperAdapter;
-import com.lusle.android.soon.ItemTouchHelper.ItemTouchHelperViewHolder;
-import com.lusle.android.soon.Model.Company;
+import com.lusle.android.soon.View.FavoriteCompanyList.FavoriteListActivity;
+import com.lusle.android.soon.Util.ItemTouchHelper.ItemTouchHelperAdapter;
+import com.lusle.android.soon.Util.ItemTouchHelper.ItemTouchHelperViewHolder;
+import com.lusle.android.soon.Model.Schema.Company;
 import com.lusle.android.soon.R;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.core.view.MotionEventCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class FavoriteListActivityRecyclerAdapter extends BaseRecyclerAdapter<FavoriteListActivityRecyclerAdapter.FavoriteCell> implements ItemTouchHelperAdapter {
+public class FavoriteListActivityRecyclerAdapter extends BaseRecyclerAdapter<FavoriteListActivityRecyclerAdapter.FavoriteViewHolder> implements ItemTouchHelperAdapter {
 
     private ArrayList<Company> mList;
 
@@ -30,13 +30,13 @@ public class FavoriteListActivityRecyclerAdapter extends BaseRecyclerAdapter<Fav
         this.mDragStartListener = mDragStartListener;
     }
 
-    public class FavoriteCell extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
+    public class FavoriteViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
 
         public TextView companyName;
 
         public ImageView handle;
 
-        public FavoriteCell(@NonNull View itemView) {
+        public FavoriteViewHolder(@NonNull View itemView) {
             super(itemView);
             companyName = itemView.findViewById(R.id.companyName);
             handle = itemView.findViewById(R.id.handle);
@@ -72,13 +72,13 @@ public class FavoriteListActivityRecyclerAdapter extends BaseRecyclerAdapter<Fav
 
     @NonNull
     @Override
-    public FavoriteCell onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public FavoriteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_favorite_recyclerview, parent, false);
-        return new FavoriteCell(view);
+        return new FavoriteViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FavoriteCell holder, int position) {
+    public void onBindViewHolder(@NonNull FavoriteViewHolder holder, int position) {
         holder.companyName.setText(mList.get(position).getName());
         holder.handle.setOnTouchListener((view, event) -> {
             if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {

@@ -38,6 +38,7 @@
                 android:layout_marginBottom="12dp"
                 android:includeFontPadding="false"
                 android:text="보헤미안 렙소디"
+                android:maxLines="1"
                 android:textSize="13dp"
                 tools:ignore="MissingPrefix"
                 android:transitionName="title"

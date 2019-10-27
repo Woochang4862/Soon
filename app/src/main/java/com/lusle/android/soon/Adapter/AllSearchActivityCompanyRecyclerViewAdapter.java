@@ -7,9 +7,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.lusle.android.soon.Model.Company;
+import com.lusle.android.soon.Model.Schema.Company;
 import com.lusle.android.soon.R;
-import com.lusle.android.soon.Utils.CircleTransform;
+import com.lusle.android.soon.Util.CircleTransform;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -80,12 +80,12 @@ public class AllSearchActivityCompanyRecyclerViewAdapter extends BaseRecyclerAda
                     tempFavorite.remove(mList.get(i));
                     ((LottieAnimationView) v).setSpeed(-2);
                     ((LottieAnimationView) v).playAnimation();
-                    onClickFavoriteListener.OnClickFavorite(tempFavorite);
+                    onClickFavoriteListener.onClickFavorite(tempFavorite);
                 } else { //추가
                     tempFavorite.add(mList.get(i));
                     ((LottieAnimationView) v).setSpeed(2);
                     ((LottieAnimationView) v).playAnimation();
-                    onClickFavoriteListener.OnClickFavorite(tempFavorite);
+                    onClickFavoriteListener.onClickFavorite(tempFavorite);
                 }
             }
         });
@@ -111,7 +111,7 @@ public class AllSearchActivityCompanyRecyclerViewAdapter extends BaseRecyclerAda
 
     public interface OnClickFavoriteListener {
 
-        void OnClickFavorite(ArrayList<Company> listTobeSaved);
+        void onClickFavorite(ArrayList<Company> listTobeSaved);
     }
 
     public void setOnClickFavoriteListener(OnClickFavoriteListener onClickFavoriteListener) {

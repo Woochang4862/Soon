@@ -5,7 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.lusle.android.soon.Model.Video;
+import com.lusle.android.soon.Model.Schema.Video;
 import com.lusle.android.soon.R;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;

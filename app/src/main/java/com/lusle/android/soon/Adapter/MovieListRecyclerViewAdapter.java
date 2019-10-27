@@ -5,16 +5,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.lusle.android.soon.Model.Genre;
-import com.lusle.android.soon.Model.Movie;
+import com.lusle.android.soon.Adapter.Contract.MovieListRecyclerAdapterContract;
+import com.lusle.android.soon.Adapter.Holder.MovieViewHolder;
+import com.lusle.android.soon.Adapter.Listener.OnBookButtonClickListener;
+import com.lusle.android.soon.Adapter.Listener.OnItemClickListener;
+import com.lusle.android.soon.Adapter.Holder.ProgressViewHolder;
+import com.lusle.android.soon.Model.Schema.Genre;
+import com.lusle.android.soon.Model.Schema.Movie;
 import com.lusle.android.soon.R;
-import com.lusle.android.soon.Utils.Utils;
+import com.lusle.android.soon.Util.Util;
 import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
@@ -29,45 +29,16 @@ import java.util.Map;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MovieListRecyclerViewAdapter extends BaseRecyclerAdapter<RecyclerView.ViewHolder> {
+public class MovieListRecyclerViewAdapter extends BaseRecyclerAdapter<RecyclerView.ViewHolder> implements MovieListRecyclerAdapterContract.Model, MovieListRecyclerAdapterContract.View {
 
     private ArrayList<Movie> mList;
     private Map<Integer, String> genres;
-    private OnClickListener onClickListener;
+    private OnItemClickListener onItemClickListener;
     private OnBookButtonClickListener onBookButtonClickListener;
 
     public MovieListRecyclerViewAdapter(RecyclerView recyclerView) {
         super(recyclerView);
         genres = new HashMap<>();
-    }
-
-    public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
-        public ImageView imageView;
-
-        public TextView title, adult, genre, overview, release;
-        public Button bookBtn;
-
-        public MovieViewHolder(@NonNull View itemView) {
-            super(itemView);
-            itemView.setOnClickListener(this);
-            imageView = itemView.findViewById(R.id.movie_list_recyclerview_poster);
-            title = itemView.findViewById(R.id.movie_list_recyclerView_title);
-            adult = itemView.findViewById(R.id.movie_list_recyclerview_adult);
-            genre = itemView.findViewById(R.id.movie_list_recyclerview_genre);
-            overview = itemView.findViewById(R.id.movie_list_recyclerview_overview);
-            release = itemView.findViewById(R.id.movie_list_recyclerview_release);
-            bookBtn = itemView.findViewById(R.id.movie_list_recyclerview_d_day);
-        }
-
-        @Override
-        public void onClick(View v) {
-            if (onClickListener != null) {
-                onClickListener.OnItemClick(v, getLayoutPosition());
-            }
-        }
-
-
     }
 
     @Override
@@ -86,7 +57,7 @@ public class MovieListRecyclerViewAdapter extends BaseRecyclerAdapter<RecyclerVi
         } else {
             Log.d("Ads", "onCreateViewHolder: VIEW_etc");
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_movie_recyclerview, parent, false);
-            vh = new MovieViewHolder(view);
+            vh = new MovieViewHolder(view, onItemClickListener);
         }
         return vh;
     }
@@ -127,7 +98,7 @@ public class MovieListRecyclerViewAdapter extends BaseRecyclerAdapter<RecyclerVi
                 Date date = sdf.parse(mList.get(position).getReleaseDate());
                 Calendar releaseDate = new GregorianCalendar();
                 releaseDate.setTime(date);
-                int day = Utils.calDDay(releaseDate);
+                int day = Util.calDDay(releaseDate);
                 if (day <= 0) {
                     ((MovieViewHolder) holder).bookBtn.setEnabled(false);
                     ((MovieViewHolder) holder).bookBtn.setText("개봉함");
@@ -145,6 +116,7 @@ public class MovieListRecyclerViewAdapter extends BaseRecyclerAdapter<RecyclerVi
                 ((MovieViewHolder) holder).bookBtn.setEnabled(false);
             }
         } else {
+            Log.d("onScrolled", limit+" "+position);
             if (limit == position) {
                 ((ProgressViewHolder) holder).progressBar.setVisibility(View.GONE);
             }
@@ -157,39 +129,39 @@ public class MovieListRecyclerViewAdapter extends BaseRecyclerAdapter<RecyclerVi
         return mList.size() + 1;
     }
 
-    public interface OnClickListener {
-
-        void OnItemClick(View v, int pos);
-
+    @Override
+    public void notifyAdapter() {
+        notifyDataSetChanged();
     }
 
+    @Override
     public void setList(ArrayList<Movie> list) {
         mList = list;
     }
 
+    @Override
+    public void addItems(ArrayList<Movie> list) {
+        this.mList.addAll(list);
+    }
+
+    @Override
     public void setGenres(ArrayList<Genre> genres) {
         for (Genre genre : genres) {
             this.genres.put(genre.getId(), genre.getName());
         }
     }
 
-    public void setOnClickListener(OnClickListener onClickListener) {
-        this.onClickListener = onClickListener;
+    @Override
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 
-    public void addItems(ArrayList<Movie> list) {
-        this.mList.addAll(list);
-    }
-
+    @Override
     public Movie getItem(int i) {
         return mList.get(i);
     }
 
-    public boolean hasGenre() {
-        return !genres.isEmpty();
-    }
-
-
+    @Override
     public void setOnBookButtonClickListener(OnBookButtonClickListener onBookButtonClickListener) {
         this.onBookButtonClickListener = onBookButtonClickListener;
     }

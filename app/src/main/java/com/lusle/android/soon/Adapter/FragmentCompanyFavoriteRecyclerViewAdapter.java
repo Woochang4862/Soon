@@ -9,16 +9,19 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.lusle.android.soon.Model.Company;
+import com.lusle.android.soon.Adapter.Contract.FragmentFavoriteCompanyAdapterContract;
+import com.lusle.android.soon.Adapter.Holder.BookMarkViewHolder;
+import com.lusle.android.soon.Adapter.Listener.OnItemClickListener;
+import com.lusle.android.soon.Model.Schema.Company;
 import com.lusle.android.soon.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class FragmentCompanyFavoriteRecyclerViewAdapter extends BaseRecyclerAdapter<RecyclerView.ViewHolder> {
+public class FragmentCompanyFavoriteRecyclerViewAdapter extends BaseRecyclerAdapter<RecyclerView.ViewHolder> implements FragmentFavoriteCompanyAdapterContract.View, FragmentFavoriteCompanyAdapterContract.Model {
 
     private ArrayList<Company> mList;
-    private OnItemClickListener mItemClickListener;
+    private OnItemClickListener onItemClickListener;
 
     public FragmentCompanyFavoriteRecyclerViewAdapter() {
     }
@@ -27,7 +30,7 @@ public class FragmentCompanyFavoriteRecyclerViewAdapter extends BaseRecyclerAdap
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_favorite_company_recyclerview, viewGroup, false);
-        return new BookMarkViewHolder(view);
+        return new BookMarkViewHolder(view, onItemClickListener);
     }
 
     @Override
@@ -48,50 +51,18 @@ public class FragmentCompanyFavoriteRecyclerViewAdapter extends BaseRecyclerAdap
         return mList.size();
     }
 
+    @Override
     public Company getItem(int position) {
         return mList.get(position);
     }
 
-    public class BookMarkViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-
-        public TextView textView;
-        public ImageView imageView;
-
-        public BookMarkViewHolder(@NonNull View itemView) {
-            super(itemView);
-            itemView.setOnClickListener(this);
-            itemView.setOnLongClickListener(this);
-            textView = itemView.findViewById(R.id.favorite_recyclerview_item_company_name);
-            imageView = itemView.findViewById(R.id.bookmark_recyclerview_item_poster);
-        }
-
-        @Override
-        public void onClick(View view) {
-            if (mItemClickListener != null) {
-                mItemClickListener.onItemClick(view, getLayoutPosition());
-            }
-        }
-
-        @Override
-        public boolean onLongClick(View view) {
-            if (mItemClickListener != null) {
-                mItemClickListener.onItemLongClick(view, getLayoutPosition());
-                return true;
-            }
-            return false;
-        }
-    }
-
-    public interface OnItemClickListener {
-        void onItemClick(View view, int position);
-        void onItemLongClick(View view, int position);
-    }
-
+    @Override
     public void setList(ArrayList<Company> list) {
         mList = list;
     }
 
-    public void setOnItemClickListener(final FragmentCompanyFavoriteRecyclerViewAdapter.OnItemClickListener mItemClickListener) {
-        this.mItemClickListener = mItemClickListener;
+    @Override
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 }

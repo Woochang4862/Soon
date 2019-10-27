@@ -25,4 +25,6 @@
     <string name="more">더 알아보기</string>
     <string name="relative_movie">관련 영화</string>
     <string name="save">저장</string>
+    <string name="search">검색어</string>
+    <string name="speak_voice">말하세요</string>
 </resources>

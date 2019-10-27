@@ -8,10 +8,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.lusle.android.soon.Model.Genre;
-import com.lusle.android.soon.Model.Movie;
+import com.lusle.android.soon.Adapter.Holder.ProgressViewHolder;
+import com.lusle.android.soon.Adapter.Listener.OnBookButtonClickListener;
+import com.lusle.android.soon.Model.Schema.Genre;
+import com.lusle.android.soon.Model.Schema.Movie;
 import com.lusle.android.soon.R;
-import com.lusle.android.soon.Utils.Utils;
+import com.lusle.android.soon.Util.Util;
 import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
@@ -122,7 +124,7 @@ public class SearchActivityMovieRecyclerViewAdapter extends BaseRecyclerAdapter<
                 Date date = sdf.parse(list.get(position).getReleaseDate());
                 Calendar releaseDate = new GregorianCalendar();
                 releaseDate.setTime(date);
-                int day = Utils.calDDay(releaseDate);
+                int day = Util.calDDay(releaseDate);
                 if (day <= 0) {
                     ((SearchMovieViewHolder) holder).bookBtn.setEnabled(false);
                     ((SearchMovieViewHolder) holder).bookBtn.setText("개봉함");

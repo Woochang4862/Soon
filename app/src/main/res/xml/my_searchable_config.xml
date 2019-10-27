@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<searchable xmlns:android="http://schemas.android.com/apk/res/android"
-    android:label="soon"
-    android:hint="검색어"
-    android:searchSuggestAuthority="com.example.MySuggestionProvider"
-    android:searchSuggestSelection=" ?" >
-</searchable>

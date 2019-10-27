@@ -4,6 +4,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.lusle.android.soon.Adapter.Listener.OnEmptyListener;
+import com.lusle.android.soon.Adapter.Listener.OnLoadMoreListener;
 import com.lusle.android.soon.R;
 
 import androidx.annotation.NonNull;
@@ -15,12 +17,12 @@ public abstract class BaseRecyclerAdapter<ViewHolder extends RecyclerView.ViewHo
     private OnLoadMoreListener onLoadMoreListener;
     private int visibleThreshold = 1;
     private int lastVisibleItem, totalItemCount;
-    private RecyclerView recyclerView;
     protected boolean loading;
     protected final int VIEW_ITEM = 1;
     protected final int VIEW_PROG = 0;
     protected final int VIEW_AD = 2;
     protected int limit = -1;
+    protected int page=1;
 
     public BaseRecyclerAdapter() {
     }
@@ -34,34 +36,19 @@ public abstract class BaseRecyclerAdapter<ViewHolder extends RecyclerView.ViewHo
                     super.onScrolled(recyclerView, dx, dy);
                     totalItemCount = linearLayoutManager.getItemCount();
                     lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
-                    Log.d("onScrolled", "totalItemCount : "+totalItemCount+", lastVisibleItem : "+lastVisibleItem+", visibleThreshold : "+visibleThreshold+" => "+String.valueOf(totalItemCount <= (lastVisibleItem + visibleThreshold)));
+                    Log.d("onScrolled", "loading : "+loading+", totalItemCount : "+totalItemCount+", lastVisibleItem : "+lastVisibleItem+", visibleThreshold : "+visibleThreshold+" => "+String.valueOf(totalItemCount <= (lastVisibleItem + visibleThreshold)));
                     if (!loading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
                         // End has been reached
                         // Do something
-                        if (onLoadMoreListener != null) {
+                        page++;
+                        loading = true;
+                        if (onLoadMoreListener != null && limit>totalItemCount-1) {
                             onLoadMoreListener.onLoadMore();
                         }
-                        loading = true;
                     }
                 }
             });
-            this.recyclerView = recyclerView;
         }
-    }
-
-    protected static class ProgressViewHolder extends RecyclerView.ViewHolder {
-        public ProgressBar progressBar;
-
-        public ProgressViewHolder(View v) {
-            super(v);
-            progressBar = v.findViewById(R.id.progressBar);
-        }
-    }
-
-    public interface OnEmptyListener {
-        void onEmpty();
-
-        void onNotEmpty();
     }
 
     public void setOnEmptyListener(OnEmptyListener onEmptyListener) {
@@ -78,19 +65,28 @@ public abstract class BaseRecyclerAdapter<ViewHolder extends RecyclerView.ViewHo
             onEmptyListener.onNotEmpty();
     }
 
-    public interface OnLoadMoreListener {
-        void onLoadMore();
-    }
-
     public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
         this.onLoadMoreListener = onLoadMoreListener;
     }
 
     public void setLoaded() {
         loading = false;
+        Log.d("onScrolled", loading+"");
     }
 
     public void setItemLimit(int limit){
         this.limit = limit;
+    }
+
+    public int getPage() {
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    public void notifyAdapter() {
+        notifyDataSetChanged();
     }
 }
