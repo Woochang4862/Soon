@@ -63,7 +63,8 @@
         <receiver
             android:name=".View.Alarm.AlarmReceiver"
             android:enabled="true"
-            android:exported="true">
+            android:exported="true"
+            android:process=":remote">
             <intent-filter>
                 <action android:name="com.lusle.android.soon.ALARM_START" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -74,13 +75,16 @@
             android:name=".View.Alarm.AlarmService"
             android:enabled="true"
             android:exported="true"
-            android:permission="" />
+            android:process=":remote" />
 
-        <provider
-            android:name=".MySuggestionProvider"
-            android:authorities="com.lusle.android.soon.MySuggestionProvider"
-            android:enabled="true"
-            android:exported="false" />
+        <service
+            android:name=".View.Alarm.FirebaseInstanceIDService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

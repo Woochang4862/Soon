@@ -82,7 +82,7 @@ public class AlarmService extends Service {
                 }
 
                 AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
-                SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+                SharedPreferences mPrefs = getSharedPreferences("alarmPref", Context.MODE_PRIVATE);
 
                 Intent __intent = new Intent("com.lusle.android.soon.ALARM_START");
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), data.getPendingIntentID(), __intent, 0);

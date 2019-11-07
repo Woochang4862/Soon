@@ -1,27 +1,20 @@
 package com.lusle.android.soon.View.Main.ThisMonthMovie.Presenter;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
-import android.view.View;
 
-import com.lusle.android.soon.Model.Contract.GenreDataRemoteSourceContract;
-import com.lusle.android.soon.Model.Contract.MovieDataRemoteSourceContract;
-import com.lusle.android.soon.Model.Source.GenreDataRemoteSource;
-import com.lusle.android.soon.View.Alarm.AlarmSettingActivity;
-import com.lusle.android.soon.View.Detail.DetailActivity;
 import com.lusle.android.soon.Adapter.Contract.MovieListRecyclerAdapterContract;
 import com.lusle.android.soon.Adapter.Listener.OnEmptyListener;
+import com.lusle.android.soon.Adapter.Listener.OnItemClickListener;
+import com.lusle.android.soon.Model.Contract.GenreDataRemoteSourceContract;
+import com.lusle.android.soon.Model.Contract.MovieDataRemoteSourceContract;
 import com.lusle.android.soon.Model.Schema.Genre;
+import com.lusle.android.soon.Model.Schema.Movie;
 import com.lusle.android.soon.Model.Schema.MovieResult;
+import com.lusle.android.soon.Model.Source.GenreDataRemoteSource;
 import com.lusle.android.soon.Model.Source.MovieDataRemoteSource;
-import com.lusle.android.soon.R;
+import com.lusle.android.soon.View.Alarm.AlarmSettingActivity;
 
 import java.util.ArrayList;
-
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.util.Pair;
-import androidx.core.view.ViewCompat;
 
 public class ThisMonthMoviePresenter implements ThisMonthMovieContract.Presenter, MovieDataRemoteSourceContract.Model.OnFinishedListener, GenreDataRemoteSourceContract.Model.OnFinishedListener {
 
@@ -57,7 +50,8 @@ public class ThisMonthMoviePresenter implements ThisMonthMovieContract.Presenter
 
     @Override
     public void loadItems(int page, boolean isSetting) {
-        view.showDialog(true);
+        if(view!=null)
+            view.showDialog(true);
         if (this.isSetting = isSetting) {
             genreModel.getGenreList();
         } else {
@@ -78,15 +72,8 @@ public class ThisMonthMoviePresenter implements ThisMonthMovieContract.Presenter
     }
 
     @Override
-    public void setOnItemClickListener() {
-        adapterModel.setOnItemClickListener((v, pos) -> {
-            Intent intent = new Intent(view.getContext(), DetailActivity.class);
-            intent.putExtra("movie_id", adapterModel.getItem(pos).getId());
-            Pair<View, String> poster = Pair.create(v.findViewById(R.id.movie_list_recyclerview_poster), ViewCompat.getTransitionName(v.findViewById(R.id.movie_list_recyclerview_poster)));
-            Pair<View, String> title = Pair.create(v.findViewById(R.id.movie_list_recyclerView_title), ViewCompat.getTransitionName(v.findViewById(R.id.movie_list_recyclerView_title)));
-            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) view.getContext(), poster, title);
-            view.getContext().startActivity(intent, options.toBundle());
-        });
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        adapterModel.setOnItemClickListener(onItemClickListener);
     }
 
     @Override
@@ -94,12 +81,12 @@ public class ThisMonthMoviePresenter implements ThisMonthMovieContract.Presenter
         adapterModel.setOnEmptyListener(new OnEmptyListener() {
             @Override
             public void onEmpty() {
-                view.setRecyclerEmpty(true);
+                if(view!=null) view.setRecyclerEmpty(true);
             }
 
             @Override
             public void onNotEmpty() {
-                view.setRecyclerEmpty(false);
+                if(view!=null) view.setRecyclerEmpty(false);
             }
         });
     }
@@ -130,8 +117,10 @@ public class ThisMonthMoviePresenter implements ThisMonthMovieContract.Presenter
         }
         adapterView.onNotEmpty();
         adapterView.setLoaded();
-        view.runRecyclerViewAnimation();
-        view.showDialog(false);
+        if(view!=null) {
+            view.runRecyclerViewAnimation();
+            view.showDialog(false);
+        }
     }
 
     @Override
@@ -143,9 +132,16 @@ public class ThisMonthMoviePresenter implements ThisMonthMovieContract.Presenter
 
     @Override
     public void onFailure(Throwable t) {
-        view.showErrorToast();
+        if (view != null) {
+            view.showErrorToast();
+            view.showDialog(false);
+        }
         adapterView.setLoaded();
         adapterView.onEmpty();
-        view.showDialog(false);
+    }
+
+    @Override
+    public Movie getItem(int pos) {
+        return adapterModel.getItem(pos);
     }
 }

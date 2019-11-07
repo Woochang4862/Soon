@@ -9,14 +9,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class APIClient {
     private static Retrofit retrofit = null;
-
+    /*211.204.155.136*/
+    /*192.168.43.145*/
     public static Retrofit getClient() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        interceptor.level(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).addNetworkInterceptor(new StethoInterceptor()).build();
 
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://211.204.155.136:3000")
+                .baseUrl("http://3.134.57.117:3000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build();

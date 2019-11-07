@@ -3,6 +3,8 @@ package com.lusle.android.soon.View.Main.ThisMonthMovie.Presenter;
 import android.content.Context;
 
 import com.lusle.android.soon.Adapter.Contract.MovieListRecyclerAdapterContract;
+import com.lusle.android.soon.Adapter.Listener.OnItemClickListener;
+import com.lusle.android.soon.Model.Schema.Movie;
 import com.lusle.android.soon.Model.Source.GenreDataRemoteSource;
 import com.lusle.android.soon.Model.Source.MovieDataRemoteSource;
 
@@ -34,12 +36,14 @@ public interface ThisMonthMovieContract {
 
         void setGenreModel(GenreDataRemoteSource genreModel);
 
-        void setOnItemClickListener();
+        void setOnItemClickListener(OnItemClickListener onItemClickListener);
 
         void setOnEmptyListener();
 
         void setOnLoadMoreListener();
 
         void setOnBookButtonClickListener();
+
+        Movie getItem(int pos);
     }
 }

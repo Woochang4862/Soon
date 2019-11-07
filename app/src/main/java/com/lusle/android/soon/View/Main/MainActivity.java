@@ -4,12 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.lusle.android.soon.View.BaseActivity;
 import com.lusle.android.soon.View.Search.SearchActivity;
 import com.lusle.android.soon.View.Main.Company.CompanyFragment;
@@ -36,7 +40,7 @@ public class MainActivity extends BaseActivity {
     private long backPressedTime = 0;
 
     final private int requestCode = 666;
-    
+
     private String TAG = MainActivity.class.getSimpleName();
 
     @Override
@@ -49,9 +53,24 @@ public class MainActivity extends BaseActivity {
 
     private void init() {
         //MobileAds.initialize(this, "ca-app-pub-2329923322434251~4419072683");
+        FirebaseApp.initializeApp(this);
+        FirebaseMessaging.getInstance().subscribeToTopic("all");
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.w("FCM Token", "getInstanceId failed", task.getException());
+                        return;
+                    }
+
+                    // Get new Instance ID token
+                    String token = task.getResult().getToken();
+
+                    // Log and toast
+                    Log.d("FCM Token", token);
+                });
 
         adView = findViewById(R.id.adView);
-        adView.setAdListener(new AdListener(){
+        adView.setAdListener(new AdListener() {
             @Override
             public void onAdClosed() {
                 super.onAdClosed();

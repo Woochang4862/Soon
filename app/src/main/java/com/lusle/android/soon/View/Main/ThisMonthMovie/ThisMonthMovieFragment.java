@@ -1,6 +1,8 @@
 package com.lusle.android.soon.View.Main.ThisMonthMovie;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.lusle.android.soon.Adapter.MovieListRecyclerViewAdapter;
 import com.lusle.android.soon.Model.Source.GenreDataRemoteSource;
 import com.lusle.android.soon.Model.Source.MovieDataRemoteSource;
+import com.lusle.android.soon.View.Detail.DetailActivity;
 import com.lusle.android.soon.View.Dialog.MovieProgressDialog;
 import com.lusle.android.soon.R;
 import com.lusle.android.soon.Util.Util;
@@ -20,6 +23,9 @@ import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.util.Pair;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -72,7 +78,14 @@ public class ThisMonthMovieFragment extends Fragment implements ThisMonthMovieCo
         presenter.setMovieAdapterView(adapter);
         recyclerView.setAdapter(adapter);
 
-        presenter.setOnItemClickListener();
+        presenter.setOnItemClickListener((v, pos) -> {
+            Intent intent = new Intent(getContext(), DetailActivity.class);
+            intent.putExtra("movie_id", presenter.getItem(pos).getId());
+            Pair<View, String> poster = Pair.create(v.findViewById(R.id.movie_list_recyclerview_poster), ViewCompat.getTransitionName(v.findViewById(R.id.movie_list_recyclerview_poster)));
+            Pair<View, String> title = Pair.create(v.findViewById(R.id.movie_list_recyclerView_title), ViewCompat.getTransitionName(v.findViewById(R.id.movie_list_recyclerView_title)));
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) view.getContext(), poster, title);
+            startActivity(intent, options.toBundle());
+        });
         presenter.setOnEmptyListener();
         presenter.setOnLoadMoreListener();
         presenter.setOnBookButtonClickListener();

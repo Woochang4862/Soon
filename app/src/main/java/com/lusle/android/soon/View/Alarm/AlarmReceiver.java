@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -24,8 +25,9 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.d("####", "onReceive: called!");
         if ("android.intent.action.BOOT_COMPLETED".equals(intent.getAction())) {
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences preferences = context.getSharedPreferences("alarmPref", Context.MODE_PRIVATE);
             Type type = new TypeToken<ArrayList<Alarm>>() {
             }.getType();
 
