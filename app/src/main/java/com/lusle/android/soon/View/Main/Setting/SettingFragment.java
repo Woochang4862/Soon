@@ -1,10 +1,7 @@
 package com.lusle.android.soon.View.Main.Setting;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,19 +10,14 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.lusle.android.soon.Adapter.AlarmSettingsAdapter;
-import com.lusle.android.soon.Model.Source.AlarmDataLocalSource;
-import com.lusle.android.soon.View.Alarm.AlarmSettingActivity;
-import com.lusle.android.soon.Adapter.Listener.OnEmptyListener;
 import com.lusle.android.soon.Model.Schema.Alarm;
+import com.lusle.android.soon.Model.Source.AlarmDataLocalSource;
 import com.lusle.android.soon.R;
 import com.lusle.android.soon.Util.Util;
 import com.lusle.android.soon.View.Main.Setting.Presenter.SettingContact;
 import com.lusle.android.soon.View.Main.Setting.Presenter.SettingPresenter;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;

@@ -40,9 +40,9 @@ public abstract class BaseRecyclerAdapter<ViewHolder extends RecyclerView.ViewHo
                     if (!loading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
                         // End has been reached
                         // Do something
-                        page++;
-                        loading = true;
                         if (onLoadMoreListener != null && limit>totalItemCount-1) {
+                            page++;
+                            loading = true;
                             onLoadMoreListener.onLoadMore();
                         }
                     }

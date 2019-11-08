@@ -117,7 +117,7 @@ public class MovieListRecyclerViewAdapter extends BaseRecyclerAdapter<RecyclerVi
             }
         } else {
             Log.d("onScrolled", limit+" "+position);
-            if (limit == position) {
+            if (limit <= position) {
                 ((ProgressViewHolder) holder).progressBar.setVisibility(View.GONE);
             }
         }
