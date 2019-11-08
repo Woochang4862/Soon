@@ -190,7 +190,7 @@ public class AlarmSettingActivity extends BaseActivity implements DatePickerDial
         alert.setMessage("정말 삭제하시겠습니까?");
         alert.setPositiveButton("Yes", (dialog, which) -> {
 
-            Intent intent = new Intent("com.lusle.android.soon.ALARM_START");
+            Intent intent = new Intent(this, AlarmReceiver.class);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), alarmData.getPendingIntentID(), intent, 0);
             am.cancel(pendingIntent);
 
