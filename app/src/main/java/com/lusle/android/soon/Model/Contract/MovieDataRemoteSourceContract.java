@@ -3,9 +3,7 @@ package com.lusle.android.soon.Model.Contract;
 import com.lusle.android.soon.Model.Schema.MovieResult;
 
 public interface MovieDataRemoteSourceContract {
-    interface Model{
-        void getThisMonthMovieResult(String region, int page);
-
+    interface Model {
         void discoverMovieWithDate(String region, String date, int page);
 
         interface OnFinishedListener {
@@ -15,5 +13,8 @@ public interface MovieDataRemoteSourceContract {
         }
 
         void setOnFinishedListener(OnFinishedListener onFinishedListener);
+
+        void getThisMonthMovieResult(String region, int page);
+
     }
 }

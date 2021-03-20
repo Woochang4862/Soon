@@ -10,6 +10,6 @@
             <corners android:radius="40dp" />
         </shape>
     </item>
-    <item android:drawable="@drawable/activiry_main_rounded_detail" />
+    <item android:drawable="@drawable/rounded_white_rectangle" />
 
 </ripple>

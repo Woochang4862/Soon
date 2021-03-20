@@ -21,10 +21,8 @@ public class FavoriteCompanyDataLocalSource {
     public ArrayList<Company> getFavoriteCompany(Context context) {
         ArrayList<Company> companyList = new ArrayList<>();
         try {
-            companyList = new FavoriteCompanyTask().execute(context).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+            companyList.addAll(new FavoriteCompanyTask().execute(context).get());
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
         return companyList;

@@ -1,12 +1,9 @@
 package com.lusle.android.soon.View.Main.Genre.Presenter;
 
-import android.content.Intent;
-
 import com.lusle.android.soon.Adapter.Contract.FragmentGenreAdapterContract;
 import com.lusle.android.soon.Model.Contract.GenreDataRemoteSourceContract;
 import com.lusle.android.soon.Model.Schema.Genre;
 import com.lusle.android.soon.Model.Source.GenreDataRemoteSource;
-import com.lusle.android.soon.View.MovieList.MovieListActivity;
 
 import java.util.ArrayList;
 
@@ -34,11 +31,7 @@ public class GenrePresenter implements GenreContractor.Presenter, GenreDataRemot
 
     @Override
     public void setOnItemClickListener() {
-        adapterModel.setOnItemClickListener((v, position) -> {
-            Intent intent = new Intent(view.getContext(), MovieListActivity.class);
-            intent.putExtra("keyword", adapterModel.getItem(position));
-            view.getContext().startActivity(intent);
-        });
+
     }
 
     @Override

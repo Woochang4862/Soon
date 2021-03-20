@@ -82,4 +82,14 @@
     <style name="WhiteRatingBar" parent="Theme.AppCompat">
         <item name="colorControlActivated">@color/white</item>
     </style>
+
+    <style name="SoonAppTitle">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:layout_marginBottom">12dp</item>
+        <item name="android:layout_marginStart">12.3dp</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="fontPath">@string/NanumBarunGothicBold_path</item>
+    </style>
 </resources>

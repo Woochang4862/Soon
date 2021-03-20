@@ -4,56 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/light_black"
+    app:elevation="0dp"
     tools:context=".View.Main.MainActivity">
 
-    <com.google.android.gms.ads.AdView xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/adView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:adSize="BANNER"
-        app:adUnitId="ca-app-pub-2329923322434251/4193773604"></com.google.android.gms.ads.AdView>
-
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/season_effect"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:elevation="10dp"
-        app:lottie_scale="3"
-        app:lottie_fileName="lottie/snow_effect.json"
-        app:lottie_loop="true" />
-
-
-    <FrameLayout
-        android:id="@+id/frame_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/navigation"
-        android:layout_below="@id/adView"
-        android:animateLayoutChanges="true">
-
-    </FrameLayout>
+        android:layout_above="@id/navigation_view"
+        app:defaultNavHost="true" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/navigation"
-        android:layout_alignParentRight="true"
-        android:layout_marginEnd="23dp"
-        android:layout_marginRight="23dp"
-        android:layout_marginBottom="23dp"
-        android:clickable="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
         app:backgroundTint="@color/colorPrimary"
+        app:elevation="12dp"
+        app:fabSize="normal"
         app:srcCompat="@drawable/ic_search_white"
-        tools:ignore="VectorDrawableCompat" />
+        android:contentDescription="@string/text_search" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/navigation"
+        android:id="@+id/navigation_view"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/white"
-        android:translationZ="10dp"
+        app:backgroundTint="@color/lighter_black"
+        app:elevation="8dp"
+        app:itemRippleColor="@color/colorPrimary"
         app:itemIconTint="@color/nav_item_state_list"
         app:itemTextColor="@color/nav_item_state_list"
         app:labelVisibilityMode="labeled"

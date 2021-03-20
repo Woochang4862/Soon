@@ -8,14 +8,14 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.lusle.android.soon.Adapter.AlarmSettingsAdapter;
+import com.lusle.android.soon.Adapter.ReleaseAlarmSettingsAdapter;
 import com.lusle.android.soon.Model.Schema.Alarm;
 import com.lusle.android.soon.Model.Source.AlarmDataLocalSource;
 import com.lusle.android.soon.R;
 import com.lusle.android.soon.Util.Util;
 import com.lusle.android.soon.View.BaseActivity;
-import com.lusle.android.soon.View.Main.Setting.ReleaseAlarm.Presenter.ReleaseAlarmContact;
-import com.lusle.android.soon.View.Main.Setting.ReleaseAlarm.Presenter.ReleaseAlarmPresenter;
+import com.lusle.android.soon.View.Main.Setting.ReleaseAlarm.Presenter.ReleaseAlarmSettingContractor;
+import com.lusle.android.soon.View.Main.Setting.ReleaseAlarm.Presenter.ReleaseAlarmSettingPresenter;
 
 import java.util.ArrayList;
 
@@ -24,23 +24,25 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ReleaseAlarmSettingActivity extends BaseActivity implements ReleaseAlarmContact.View {
+public class ReleaseAlarmSettingActivity extends BaseActivity implements ReleaseAlarmSettingContractor.View {
 
     private Switch aSwitch;
     private RecyclerView recyclerView;
-    private AlarmSettingsAdapter adapter;
+    private ReleaseAlarmSettingsAdapter adapter;
     private LinearLayoutManager layoutManager;
     private FrameLayout emptyViewGroup;
     private LottieAnimationView emptyAnim;
+
     private boolean clickedByUser = true;
-    private ReleaseAlarmPresenter presenter;
+
+    private ReleaseAlarmSettingPresenter presenter;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_release_alarm_setting);
 
-        presenter = new ReleaseAlarmPresenter();
+        presenter = new ReleaseAlarmSettingPresenter();
         presenter.attachView(this);
         presenter.setModel(AlarmDataLocalSource.getInstance(getContext()));
 
@@ -51,7 +53,7 @@ public class ReleaseAlarmSettingActivity extends BaseActivity implements Release
 
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new AlarmSettingsAdapter();
+        adapter = new ReleaseAlarmSettingsAdapter();
         presenter.setAdapterView(adapter);
         presenter.setAdapterModel(adapter);
         presenter.setOnItemClickListener();
@@ -88,7 +90,7 @@ public class ReleaseAlarmSettingActivity extends BaseActivity implements Release
         clickedByUser = true;
     }
 
-    private void reload(){
+    private void reload() {
         presenter.loadItems();
         Util.runLayoutAnimation(recyclerView);
     }
@@ -102,7 +104,7 @@ public class ReleaseAlarmSettingActivity extends BaseActivity implements Release
 
     @Override
     public void setRecyclerEmpty(boolean isEmpty) {
-        if(isEmpty){
+        if (isEmpty) {
             recyclerView.setVisibility(View.GONE);
             emptyViewGroup.setVisibility(View.VISIBLE);
             if (!emptyAnim.isAnimating()) emptyAnim.playAnimation();
@@ -114,13 +116,13 @@ public class ReleaseAlarmSettingActivity extends BaseActivity implements Release
     }
 
     @Override
-    public Context getContext() {
-        return this;
-    }
-
-    @Override
     public void onDestroy() {
         presenter.detachView();
         super.onDestroy();
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
     }
 }

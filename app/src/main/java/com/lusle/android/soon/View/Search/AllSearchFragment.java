@@ -19,13 +19,13 @@ import com.lusle.android.soon.Model.API.APIClient;
 import com.lusle.android.soon.Model.API.APIInterface;
 import com.lusle.android.soon.Adapter.AllSearchActivityCompanyRecyclerViewAdapter;
 import com.lusle.android.soon.Adapter.AllSearchActivityMovieRecyclerViewAdapter;
+import com.lusle.android.soon.Model.Schema.Movie;
+import com.lusle.android.soon.Model.Schema.MovieResult;
 import com.lusle.android.soon.View.Alarm.AlarmSettingActivity;
 import com.lusle.android.soon.View.Detail.DetailActivity;
 import com.lusle.android.soon.Model.Schema.Company;
 import com.lusle.android.soon.Model.Schema.CompanyResult;
 import com.lusle.android.soon.Model.Schema.GenreResult;
-import com.lusle.android.soon.Model.Schema.Movie;
-import com.lusle.android.soon.Model.Schema.MovieResult;
 import com.lusle.android.soon.View.Dialog.MovieProgressDialog;
 import com.lusle.android.soon.R;
 import com.lusle.android.soon.Util.Util;
@@ -265,11 +265,11 @@ public class AllSearchFragment extends Fragment implements SearchActivity.OnQuer
                     movieSection.setVisibility(View.GONE);
                 } else if (result.getTotalResults() != 0 && result.getTotalResults() <= 3) {
                     movieSection.setVisibility(View.VISIBLE);
-                    movieAdapter.setList(result.getResults());
+                    movieAdapter.setList(new ArrayList(result.getResults()));
                     movieResults.setText("총 " + result.getTotalResults() + "개의 결과 더보기");
                 } else if (result.getTotalResults() != 0) {
                     movieSection.setVisibility(View.VISIBLE);
-                    movieExpandArrayList = result.getResults();
+                    movieExpandArrayList = new ArrayList(result.getResults());
                     movieCollapseArrayList = new ArrayList<>();
                     for (int i = 0; i < 3; i++)
                         movieCollapseArrayList.add(result.getResults().get(i));

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginStart="9dp"
+    android:layout_marginEnd="9dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="@dimen/favorite_company_item_width"
+        android:layout_height="@dimen/favorite_company_item_height"
+        android:background="@color/white"
+        android:layout_gravity="center_vertical"
+        android:transitionName="poster">
+
+        <ImageView
+            android:id="@+id/company_logo"
+            android:layout_width="match_parent"
+            android:padding="5dp"
+            android:layout_height="match_parent"
+            android:src="@color/defaultTextColor" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/error_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:lottie_fileName="lottie/error_cloud.json"
+            app:lottie_loop="false" />
+    </FrameLayout>
+
+
+
+    <TextView
+        android:id="@+id/company_name"
+        fontPath="@string/NanumBarunGothicUltraLight_path"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_marginTop="8dp"
+        android:text="마블"
+        android:textColor="@color/white"
+        android:textSize="10dp"
+        tools:ignore="MissingPrefix" />
+
+
+</LinearLayout>

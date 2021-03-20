@@ -33,7 +33,10 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Log.d("####", "onMessageReceived: " + remoteMessage.getNotification());
         if (remoteMessage != null && remoteMessage.getNotification() != null) {
-            if (PreferenceManager.getDefaultSharedPreferences(FirebaseInstanceIDService.this).getBoolean(getString(R.string.key_monthly_alarm), true)) {
+            if (remoteMessage.getTo().equals("/topics/all")) {
+                if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getString(R.string.key_monthly_alarm), true))
+                    sendNotification(remoteMessage);
+            } else {
                 sendNotification(remoteMessage);
             }
         }

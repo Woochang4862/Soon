@@ -1,8 +1,9 @@
 package com.lusle.android.soon.View.Main.Date;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +15,14 @@ import android.widget.TextView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.google.android.material.appbar.AppBarLayout;
-import com.lusle.android.soon.Adapter.MovieListRecyclerViewAdapter;
+import com.lusle.android.soon.Adapter.Listener.OnEmptyListener;
+import com.lusle.android.soon.Adapter.Listener.OnItemClickListener;
+import com.lusle.android.soon.Adapter.MoviePagedListAdapter;
 import com.lusle.android.soon.Model.Source.GenreDataRemoteSource;
 import com.lusle.android.soon.Model.Source.MovieDataRemoteSource;
 import com.lusle.android.soon.R;
 import com.lusle.android.soon.Util.Util;
+import com.lusle.android.soon.View.Detail.DetailActivity;
 import com.lusle.android.soon.View.Dialog.MovieProgressDialog;
 import com.lusle.android.soon.View.Main.Date.Presenter.DateContract;
 import com.lusle.android.soon.View.Main.Date.Presenter.DatePresenter;
@@ -33,6 +37,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.util.Pair;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -48,7 +54,7 @@ public class DateFragment extends Fragment implements DateContract.View {
     private FrameLayout emptyViewGroup;
     private LottieAnimationView emptyAnim;
     private RecyclerView mMovieList;
-    private MovieListRecyclerViewAdapter adapter;
+    private MoviePagedListAdapter adapter;
 
     private Date currDate = new Date();
 
@@ -135,9 +141,28 @@ public class DateFragment extends Fragment implements DateContract.View {
         mMovieList = view.findViewById(R.id.fragment_date_movie_list);
         linearLayoutManager = new LinearLayoutManager(getContext());
         mMovieList.setLayoutManager(linearLayoutManager);
-        adapter = new MovieListRecyclerViewAdapter(mMovieList);
-        presenter.setAdapterView(adapter);
-        presenter.setAdapterModel(adapter);
+        adapter = new MoviePagedListAdapter(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent intent = new Intent(view.getContext(), DetailActivity.class);
+                intent.putExtra("movie_id", adapter.getItem(position).getId());
+                Pair<View, String> poster = Pair.create(view.findViewById(R.id.movie_list_recyclerview_poster), ViewCompat.getTransitionName(view.findViewById(R.id.movie_list_recyclerview_poster)));
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) view.getContext(), poster);
+                view.getContext().startActivity(intent, options.toBundle());
+            }
+        }, new OnEmptyListener() {
+            @Override
+            public void onEmpty() {
+
+            }
+
+            @Override
+            public void onNotEmpty() {
+
+            }
+        });
+        //presenter.setAdapterView(adapter);
+        //presenter.setAdapterModel(adapter);
         mMovieList.setAdapter(adapter);
         presenter.setOnItemClickListener();
         presenter.setOnEmptyListener();

@@ -134,7 +134,7 @@ public class DetailActivity extends BaseActivity {
 
         Integer id = getIntent().getIntExtra("movie_id", -1);
 
-        APIClient.getClient().create(APIInterface.class).getMovieDetails(id, Util.getRegionCode(this)).enqueue(new retrofit2.Callback<MovieDetail>() {
+        APIClient.getClient().create(APIInterface.class).getMovieDetails(Util.getRegionCode(this), id).enqueue(new retrofit2.Callback<MovieDetail>() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(Call<MovieDetail> call, Response<MovieDetail> response) {

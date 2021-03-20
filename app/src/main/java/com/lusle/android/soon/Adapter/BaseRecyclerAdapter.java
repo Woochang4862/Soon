@@ -9,6 +9,8 @@ import com.lusle.android.soon.Adapter.Listener.OnLoadMoreListener;
 import com.lusle.android.soon.R;
 
 import androidx.annotation.NonNull;
+import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,35 +24,63 @@ public abstract class BaseRecyclerAdapter<ViewHolder extends RecyclerView.ViewHo
     protected final int VIEW_PROG = 0;
     protected final int VIEW_AD = 2;
     protected int limit = -1;
-    protected int page=1;
+    protected int page = 1;
 
     public BaseRecyclerAdapter() {
     }
 
     public BaseRecyclerAdapter(RecyclerView recyclerView) {
-        if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
-            final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                @Override
-                public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                    super.onScrolled(recyclerView, dx, dy);
-                    totalItemCount = linearLayoutManager.getItemCount();
-                    lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
-                    Log.d("onScrolled", "loading : "+loading+
-                            ", totalItemCount : "+totalItemCount+
-                            ", lastVisibleItem : "+lastVisibleItem+
-                            ", visibleThreshold : "+visibleThreshold+" => "+ (totalItemCount <= (lastVisibleItem + visibleThreshold)));
-                    if (!loading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
-                        // End has been reached
-                        // Do something
-                        if (onLoadMoreListener != null && limit>totalItemCount-1) {
-                            page++;
-                            loading = true;
-                            onLoadMoreListener.onLoadMore();
+        if (recyclerView.getLayoutManager() instanceof GridLayoutManager) {
+            final GridLayoutManager linearLayoutManager = (GridLayoutManager) recyclerView.getLayoutManager();
+            if (recyclerView.getRootView().getRootView() instanceof NestedScrollView) {
+                ((NestedScrollView) recyclerView.getRootView().getRootView()).setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+                    @Override
+                    public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                        if (scrollY < oldScrollY) {
+                            Log.i("TAG", "Scroll UP");
+                        }
+
+                        if (scrollY == 0) {
+                            Log.i("TAG", "TOP SCROLL");
+                        }
+
+                        if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) && scrollY > oldScrollY) {
+                            Log.i("TAG", "BOTTOM SCROLL");
+                            // here where the trick is going
+                            totalItemCount = linearLayoutManager.getItemCount();
+                            lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
+                            if (!loading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+                                // End has been reached
+                                // Do something
+                                if (onLoadMoreListener != null && limit > totalItemCount - 1) {
+                                    page++;
+                                    loading = true;
+                                    onLoadMoreListener.onLoadMore();
+                                }
+                            }
                         }
                     }
-                }
-            });
+                });
+            } else {
+                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+                        totalItemCount = linearLayoutManager.getItemCount();
+                        lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
+                        Log.d("onScrolled", "loading : " + loading + ", totalItemCount : " + totalItemCount + ", lastVisibleItem : " + lastVisibleItem + ", visibleThreshold : " + visibleThreshold + " => " + String.valueOf(totalItemCount <= (lastVisibleItem + visibleThreshold)));
+                        if (!loading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+                            // End has been reached
+                            // Do something
+                            if (onLoadMoreListener != null && limit > totalItemCount - 1) {
+                                page++;
+                                loading = true;
+                                onLoadMoreListener.onLoadMore();
+                            }
+                        }
+                    }
+                });
+            }
         }
     }
 
@@ -74,10 +104,10 @@ public abstract class BaseRecyclerAdapter<ViewHolder extends RecyclerView.ViewHo
 
     public void setLoaded() {
         loading = false;
-        Log.d("onScrolled", loading+"");
+        Log.d("onScrolled", loading + "");
     }
 
-    public void setItemLimit(int limit){
+    public void setItemLimit(int limit) {
         this.limit = limit;
     }
 

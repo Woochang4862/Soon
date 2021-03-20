@@ -7,9 +7,9 @@ import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -23,9 +23,9 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.lusle.android.soon.Model.Schema.Movie;
 import com.lusle.android.soon.View.BaseActivity;
 import com.lusle.android.soon.Model.Schema.Alarm;
-import com.lusle.android.soon.Model.Schema.Movie;
 import com.lusle.android.soon.R;
 import com.squareup.picasso.Picasso;
 
@@ -113,11 +113,15 @@ public class AlarmSettingActivity extends BaseActivity implements DatePickerDial
     private void save() {
         alarmData = new Alarm(movieData, currentCal.getTimeInMillis(), alarmData == null ? movieData.hashCode() : alarmData.getPendingIntentID(), active);
 
-        Intent intent = new Intent(this, AlarmReceiver.class);
+        registerReceiver(new AlarmReceiver(), new IntentFilter());
+
+        Log.d("####", "save: "+alarmData);
+        Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
         Bundle args = new Bundle();
         args.putSerializable("DATA", alarmData);
         intent.putExtra("alarm_info", args);
         intent.addFlags(FLAG_INCLUDE_STOPPED_PACKAGES);
+
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), alarmData.getPendingIntentID(), intent, 0);
 
         if (pendingIntent != null) {
@@ -152,10 +156,11 @@ public class AlarmSettingActivity extends BaseActivity implements DatePickerDial
             hiddenSection = findViewById(R.id.hidden_section);
             hiddenSection.setVisibility(View.VISIBLE);
             aSwitch = findViewById(R.id.alarm_switch);
-            active = this.alarmData.isActive();
-            Log.d("AlarmSettingActivity", "binding: "+active+" "+alarmData.isActive());
+            active = alarmData.isActive();
+            Log.d("#####", "binding: "+alarmData.isActive());
             aSwitch.setChecked(active);
-            aSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> active = isChecked);
+            aSwitch.setOnCheckedChangeListener((buttonView, isChecked) ->{ active = isChecked;
+                Log.d("#####", "setOnCheckedChangeListener: "+active);});
             deleteBtn = findViewById(R.id.delete_btn);
             deleteBtn.setOnClickListener(v -> delete());
         }

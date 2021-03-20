@@ -9,7 +9,7 @@ public interface FragmentGenreAdapterContract {
 
     }
 
-    interface Model extends BaseAdapterContract.Model {
+    interface Model {
 
         void setList(ArrayList<Genre> mList);
 

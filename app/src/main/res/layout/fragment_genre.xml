@@ -1,57 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_genre_nestedscrollview"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".View.Main.Genre.GenreFragment">
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/fragment_genre_nestedscrollview"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:focusableInTouchMode="true">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/title"
+            style="@style/SoonAppTitle"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:focusableInTouchMode="true">
+            android:text="@string/text_genre" />
 
-            <RelativeLayout
-                android:id="@+id/fragment_genre_title_group"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="50dp"
-                android:layout_marginTop="50dp"
-                android:layout_marginBottom="56.3dp">
-
-                <TextView
-                    android:id="@+id/fragment_genre_title_text"
-                    fontPath="@string/NanumBarunGothicBold_path"
-                    android:layout_width="wrap_content"
-                    android:layout_height="27dp"
-                    android:gravity="left|bottom"
-                    android:includeFontPadding="false"
-                    android:paddingBottom="5dp"
-                    android:text="장르선택"
-                    android:textColor="@color/black"
-                    android:textSize="20dp"
-                    tools:ignore="MissingPrefix" />
-
-                <View
-                    android:layout_width="70dp"
-                    android:layout_height="3dp"
-                    android:layout_below="@+id/fragment_genre_title_text"
-                    android:layout_centerHorizontal="true"
-                    android:background="@color/black" />
-
-            </RelativeLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/title">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/fragment_genre_genre_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/fragment_genre_title_group"></androidx.recyclerview.widget.RecyclerView>
+                android:layout_marginStart="@dimen/margin_content_list"
+                android:layout_marginEnd="@dimen/margin_content_list" />
 
-        </RelativeLayout>
+            <FrameLayout
+                android:id="@+id/list_empty_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone">
 
-    </androidx.core.widget.NestedScrollView>
-</RelativeLayout>
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/list_empty_anim"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    app:lottie_fileName="lottie/not_found.json"
+                    app:lottie_loop="true"
+                    app:lottie_scale="0.2" />
+
+                <TextView
+                    fontPath="@string/NanumBarunGothicBold_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="30dp"
+                    android:text="@string/empty_text"
+                    tools:ignore="MissingPrefix" />
+            </FrameLayout>
+
+        </FrameLayout>
+
+    </RelativeLayout>
+
+</androidx.core.widget.NestedScrollView>

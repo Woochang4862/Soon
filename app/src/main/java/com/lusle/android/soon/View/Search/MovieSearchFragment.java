@@ -13,11 +13,11 @@ import com.lusle.android.soon.Adapter.Listener.OnEmptyListener;
 import com.lusle.android.soon.Model.API.APIClient;
 import com.lusle.android.soon.Model.API.APIInterface;
 import com.lusle.android.soon.Adapter.SearchActivityMovieRecyclerViewAdapter;
+import com.lusle.android.soon.Model.Schema.Movie;
+import com.lusle.android.soon.Model.Schema.MovieResult;
 import com.lusle.android.soon.View.Alarm.AlarmSettingActivity;
 import com.lusle.android.soon.View.Detail.DetailActivity;
 import com.lusle.android.soon.Model.Schema.GenreResult;
-import com.lusle.android.soon.Model.Schema.Movie;
-import com.lusle.android.soon.Model.Schema.MovieResult;
 import com.lusle.android.soon.View.Dialog.MovieProgressDialog;
 import com.lusle.android.soon.R;
 import com.lusle.android.soon.Util.Util;
@@ -95,7 +95,7 @@ public class MovieSearchFragment extends Fragment implements SearchActivity.OnQu
             call.enqueue(new Callback<MovieResult>() {
                 @Override
                 public void onResponse(Call<MovieResult> call, Response<MovieResult> response) {
-                    ArrayList<Movie> list = response.body().getResults();
+                    ArrayList<Movie> list = new ArrayList<>(response.body().getResults());
                     if (list.size() != 0) {
                         adapter.addItems(list);
                         getActivity().runOnUiThread(() -> {
@@ -115,7 +115,7 @@ public class MovieSearchFragment extends Fragment implements SearchActivity.OnQu
                 }
             });
         }).start());
-        adapter.setOnBookButtonClickListener(movie -> {
+        adapter.setOnBookButtonClickListener(movie->{
             Intent intent = new Intent(getContext(), AlarmSettingActivity.class);
             intent.putExtra("movie_info", movie);
             startActivity(intent);
@@ -152,7 +152,7 @@ public class MovieSearchFragment extends Fragment implements SearchActivity.OnQu
             call.enqueue(new Callback<MovieResult>() {
                 @Override
                 public void onResponse(Call<MovieResult> call, Response<MovieResult> response) {
-                    ArrayList<Movie> list = response.body().getResults();
+                    ArrayList<Movie> list = new ArrayList<>(response.body().getResults());
                     adapter.setItemLimit(response.body().getTotalResults());
                     adapter.setList(list);
                     getActivity().runOnUiThread(() -> {
@@ -164,7 +164,7 @@ public class MovieSearchFragment extends Fragment implements SearchActivity.OnQu
 
                 @Override
                 public void onFailure(Call<MovieResult> call, Throwable t) {
-                    Log.d(call.request().url().toString() + ":", t.getMessage());
+                    Log.d(call.request().url().toString()+":", t.getMessage());
                     adapter.onEmpty();
                     dialog.dismiss();
                     DynamicToast.makeError(getContext(), getString(R.string.server_error_msg)).show();

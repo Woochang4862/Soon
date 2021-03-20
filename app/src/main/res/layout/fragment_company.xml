@@ -1,89 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="false"
+    tools:context=".View.Main.Company.CompanyFragment">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/fragment_company_bookmark_text"
-            fontPath="@string/NanumBarunGothicBold_path"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="25dp"
-            android:includeFontPadding="false"
-            android:text="제작사별"
-            android:textColor="@color/black"
-            android:textSize="18dp"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            tools:ignore="MissingPrefix" />
+            <TextView
+                android:id="@+id/title_company"
+                style="@style/SoonAppTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_applied_company" />
 
-        <TextView
-            android:id="@+id/fragment_company_favorite_more"
-            fontPath="@string/NanumBarunGothicUltraLight_path"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/fragment_company_bookmark_text"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="15dp"
-            android:layout_marginRight="14dp"
-            android:background="?attr/selectableItemBackground"
-            android:includeFontPadding="false"
-            android:text="전체보기"
-            android:textSize="10.2sp"
-            android:visibility="gone"
-            tools:ignore="MissingPrefix" />
+            <TextView
+                android:id="@+id/manage_btn"
+                fontPath="@string/NanumBarunGothicUltraLight_path"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/title_company"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="14dp"
+                android:foreground="?attr/selectableItemBackground"
+                android:includeFontPadding="false"
+                android:text="@string/text_manage"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+        </RelativeLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/fragment_company_favorite"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_below="@id/fragment_company_favorite_more"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="10dp"
-            android:nestedScrollingEnabled="false" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    </RelativeLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/company_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_content_list"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="@dimen/margin_content_list"
+                android:layout_marginBottom="10dp" />
 
+            <FrameLayout
+                android:id="@+id/company_empty_view"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:visibility="gone">
 
-    <com.skyfishjy.library.RippleBackground
-        android:id="@+id/rippleBackground"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="0dp"
-        android:layout_marginRight="0dp"
-        android:layout_marginBottom="0dp"
-        app:rb_color="@color/colorAccent"
-        app:rb_duration="2000"
-        app:rb_radius="32dp"
-        app:rb_rippleAmount="2"
-        app:rb_scale="1.5">
+                <TextView
+                    fontPath="@string/NanumBarunGothicBold_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textSize="20sp"
+                    android:textColor="@color/white"
+                    android:text="@string/text_company_empty" />
+            </FrameLayout>
+        </FrameLayout>
 
-    </com.skyfishjy.library.RippleBackground>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/fragment_company_empty_text"
-        fontPath="@string/NanumBarunGothicBold_path"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginRight="-1dp"
-        android:layout_marginBottom="38dp"
-        android:layout_toLeftOf="@+id/rippleBackground"
-        android:includeFontPadding="false"
-        android:text="당신의 제작사를 등록해주세요"
-        android:textColor="@color/black"
-        android:textSize="20dp"
-        tools:ignore="MissingPrefix" />
+            <TextView
+                android:id="@+id/content_title"
+                style="@style/SoonAppTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_coming_up" />
 
-</RelativeLayout>
+        </RelativeLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/movie_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_content_list"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="@dimen/margin_content_list"
+                android:nestedScrollingEnabled="false" />
+
+            <FrameLayout
+                android:id="@+id/movie_empty_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/movie_empty_anim"
+                    android:layout_width="300dp"
+                    android:layout_height="300dp"
+                    android:layout_gravity="center"
+                    app:lottie_fileName="lottie/not_found.json"
+                    app:lottie_loop="false"
+                    app:lottie_scale="0.3" />
+
+                <TextView
+                    fontPath="@string/NanumBarunGothicBold_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="30dp"
+                    android:textColor="@color/white"
+                    android:text="@string/empty_text" />
+            </FrameLayout>
+        </FrameLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

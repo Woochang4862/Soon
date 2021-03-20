@@ -27,15 +27,14 @@
                 android:id="@+id/movie_list_recyclerview_poster"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:transitionName="poster" />
 
             <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/movie_list_recyclerview_poster_empty"
+                android:id="@+id/error_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:transitionName="poster"
-                android:visibility="gone"
-                app:lottie_fileName="lottie/poster_error.json"
+                app:lottie_fileName="lottie/error_cloud.json"
                 app:lottie_loop="false" />
         </FrameLayout>
 

@@ -17,7 +17,6 @@ import com.lusle.android.soon.Util.Util;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -44,7 +43,7 @@ public class AllSearchActivityMovieRecyclerViewAdapter extends BaseRecyclerAdapt
     public class SearchMovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public ImageView imageView;
-        public LottieAnimationView lav;
+        public LottieAnimationView error_image;
         public TextView title, adult, genre, overview, release;
         public Button bookBtn;
 
@@ -52,7 +51,7 @@ public class AllSearchActivityMovieRecyclerViewAdapter extends BaseRecyclerAdapt
             super(itemView);
             itemView.setOnClickListener(this);
             imageView = itemView.findViewById(R.id.movie_list_recyclerview_poster);
-            lav = itemView.findViewById(R.id.movie_list_recyclerview_poster_empty);
+            error_image = itemView.findViewById(R.id.error_image);
             title = itemView.findViewById(R.id.movie_list_recyclerView_title);
             adult = itemView.findViewById(R.id.movie_list_recyclerview_adult);
             genre = itemView.findViewById(R.id.movie_list_recyclerview_genre);
@@ -83,19 +82,20 @@ public class AllSearchActivityMovieRecyclerViewAdapter extends BaseRecyclerAdapt
                 .load("https://image.tmdb.org/t/p/w500" + list.get(position).getPosterPath())
                 .centerCrop()
                 .fit()
+                .error(R.drawable.ic_broken_image)
                 .into(((SearchMovieViewHolder) holder).imageView, new Callback() {
                     @Override
                     public void onSuccess() {
+                        ((SearchMovieViewHolder) holder).error_image.setVisibility(View.GONE);
                         ((SearchMovieViewHolder) holder).imageView.setVisibility(View.VISIBLE);
-                        ((SearchMovieViewHolder) holder).lav.setVisibility(View.GONE);
+                        if(((SearchMovieViewHolder) holder).error_image.isAnimating()) ((SearchMovieViewHolder) holder).error_image.cancelAnimation();
                     }
 
                     @Override
                     public void onError(Exception e) {
+                        ((SearchMovieViewHolder) holder).error_image.setVisibility(View.VISIBLE);
                         ((SearchMovieViewHolder) holder).imageView.setVisibility(View.GONE);
-                        ((SearchMovieViewHolder) holder).lav.setVisibility(View.VISIBLE);
-                        ((SearchMovieViewHolder) holder).lav.setProgress(0);
-                        ((SearchMovieViewHolder) holder).lav.playAnimation();
+                        if(!((SearchMovieViewHolder) holder).error_image.isAnimating()) ((SearchMovieViewHolder) holder).error_image.playAnimation();
                     }
                 });
 

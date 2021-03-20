@@ -41,7 +41,7 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements YouTub
 
     @Override
     public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-        DynamicToast.makeError(this, "동영상을 불러오지 못했습니다").show();
+        DynamicToast.makeError(this, "동영상을 불러오지 못 했습니다").show();
     }
 
     private YouTubePlayer.PlaybackEventListener playbackEventListener = new YouTubePlayer.PlaybackEventListener() {

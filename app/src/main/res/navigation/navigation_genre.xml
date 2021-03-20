@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/genre"
+    app:startDestination="@id/genreFragment">
+
+    <fragment
+        android:id="@+id/genreFragment"
+        android:name="com.lusle.android.soon.View.Main.Genre.GenreFragment"
+        android:label="fragment_genre"
+        tools:layout="@layout/fragment_genre">
+        <action
+            android:id="@+id/action_genreFragment_to_movieListFragment"
+            app:destination="@id/movieListFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" >
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/movieListFragment"
+        android:name="com.lusle.android.soon.View.MovieList.MovieListFragment"
+        android:label="fragment_movie_list"
+        tools:layout="@layout/fragment_movie_list" >
+    </fragment>
+</navigation>

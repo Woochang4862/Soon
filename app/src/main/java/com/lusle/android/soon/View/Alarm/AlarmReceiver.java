@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -45,7 +46,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                     Toast.makeText(context, "Alarm is now active", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(context, AlarmReceiver.class);
                     Bundle args = new Bundle();
-                    args.putSerializable("DATA", a);
+                    args.putSerializable("alarm_info", a);
                     i.putExtra("alarm_info", args);
                     i.addFlags(FLAG_INCLUDE_STOPPED_PACKAGES);
 
@@ -56,13 +57,14 @@ public class AlarmReceiver extends BroadcastReceiver {
             }
         } else {
             Alarm data = (Alarm) intent.getBundleExtra("alarm_info").getSerializable("DATA");
+            Log.d("####", "onReceive: "+data);
             if (data == null) return;
+            Log.d("####", "onReceive: data is not null");
             Intent serviceIntent = new Intent(context, AlarmService.class);
             Bundle args = new Bundle();
             args.putSerializable("DATA", data);
             serviceIntent.putExtra("alarm_info", args);
             serviceIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 context.startForegroundService(serviceIntent);
             } else {

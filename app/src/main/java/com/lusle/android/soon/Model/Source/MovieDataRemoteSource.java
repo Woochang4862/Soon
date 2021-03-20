@@ -41,7 +41,7 @@ public class MovieDataRemoteSource implements MovieDataRemoteSourceContract.Mode
     }
 
     @Override
-    public void discoverMovieWithDate(String date, String region, int page){
+    public void discoverMovieWithDate(String region, String date, int page){
         APIClient.getClient().create(APIInterface.class).discoverMovieWithDate(date, region, page).enqueue(new Callback<MovieResult>() {
             @Override
             public void onResponse(Call<MovieResult> call, Response<MovieResult> response) {

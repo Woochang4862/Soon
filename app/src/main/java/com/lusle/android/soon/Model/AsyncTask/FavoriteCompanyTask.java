@@ -17,7 +17,7 @@ public class FavoriteCompanyTask extends AsyncTask<Context, Void, ArrayList<Comp
     @Override
     protected ArrayList<Company> doInBackground(Context... contexts) {
         SharedPreferences pref = contexts[0].getSharedPreferences("pref", MODE_PRIVATE);
-        String list = pref.getString("favorite_company", "");
+        String list = pref.getString("favorite_company", "[]");
         Type type = new TypeToken<ArrayList<Company>>() {
         }.getType();
         ArrayList<Company> companyList = new Gson().fromJson(list, type);

@@ -27,18 +27,39 @@
     <string name="save">저장</string>
     <string name="search">검색어</string>
     <string name="speak_voice">말하세요</string>
-    <string name="text_alarm">알림</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="key_monthly_alarm">key_monthly_alarm</string>
-    <string name="text_monthly_alarm">매월 영화 알림</string>
-    <string name="text_release_alarm">개봉 알림</string>
-    <string name="text_release_alarm_detail">자신이 등록한 개봉 알림을 설정할 수 있습니다</string>
-    <string name="text_company_alarm_detail">자신이 등록한 제작사 알림을 설정할 수 있습니다</string>
-    <string name="text_company_alarm">제작사 알림</string>
-    <string name="text_privacy">개인 정보</string>
-    <string name="text_region_setting">지역 설정</string>
     <string name="key_region">key_region</string>
     <string name="key_clear_search_history">key_clear_search_history</string>
-    <string name="text_clear_search_history">검색 기록 삭제</string>
-    <string name="text_app_info">앱 정보</string>
-    <string name="text_licence">약관</string>
+    <string name="text_this_month">이번 달</string>
+    <string name="text_manage">관리하기</string>
+    <string name="text_applied_company">등록 제작사</string>
+    <string name="text_coming_up">예정작</string>
+    <string name="text_genre">장르</string>
+    <string name="text_search">검색</string>
+    <string name="text_manage_my_company">나의 제작사 관리</string>
+    <string name="text_company_empty">검색 버튼을 눌러 제작사 등록</string>
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
+    <!--CountryPicker-->
+    <string name="search_hint">Search…</string>
+    <string name="no_result_found">Results not found</string>
+    <string name="select_country">Select a country</string>
+    <string name="dismiss_button_content_description">Dismiss</string>
+    <string name="clear_search_button_content_description">Clear search</string>
 </resources>

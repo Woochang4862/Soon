@@ -17,21 +17,32 @@
         android:roundIcon="@mipmap/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.SubTheme">
-        <activity android:name=".View.Main.Setting.Licence.LicenceActivity"></activity>
-        <activity android:name=".View.Main.Setting.CompanyAlarm.CompanyAlarmActivity" />
-        <activity android:name=".View.Main.Setting.AppInfo.AppInfoActivity" />
 
-        <meta-data
-            android:name="android.app.default_searchable"
-            android:value="com.apkgetter.SearchResultsActivity" />
+        <activity android:name=".View.Main.Setting.AppInfo.AppInfoActivity">
+            <intent-filter>
+                <action android:name="com.lusle.android.soon.AppInfoActivity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
 
-        <activity android:name=".View.Main.MainActivity">
+        <activity android:name=".View.Main.Setting.CompanyAlarm.CompanyAlarmSettingActivity">
+            <intent-filter>
+                <action android:name="com.lusle.android.soon.CompanyAlarmSettingActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+
+        <activity android:name=".View.Main.MainActivity"
+            android:theme="@style/AppTheme.SubTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".View.Search.SearchActivity"
             android:launchMode="singleTop"
@@ -42,46 +53,31 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable_config" />
         </activity>
-        <activity
-            android:name=".View.MovieList.MovieListActivity"
-            android:theme="@style/AppTheme.SubTheme" />
-        <activity
-            android:name=".View.FavoriteCompanyList.FavoriteListActivity"
-            android:theme="@style/AppTheme.SubTheme" />
+
         <activity
             android:name=".View.Detail.DetailActivity"
             android:theme="@style/AppTheme.SubTheme" />
         <activity
             android:name=".View.YoutubePlayer.YoutubePlayerActivity"
             android:theme="@style/AppTheme.SubTheme" />
-        <activity android:name=".View.Alarm.AlarmSettingActivity">
-            <intent-filter>
-                <action android:name="com.lusle.android.soon.ALARM_START" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".View.Alarm.AlarmSettingActivity"/>
+
         <activity android:name=".View.Main.Setting.ReleaseAlarm.ReleaseAlarmSettingActivity">
             <intent-filter>
-                <action android:name="com.lusle.soon.ReleaseAlarmSettingActivity" />
-
+                <action android:name="com.lusle.android.soon.ReleaseAlarmSettingActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
-        <service
-            android:name=".View.Alarm.AlarmReceiverService"
-            android:exported="false" />
 
         <receiver
             android:name=".View.Alarm.AlarmReceiver"
             android:enabled="true"
-            android:exported="false">
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.lusle.android.soon.ALARM_START" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -91,7 +87,8 @@
         <service
             android:name=".View.Alarm.AlarmService"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="true" />
+
         <service
             android:name=".View.Alarm.FirebaseInstanceIDService"
             android:exported="false">
@@ -103,8 +100,12 @@
 
         <provider
             android:name=".MySuggestionProvider"
-            android:authorities="com.lusle.soon.MySuggestionProvider"
+            android:authorities="com.lusle.android.soon.MySuggestionProvider"
             android:exported="false" />
+
+        <meta-data
+            android:name="android.app.default_searchable"
+            android:value="com.apkgetter.SearchResultsActivity" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

@@ -2,24 +2,18 @@ package com.lusle.android.soon.View.Main.Date.Presenter;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 
 import com.lusle.android.soon.Adapter.Contract.MovieListRecyclerAdapterContract;
-import com.lusle.android.soon.Adapter.Listener.OnBookButtonClickListener;
 import com.lusle.android.soon.Adapter.Listener.OnEmptyListener;
-import com.lusle.android.soon.Adapter.Listener.OnItemClickListener;
-import com.lusle.android.soon.Adapter.Listener.OnLoadMoreListener;
 import com.lusle.android.soon.Model.Contract.GenreDataRemoteSourceContract;
 import com.lusle.android.soon.Model.Contract.MovieDataRemoteSourceContract;
 import com.lusle.android.soon.Model.Schema.Genre;
-import com.lusle.android.soon.Model.Schema.Movie;
 import com.lusle.android.soon.Model.Schema.MovieResult;
 import com.lusle.android.soon.Model.Source.GenreDataRemoteSource;
 import com.lusle.android.soon.Model.Source.MovieDataRemoteSource;
 import com.lusle.android.soon.R;
 import com.lusle.android.soon.Util.Util;
-import com.lusle.android.soon.View.Alarm.AlarmSettingActivity;
 import com.lusle.android.soon.View.Detail.DetailActivity;
 
 import java.util.ArrayList;
@@ -63,25 +57,13 @@ public class DatePresenter implements DateContract.Presenter, MovieDataRemoteSou
             Intent intent = new Intent(view.getContext(), DetailActivity.class);
             intent.putExtra("movie_id", adapterModel.getItem(position).getId());
             Pair<View, String> poster = Pair.create(v.findViewById(R.id.movie_list_recyclerview_poster), ViewCompat.getTransitionName(v.findViewById(R.id.movie_list_recyclerview_poster)));
-            Pair<View, String> title = Pair.create(v.findViewById(R.id.movie_list_recyclerView_title), ViewCompat.getTransitionName(v.findViewById(R.id.movie_list_recyclerView_title)));
-            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) view.getContext(), poster, title);
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) view.getContext(), poster);
             view.getContext().startActivity(intent, options.toBundle());
         });
     }
 
     @Override
     public void setOnEmptyListener() {
-        adapterModel.setOnEmptyListener(new OnEmptyListener() {
-            @Override
-            public void onEmpty() {
-                view.setRecyclerEmpty(true);
-            }
-
-            @Override
-            public void onNotEmpty() {
-                view.setRecyclerEmpty(false);
-            }
-        });
     }
 
     @Override
@@ -91,11 +73,7 @@ public class DatePresenter implements DateContract.Presenter, MovieDataRemoteSou
 
     @Override
     public void setOnBookButtonClickListener() {
-        adapterModel.setOnBookButtonClickListener(movie -> {
-            Intent intent = new Intent(view.getContext(), AlarmSettingActivity.class);
-            intent.putExtra("movie_info", movie);
-            view.getContext().startActivity(intent);
-        });
+
     }
 
     @Override
@@ -119,7 +97,7 @@ public class DatePresenter implements DateContract.Presenter, MovieDataRemoteSou
             genreModel.getGenreList();
         } else {
             view.showDialog(true);
-            movieModel.discoverMovieWithDate(date, Util.getRegionCode(view.getContext()), adapterModel.getPage());
+            movieModel.discoverMovieWithDate(Util.getRegionCode(view.getContext()), date, adapterModel.getPage());
         }
     }
 
@@ -139,8 +117,7 @@ public class DatePresenter implements DateContract.Presenter, MovieDataRemoteSou
 
     @Override
     public void onFinished(ArrayList<Genre> genres) {
-        adapterModel.setGenres(genres);
-        movieModel.discoverMovieWithDate(date, Util.getRegionCode(view.getContext()), adapterModel.getPage());
+        movieModel.discoverMovieWithDate(Util.getRegionCode(view.getContext()), date, adapterModel.getPage());
     }
 
     @Override

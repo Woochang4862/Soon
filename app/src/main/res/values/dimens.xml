@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="favorite_company_item_width">266.3dp</dimen>
-    <dimen name="favorite_company_item_height">608.3dp</dimen>
+    <dimen name="favorite_company_item_width">120dp</dimen>
+    <dimen name="favorite_company_item_height">170dp</dimen>
     <dimen name="favorite_company_name_height">16.7dp</dimen>
     <dimen name="fragment_company_top_bottom_padding">30dp</dimen>
     <dimen name="fragment_common_side_padding">50dp</dimen>
@@ -19,4 +19,19 @@
     <dimen name="fragment_date_handle_margin">20dp</dimen>
     <dimen name="fragment_date_searchbar_radius">15dp</dimen>
     <dimen name="toolbar_height">50dp</dimen>
+    <dimen name="margin_content_list">12.3dp</dimen>
+    <dimen name="list_item_spacing">16dp</dimen>
+    <dimen name="list_item_spacing_half">8dp</dimen>
+
+    <!--CountryPicker-->
+    <dimen name="google_1x">8dp</dimen>
+    <dimen name="ccp_padding">8dp</dimen>
+    <dimen name="fastscroll__bubble_corner">20dp</dimen>
+    <dimen name="fastscroll__bubble_size">50dp</dimen>
+    <dimen name="fastscroll__handle_corner">3dp</dimen>
+    <dimen name="fastscroll__handle_height">30dp</dimen>
+    <dimen name="fastscroll__handle_width">6dp</dimen>
+    <dimen name="fastscroll__handle_inset">9dp</dimen>
+    <dimen name="fastscroll__handle_clickable_width">24dp</dimen>
+    <dimen name="fastscroll__handle_padding">2dp</dimen>
 </resources>

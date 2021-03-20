@@ -5,60 +5,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".View.MovieList.MovieListActivity">
+    tools:context=".View.Main.ThisMonthMovie.ThisMonthMovieFragment">
 
-    <com.hugocastelani.waterfalltoolbar.WaterfallToolbar
-        android:id="@+id/waterfallToolbar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_height">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolBar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white"
-            android:contentInsetStart="0dp"
-            android:contentInsetLeft="0dp"
-            app:contentInsetLeft="0dp"
-            app:contentInsetStart="0dp">
-
-            <TextView
-                fontPath="@string/NanumBarunGothicBold_path"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginLeft="12.3dp"
-                android:gravity="center"
-                android:includeFontPadding="false"
-                android:text="#이번 달"
-                android:textColor="@color/colorPrimary"
-                android:textSize="20sp"
-                tools:ignore="MissingPrefix" />
-
-            <TextView
-                fontPath="@string/NanumBarunGothicUltraLight_path"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:includeFontPadding="false"
-                android:text="에 개봉하는 영화"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                tools:ignore="MissingPrefix" />
-        </androidx.appcompat.widget.Toolbar>
-    </com.hugocastelani.waterfalltoolbar.WaterfallToolbar>
+    <TextView
+        style="@style/SoonAppTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_this_month" />
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/waterfallToolbar"
-        android:background="@color/white">
+        android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/movie_list_recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></androidx.recyclerview.widget.RecyclerView>
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_content_list"
+            android:layout_marginEnd="@dimen/margin_content_list" />
 
         <FrameLayout
             android:id="@+id/list_empty_view"
@@ -86,5 +50,6 @@
         </FrameLayout>
 
     </FrameLayout>
+
 
 </LinearLayout>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home"
+    app:startDestination="@id/thisMonthMovieFragment">
+
+    <fragment
+        android:id="@+id/thisMonthMovieFragment"
+        android:name="com.lusle.android.soon.View.Main.ThisMonthMovie.ThisMonthMovieFragment"
+        android:label="fragment_this_month_movie"
+        tools:layout="@layout/fragment_this_month_movie" />
+    <action android:id="@+id/action_global_thisMonthMovieFragment" app:destination="@id/thisMonthMovieFragment"
+        app:enterAnim="@android:anim/fade_in"
+        app:exitAnim="@android:anim/fade_out"
+        app:popEnterAnim="@android:anim/fade_in"
+        app:popExitAnim="@android:anim/fade_out" />
+</navigation>

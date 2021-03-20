@@ -3,6 +3,7 @@ package com.lusle.android.soon.Util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -15,8 +16,7 @@ import android.widget.FrameLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.lusle.android.soon.Adapter.BaseRecyclerAdapter;
-import com.lusle.android.soon.Adapter.FavoriteListActivityRecyclerAdapter;
-import com.lusle.android.soon.Adapter.FragmentCompanyFavoriteRecyclerViewAdapter;
+import com.lusle.android.soon.Adapter.ManageCompanyListAdapter;
 import com.lusle.android.soon.Model.Schema.Company;
 import com.lusle.android.soon.R;
 import com.mukesh.countrypicker.Country;
@@ -26,7 +26,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -43,7 +42,7 @@ public class Util {
                     Type type = new TypeToken<ArrayList<Company>>() {
                     }.getType();
                     ArrayList<Company> companyList = new Gson().fromJson(list, type);
-                    ((FavoriteListActivityRecyclerAdapter) recyclerView.getAdapter()).setList(companyList);
+                    ((ManageCompanyListAdapter) recyclerView.getAdapter()).setList(companyList);
                 };
                 break;
             default:
@@ -164,15 +163,12 @@ public class Util {
 
     }
 
-    public static String getRegionCode(Context context) {
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        Country country = new Gson().fromJson(pref.getString(context.getString(R.string.key_region), ""), Country.class);
-        if (country == null)
-            pref.edit().putString(
-                    context.getString(R.string.key_region),
-                    new Gson().toJson(
-                            new CountryPicker.Builder().with(context).build().getCountryFromSIM()
-                    )).apply();
-        return country.getCode();
+    public static String getRegionCode(Context context){
+        Country c = new Gson().fromJson(PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.key_region), ""), Country.class);
+        if(c == null) {
+            c = new CountryPicker.Builder().with(context).build().getCountryFromSIM();
+            PreferenceManager.getDefaultSharedPreferences(context).edit().putString(context.getString(R.string.key_region), new Gson().toJson(c)).apply();
+        }
+        return c.getCode();
     }
 }

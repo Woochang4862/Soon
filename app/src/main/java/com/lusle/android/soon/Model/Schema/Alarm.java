@@ -4,6 +4,7 @@ import android.util.Log;
 
 import java.io.Serializable;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class Alarm implements Serializable {
@@ -65,5 +66,11 @@ public class Alarm implements Serializable {
     @Override
     public int hashCode() {
         return pendingIntentID;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return String.valueOf(pendingIntentID);
     }
 }

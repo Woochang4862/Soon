@@ -1,7 +1,5 @@
 package com.lusle.android.soon.View.Main.ThisMonthMovie.Presenter;
 
-import android.content.Intent;
-
 import com.lusle.android.soon.Adapter.Contract.MovieListRecyclerAdapterContract;
 import com.lusle.android.soon.Adapter.Listener.OnEmptyListener;
 import com.lusle.android.soon.Adapter.Listener.OnItemClickListener;
@@ -10,10 +8,8 @@ import com.lusle.android.soon.Model.Contract.MovieDataRemoteSourceContract;
 import com.lusle.android.soon.Model.Schema.Genre;
 import com.lusle.android.soon.Model.Schema.Movie;
 import com.lusle.android.soon.Model.Schema.MovieResult;
-import com.lusle.android.soon.Model.Source.GenreDataRemoteSource;
 import com.lusle.android.soon.Model.Source.MovieDataRemoteSource;
 import com.lusle.android.soon.Util.Util;
-import com.lusle.android.soon.View.Alarm.AlarmSettingActivity;
 
 import java.util.ArrayList;
 
@@ -25,7 +21,6 @@ public class ThisMonthMoviePresenter implements ThisMonthMovieContract.Presenter
     private MovieListRecyclerAdapterContract.View adapterView;
 
     private MovieDataRemoteSource movieModel;
-    private GenreDataRemoteSource genreModel;
 
     private boolean isSetting;
 
@@ -53,11 +48,8 @@ public class ThisMonthMoviePresenter implements ThisMonthMovieContract.Presenter
     public void loadItems(int page, boolean isSetting) {
         if (view != null)
             view.showDialog(true);
-        if (this.isSetting = isSetting) {
-            genreModel.getGenreList();
-        } else {
-            movieModel.getThisMonthMovieResult(Util.getRegionCode(view.getContext()), adapterModel.getPage());
-        }
+        this.isSetting = isSetting;
+        movieModel.getThisMonthMovieResult(Util.getRegionCode(view.getContext()), adapterModel.getPage());
     }
 
     @Override
@@ -67,29 +59,12 @@ public class ThisMonthMoviePresenter implements ThisMonthMovieContract.Presenter
     }
 
     @Override
-    public void setGenreModel(GenreDataRemoteSource genreModel) {
-        genreModel.setOnFinishedListener(this);
-        this.genreModel = genreModel;
-    }
-
-    @Override
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         adapterModel.setOnItemClickListener(onItemClickListener);
     }
 
     @Override
     public void setOnEmptyListener() {
-        adapterModel.setOnEmptyListener(new OnEmptyListener() {
-            @Override
-            public void onEmpty() {
-                if (view != null) view.setRecyclerEmpty(true);
-            }
-
-            @Override
-            public void onNotEmpty() {
-                if (view != null) view.setRecyclerEmpty(false);
-            }
-        });
     }
 
     @Override
@@ -100,27 +75,12 @@ public class ThisMonthMoviePresenter implements ThisMonthMovieContract.Presenter
     }
 
     @Override
-    public void setOnBookButtonClickListener() {
-        adapterModel.setOnBookButtonClickListener(movie -> {
-            Intent intent = new Intent(view.getContext(), AlarmSettingActivity.class);
-            intent.putExtra("movie_info", movie);
-            view.getContext().startActivity(intent);
-        });
-    }
-
-    @Override
     public void onFinished(MovieResult movieArrayList) {
-        //TODO:empty
-        if (movieArrayList != null) {
-            if (isSetting) {
-                if(movieArrayList.getResults().isEmpty()) adapterView.onEmpty();
-                else {
-                    adapterModel.setList(movieArrayList.getResults());
-                    adapterModel.setItemLimit(movieArrayList.getTotalResults());
-                }
-            } else {
-                adapterModel.addItems(movieArrayList.getResults());
-            }
+        if (isSetting) {
+            adapterModel.setList(movieArrayList.getResults());
+            adapterModel.setItemLimit(movieArrayList.getTotalResults());
+        } else {
+            adapterModel.addItems(movieArrayList.getResults());
         }
         adapterView.onNotEmpty();
         adapterView.setLoaded();
@@ -128,14 +88,13 @@ public class ThisMonthMoviePresenter implements ThisMonthMovieContract.Presenter
             view.runRecyclerViewAnimation();
             view.showDialog(false);
         }
-
     }
 
     @Override
     public void onFinished(ArrayList<Genre> genres) {
         adapterModel.setPage(1);
-        adapterModel.setGenres(genres);
-        movieModel.getThisMonthMovieResult(Util.getRegionCode(view.getContext()), adapterModel.getPage());
+        if (view != null)
+            movieModel.getThisMonthMovieResult(Util.getRegionCode(view.getContext()), adapterModel.getPage());
     }
 
     @Override
