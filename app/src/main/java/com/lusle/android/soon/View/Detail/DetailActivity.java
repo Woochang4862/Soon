@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.lusle.android.soon.Util.Util;
 import com.lusle.android.soon.View.BaseActivity;
 import com.lusle.android.soon.View.YoutubePlayer.YoutubePlayerActivity;
@@ -42,6 +43,7 @@ public class DetailActivity extends BaseActivity {
 
     private ImageView poster;
     private SubtitleCollapsingToolbarLayout toolbar;
+    private LottieAnimationView scrollDownArrow;
     private RatingBar headerVoteAverage, voteAverage;
     private TextView voteCount, voteAverageLabel, voteAverageText, genre, releaseDate, runtime, popularity, overview, revenue, budget, originalLang, originalTitle, videoEmptyView, previewEmptyView;
     private RecyclerView videoRecyclerView, previewImageRecyclerView;
@@ -57,6 +59,9 @@ public class DetailActivity extends BaseActivity {
         poster = findViewById(R.id.poster);
         toolbar = findViewById(R.id.collapsing_toolbar_layout);
         headerVoteAverage = findViewById(R.id.vote_average_header);
+        scrollDownArrow = findViewById(R.id.scroll_down_arrow);
+
+        scrollDownArrow.setScale(0.06f);
 
         voteCount = findViewById(R.id.vote_count);
         voteAverageLabel = findViewById(R.id.vote_label);

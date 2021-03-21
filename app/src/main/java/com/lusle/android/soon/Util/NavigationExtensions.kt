@@ -95,6 +95,7 @@ fun BottomNavigationView.setupWithNavController(
                 // Pop everything above the first fragment (the "fixed start destination")
                 fragmentManager.popBackStack(firstFragmentTag,
                     FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                if(fragmentManager.findFragmentByTag(newlySelectedItemTag) == null) return@setOnNavigationItemSelectedListener false
                 val selectedFragment = fragmentManager.findFragmentByTag(newlySelectedItemTag)
                     as NavHostFragment
 

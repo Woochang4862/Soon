@@ -4,9 +4,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.View;
 
-/**
- * Created by mklimczak on 31/07/15.
- */
 public class Utils {
 
     public static float getViewRawY(View view) {

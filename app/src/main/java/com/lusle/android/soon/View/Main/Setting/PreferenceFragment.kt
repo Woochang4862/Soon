@@ -4,23 +4,26 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.provider.SearchRecentSuggestions
+import android.util.Log
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.google.gson.Gson
 import com.lusle.android.soon.MySuggestionProvider
 import com.lusle.android.soon.R
+import com.lusle.android.soon.Util.CountryPickerDialog.CCPCountry
 import com.lusle.android.soon.Util.CountryPickerDialog.CountryCodeDialog
-import com.mukesh.countrypicker.Country
-import com.mukesh.countrypicker.CountryPicker
+import com.lusle.android.soon.Util.CountryPickerDialog.CountryCodePicker
+import com.lusle.android.soon.Util.Util
 
 /**
  * A simple [Fragment] subclass.
  */
 public class PreferenceFragment : PreferenceFragmentCompat() {
     private lateinit var pref: SharedPreferences
+
+    private val DEFAULT_NAME_CODE = "kr"
     override fun onAttach(context: Context) {
         super.onAttach(context)
         pref = PreferenceManager.getDefaultSharedPreferences(context)
@@ -33,8 +36,8 @@ public class PreferenceFragment : PreferenceFragmentCompat() {
     }
 
     private fun setUpRegion() {
-        val c = CountryPicker.Builder().with(requireContext()).build().countryFromSIM
-        pref.edit().putString(requireContext().getString(R.string.key_region), Gson().toJson(c)).apply()
+        val country = CCPCountry.getCountryForNameCodeFromLibraryMasterList(context, CountryCodePicker.Language.KOREAN, DEFAULT_NAME_CODE)
+        pref.edit().putString(requireContext().getString(R.string.key_region), Gson().toJson(country)).apply()
     }
 
     private fun setClearHistoryPreference() {
@@ -53,16 +56,24 @@ public class PreferenceFragment : PreferenceFragmentCompat() {
 
     private fun setRegionPreference() {
         findPreference<Preference>(getString(R.string.key_region))!!.onPreferenceClickListener = Preference.OnPreferenceClickListener { preference ->
-            val builder = CountryPicker.Builder().with(requireContext())
-                    .listener { country ->
-                        preference.summary = country.name
-                        pref.edit().putString(getString(R.string.key_region), Gson().toJson(country)).apply()
-                    }
-            builder.build().showBottomSheet(context as AppCompatActivity?)
+            val countryCodePicker = CountryCodePicker(context)
+            val country = Gson().fromJson(
+                    pref.getString(getString(R.string.key_region), null),
+                    CCPCountry::class.java
+            )
+            countryCodePicker.setDialogKeyboardAutoPopup(false)
+            countryCodePicker.selectedCountry = country
+            countryCodePicker.changeDefaultLanguage(CountryCodePicker.Language.KOREAN)
+            countryCodePicker.setOnCountryChangeListener {
+                val country = countryCodePicker.selectedCountry
+                preference.summary = country.name
+                pref.edit().putString(getString(R.string.key_region), Gson().toJson(country)).apply()
+            }
+            CountryCodeDialog.openCountryCodeDialog(countryCodePicker, pref.getString(getString(R.string.key_region), null))
             false
         }
-        if (pref.getString(getString(R.string.key_region), "") == "") setUpRegion()
+        if (pref.getString(getString(R.string.key_region), null) == null) setUpRegion()
         val countryJson = pref.getString(getString(R.string.key_region), "")
-        findPreference<Preference>(getString(R.string.key_region))!!.summary = Gson().fromJson(countryJson, Country::class.java).name
+        findPreference<Preference>(getString(R.string.key_region))!!.summary = Gson().fromJson(countryJson, CCPCountry::class.java).name
     }
 }

@@ -1,17 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowDrawsSystemBarBackgrounds" tools:ignore="NewApi">true</item>
-        <item name="android:statusBarColor" tools:ignore="NewApi">@color/transparent</item>
-        <item name="android:windowTranslucentStatus" tools:ignore="NewApi">true</item>
-    </style>
-
-    <style name="AppTheme.SubTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -23,12 +16,13 @@
         <item name="android:keyTextSize">11sp</item>
     </style>
 
-    <style name="AppTheme.Transparent" parent="AppTheme.SubTheme">
+    <style name="AppTheme.Transparent" parent="AppTheme">
+        <item name="android:statusBarColor" tools:ignore="NewApi">@color/transparent</item>
+        <item name="android:windowTranslucentStatus" tools:ignore="NewApi">true</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     </style>
-
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
@@ -62,7 +56,7 @@
 
     <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="Widget.Design.SubtitleCollapsingToolbar" parent="Widget.Design.CollapsingToolbar" />
@@ -92,4 +86,5 @@
         <item name="android:includeFontPadding">false</item>
         <item name="fontPath">@string/NanumBarunGothicBold_path</item>
     </style>
+
 </resources>

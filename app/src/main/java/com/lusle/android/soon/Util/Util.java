@@ -19,8 +19,8 @@ import com.lusle.android.soon.Adapter.BaseRecyclerAdapter;
 import com.lusle.android.soon.Adapter.ManageCompanyListAdapter;
 import com.lusle.android.soon.Model.Schema.Company;
 import com.lusle.android.soon.R;
-import com.mukesh.countrypicker.Country;
-import com.mukesh.countrypicker.CountryPicker;
+import com.lusle.android.soon.Util.CountryPickerDialog.CCPCountry;
+import com.lusle.android.soon.Util.CountryPickerDialog.CountryCodePicker;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -164,11 +164,38 @@ public class Util {
     }
 
     public static String getRegionCode(Context context){
-        Country c = new Gson().fromJson(PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.key_region), ""), Country.class);
-        if(c == null) {
-            c = new CountryPicker.Builder().with(context).build().getCountryFromSIM();
-            PreferenceManager.getDefaultSharedPreferences(context).edit().putString(context.getString(R.string.key_region), new Gson().toJson(c)).apply();
+        CCPCountry country = new Gson().fromJson(PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.key_region), ""), CCPCountry.class);
+        if(country == null) {
+            CountryCodePicker countryPicker = new CountryCodePicker(context);
+            countryPicker.resetToDefaultCountry();
+            country = countryPicker.getDefaultCountry();
+            PreferenceManager.getDefaultSharedPreferences(context).edit().putString(context.getString(R.string.key_region), new Gson().toJson(country)).apply();
         }
-        return c.getCode();
+        return country.getNameCode();
+    }
+
+    public static String getNameCodeForLanguage(String code){
+        String result;
+        /*switch(code){
+            case "ad": result = ; break;
+            case "ae": result = ; break;
+            case "af": result = ; break;
+            case "ag": result = ; break;
+            case "ai": result = ; break;
+            case "ad": result = ; break;
+            case "ad": result = ; break;
+            case "ad": result = ; break;
+            case "ad": result = ; break;
+            case "ad": result = ; break;
+            case "ad": result = ; break;
+            case "ad": result = ; break;
+            case "ad": result = ; break;
+            case "ad": result = ; break;
+            case "ad": result = ; break;
+            case "ad": result = ; break;
+            case "ad": result = ; break;
+            case "ad": result = ; break;
+        }*/
+        return "";
     }
 }

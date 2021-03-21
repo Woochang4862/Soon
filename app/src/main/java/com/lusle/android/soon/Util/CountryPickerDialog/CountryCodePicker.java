@@ -729,7 +729,7 @@ public class CountryCodePicker extends RelativeLayout {
 
     private Language getCCPLanguageFromLocale() {
         Locale currentLocale = context.getResources().getConfiguration().locale;
-//        Log.d(TAG, "getCCPLanguageFromLocale: current locale language" + currentLocale.getLanguage());
+        Log.d(TAG, "getCCPLanguageFromLocale: current locale language" + currentLocale.getLanguage());
         for (Language language : Language.values()) {
             if (language.getCode().equalsIgnoreCase(currentLocale.getLanguage())) {
 
@@ -748,7 +748,7 @@ public class CountryCodePicker extends RelativeLayout {
         return null;
     }
 
-    private CCPCountry getDefaultCountry() {
+    public CCPCountry getDefaultCountry() {
         return defaultCCPCountry;
     }
 
@@ -773,14 +773,14 @@ public class CountryCodePicker extends RelativeLayout {
         this.imageViewFlag = imageViewFlag;
     }
 
-    private CCPCountry getSelectedCountry() {
+    public CCPCountry getSelectedCountry() {
         if (selectedCCPCountry == null) {
             setSelectedCountry(getDefaultCountry());
         }
         return selectedCCPCountry;
     }
 
-    void setSelectedCountry(CCPCountry selectedCCPCountry) {
+    public void setSelectedCountry(CCPCountry selectedCCPCountry) {
         if (talkBackTextProvider != null && talkBackTextProvider.getTalkBackTextForCountry(selectedCCPCountry) != null) {
             textView_selectedCountry.setContentDescription(talkBackTextProvider.getTalkBackTextForCountry(selectedCCPCountry));
         }

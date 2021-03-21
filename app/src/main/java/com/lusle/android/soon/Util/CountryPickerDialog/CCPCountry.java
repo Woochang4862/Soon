@@ -70,7 +70,7 @@ public class CCPCountry implements Comparable<CCPCountry> {
         this.flagResID = flagResID;
     }
 
-    static CountryCodePicker.Language getLoadedLibraryMasterListLanguage() {
+    public static CountryCodePicker.Language getLoadedLibraryMasterListLanguage() {
         return loadedLibraryMasterListLanguage;
     }
 

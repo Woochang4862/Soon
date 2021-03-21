@@ -21,7 +21,7 @@
             android:theme="@style/AppTheme.AppBarOverlay"
             app:collapsedSubtitleTextAppearance="@style/Toolbar.TitleText"
             app:collapsedTitleTextAppearance="@style/Toolbar.TitleText"
-            app:contentScrim="@color/white"
+            app:contentScrim="@color/colorPrimaryDark"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:subtitle="subtitle"
             app:title="Title">
@@ -59,6 +59,7 @@
                     android:transitionName="poster" />
 
                 <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/scroll_down_arrow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|center_horizontal"
@@ -115,7 +116,7 @@
                         android:includeFontPadding="false"
                         android:lineSpacingExtra="2.7sp"
                         android:text="주요 정보"
-                        android:textColor="#000000"
+                        android:textColor="@color/white"
                         android:textSize="16sp"
                         tools:ignore="MissingPrefix" />
 
@@ -128,7 +129,7 @@
                         android:layout_marginBottom="5dp"
                         android:includeFontPadding="false"
                         android:text="100"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="12sp"
                         tools:ignore="MissingPrefix" />
 
@@ -142,7 +143,7 @@
                         android:layout_toRightOf="@id/vote_count"
                         android:includeFontPadding="false"
                         android:text="명의 평균 점수"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="12sp"
                         tools:ignore="MissingPrefix" />
 
@@ -168,7 +169,7 @@
                         android:layout_toRightOf="@id/vote_average"
                         android:includeFontPadding="false"
                         android:text="0/10"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="12sp"
                         tools:ignore="MissingPrefix" />
 
@@ -182,7 +183,7 @@
                         android:layout_marginBottom="10dp"
                         android:includeFontPadding="false"
                         android:text="장르 : "
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="12sp"
                         tools:ignore="MissingPrefix" />
 
@@ -195,7 +196,7 @@
                         android:layout_toRightOf="@id/genre_label"
                         android:includeFontPadding="false"
                         android:text="액션"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="12sp"
                         tools:ignore="MissingPrefix" />
 
@@ -209,7 +210,7 @@
                         android:layout_marginBottom="10dp"
                         android:includeFontPadding="false"
                         android:text="개봉일 : "
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="12sp"
                         tools:ignore="MissingPrefix" />
 
@@ -224,7 +225,7 @@
                         android:layout_toRightOf="@id/release_date_label"
                         android:includeFontPadding="false"
                         android:text="2019-04-23"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="12sp"
                         tools:ignore="MissingPrefix" />
 
@@ -238,7 +239,7 @@
                         android:layout_marginBottom="10dp"
                         android:includeFontPadding="false"
                         android:text="상영시간 : "
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="12sp"
                         tools:ignore="MissingPrefix" />
 
@@ -253,7 +254,7 @@
                         android:layout_toRightOf="@id/runtime_label"
                         android:includeFontPadding="false"
                         android:text="150분"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="12sp"
                         tools:ignore="MissingPrefix" />
 
@@ -267,7 +268,7 @@
                         android:layout_marginBottom="10dp"
                         android:includeFontPadding="false"
                         android:text="우선 순위 : "
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="12sp"
                         tools:ignore="MissingPrefix" />
 
@@ -281,7 +282,7 @@
                         android:layout_toRightOf="@id/popularity_label"
                         android:includeFontPadding="false"
                         android:text=""
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="12sp"
                         tools:ignore="MissingPrefix" />
 
@@ -294,7 +295,7 @@
                         android:layout_marginBottom="10dp"
                         android:includeFontPadding="false"
                         android:text="우선 순위란?\n하루 투표 수, 하루 조회수, 좋아요를 누른 사람 수, 재생목록에 담은 사람 수, 개봉일, 전체 투표 수, 어제 점수를 총 집계한 점수"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="8sp"
                         tools:ignore="MissingPrefix" />
 
@@ -323,7 +324,7 @@
                         android:includeFontPadding="false"
                         android:lineSpacingExtra="2.7sp"
                         android:text="예고편"
-                        android:textColor="#000000"
+                        android:textColor="@color/white"
                         android:textSize="16sp"
                         tools:ignore="MissingPrefix" />
 
@@ -341,7 +342,7 @@
                         android:layout_below="@id/videoTitle"
                         android:includeFontPadding="false"
                         android:text="해당 정보 없음"
-                        android:textColor="@color/defaultTextColor"
+                        android:textColor="@color/white"
                         android:textSize="12sp"
                         android:visibility="gone"
                         tools:ignore="MissingPrefix" />
@@ -371,7 +372,7 @@
                         android:includeFontPadding="false"
                         android:lineSpacingExtra="2.7sp"
                         android:text="줄거리"
-                        android:textColor="#000000"
+                        android:textColor="@color/white"
                         android:textSize="16sp"
                         tools:ignore="MissingPrefix" />
 
@@ -382,7 +383,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/overviewTitle"
                         android:includeFontPadding="false"
-                        android:textColor="@color/defaultTextColor"
+                        android:textColor="@color/white"
                         android:textSize="12sp"
                         tools:ignore="MissingPrefix" />
 
@@ -411,7 +412,7 @@
                         android:includeFontPadding="false"
                         android:lineSpacingExtra="2.7sp"
                         android:text="이미지"
-                        android:textColor="#000000"
+                        android:textColor="@color/white"
                         android:textSize="16sp"
                         tools:ignore="MissingPrefix" />
 
@@ -429,7 +430,7 @@
                         android:layout_below="@id/preview_image_title"
                         android:includeFontPadding="false"
                         android:text="해당 정보 없음"
-                        android:textColor="@color/defaultTextColor"
+                        android:textColor="@color/white"
                         android:textSize="12sp"
                         android:visibility="gone"
                         tools:ignore="MissingPrefix" />
@@ -460,7 +461,7 @@
                         android:includeFontPadding="false"
                         android:lineSpacingExtra="2.7sp"
                         android:text="기타 정보"
-                        android:textColor="#000000"
+                        android:textColor="@color/white"
                         android:textSize="16sp"
                         tools:ignore="MissingPrefix" />
 
@@ -474,7 +475,7 @@
                         android:layout_marginBottom="10dp"
                         android:includeFontPadding="false"
                         android:text="수익 : "
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="12sp"
                         tools:ignore="MissingPrefix" />
 
@@ -488,7 +489,7 @@
                         android:layout_marginBottom="10dp"
                         android:layout_toRightOf="@id/revenue_label"
                         android:includeFontPadding="false"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="12sp"
                         tools:ignore="MissingPrefix" />
 
@@ -502,7 +503,7 @@
                         android:layout_marginBottom="10dp"
                         android:includeFontPadding="false"
                         android:text="제작비 : "
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="12sp"
                         tools:ignore="MissingPrefix" />
 
@@ -516,7 +517,7 @@
                         android:layout_marginBottom="10dp"
                         android:layout_toRightOf="@id/budget_label"
                         android:includeFontPadding="false"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="12sp"
                         tools:ignore="MissingPrefix" />
 
@@ -530,7 +531,7 @@
                         android:layout_marginBottom="10dp"
                         android:includeFontPadding="false"
                         android:text="원어 : "
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="12sp"
                         tools:ignore="MissingPrefix" />
 
@@ -544,7 +545,7 @@
                         android:layout_marginBottom="10dp"
                         android:layout_toRightOf="@id/original_lang_label"
                         android:includeFontPadding="false"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="12sp"
                         tools:ignore="MissingPrefix" />
 
@@ -558,7 +559,7 @@
                         android:layout_marginBottom="10dp"
                         android:includeFontPadding="false"
                         android:text="원제 : "
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="12sp"
                         tools:ignore="MissingPrefix" />
 
@@ -572,7 +573,7 @@
                         android:layout_marginBottom="10dp"
                         android:layout_toRightOf="@id/original_title_label"
                         android:includeFontPadding="false"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="12sp"
                         tools:ignore="MissingPrefix" />
 
