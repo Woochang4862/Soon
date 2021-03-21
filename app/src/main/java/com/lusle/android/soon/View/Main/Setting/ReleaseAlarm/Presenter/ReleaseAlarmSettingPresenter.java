@@ -1,15 +1,20 @@
 package com.lusle.android.soon.View.Main.Setting.ReleaseAlarm.Presenter;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.lusle.android.soon.Adapter.Contract.ReleaseAlarmSettingAdapterContract;
 import com.lusle.android.soon.Adapter.Listener.OnEmptyListener;
+import com.lusle.android.soon.Adapter.Listener.OnItemClickListener;
 import com.lusle.android.soon.Model.Schema.Alarm;
 import com.lusle.android.soon.Model.Source.AlarmDataLocalSource;
-import com.lusle.android.soon.View.Alarm.AlarmSettingActivity;
+import com.lusle.android.soon.R;
+import com.lusle.android.soon.View.Alarm.AlarmSettingFragment;
 
 import java.util.ArrayList;
+
+import androidx.navigation.fragment.FragmentKt;
 
 public class ReleaseAlarmSettingPresenter implements ReleaseAlarmSettingContractor.Presenter {
 
@@ -44,13 +49,8 @@ public class ReleaseAlarmSettingPresenter implements ReleaseAlarmSettingContract
     }
 
     @Override
-    public void setOnItemClickListener() {
-        adapterModel.setOnItemClickListener((v, pos) -> {
-            Intent intent = new Intent(view.getContext(), AlarmSettingActivity.class);
-            intent.putExtra("alarm_info", adapterModel.getItem(pos));
-            Log.d("#####", "setOnItemClickListener: "+adapterModel.getItem(pos).isActive());
-            view.getContext().startActivity(intent);
-        });
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        adapterModel.setOnItemClickListener(onItemClickListener);
     }
 
     @Override

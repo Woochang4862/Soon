@@ -4,14 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.Main.Setting.AppInfo.AppInfoActivity">
+    tools:context=".View.Main.Setting.AppInfo.AppInfoFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
         android:layout_alignParentTop="true"
-        android:background="@color/white"
         android:contentInsetStart="0dp"
         android:contentInsetLeft="0dp"
         app:contentInsetLeft="0dp"
@@ -30,7 +29,7 @@
                 android:layout_marginLeft="13dp"
                 android:includeFontPadding="false"
                 android:text="앱 정보"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="20sp"
                 tools:ignore="MissingPrefix" />
 
@@ -53,8 +52,8 @@
         android:layout_marginBottom="10dp"
         android:fontFamily="@string/NanumBarunGothicBold_path"
         android:text="@string/app_name"
-        android:textColor="@color/black"
-        android:textSize="30dp" />
+        android:textColor="@color/white"
+        android:textSize="30sp" />
 
     <TextView
         android:id="@+id/app_version"
@@ -63,10 +62,10 @@
         android:layout_below="@id/app_name"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"
-        android:fontFamily="@string/NanumBarunGothicBold_path"
+        android:fontFamily="@string/NanumBarunGothic_path"
         android:text=""
-        android:textColor="@color/defaultTextColor"
-        android:textSize="20dp" />
+        android:textColor="@color/white"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/app_developer_contact"
@@ -76,10 +75,10 @@
         android:layout_centerHorizontal="true"
         android:gravity="center"
         android:autoLink="web|email"
-        android:fontFamily="@string/NanumBarunGothicBold_path"
+        android:fontFamily="@string/NanumBarunGothicUltraLight_path"
         android:text="개발자 연락처\nwoochang4862@gmail.com"
-        android:textColor="@color/defaultTextColor"
-        android:textSize="15dp" />
+        android:textColor="@color/white"
+        android:textSize="15sp" />
 
 
 </RelativeLayout>

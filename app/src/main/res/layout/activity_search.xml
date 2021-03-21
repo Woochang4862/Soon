@@ -5,7 +5,7 @@
     android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/lighter_black"
     tools:context=".View.Search.SearchActivity">
 
     <RelativeLayout
@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
         android:layout_marginBottom="5dp"
-        android:background="@color/white">
+        android:background="@color/light_black">
 
         <ImageView
             android:id="@+id/activity_search_back_btn"
@@ -22,22 +22,24 @@
             android:layout_centerVertical="true"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:layout_marginLeft="10dp"
-            android:src="@drawable/ic_arrow_back_black_24dp" />
+            android:src="@drawable/ic_arrow_back_24dp" />
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/activity_search_searchview"
             style="@style/AppSearchView"
+            app:voiceIcon="@drawable/ic_baseline_keyboard_voice_24"
             android:layout_width="wrap_content"
+            app:submitBackground="@null"
             android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_toRightOf="@id/activity_search_back_btn"
+            android:layout_toEndOf="@id/activity_search_back_btn"
             android:background="@null"
             app:iconifiedByDefault="false"
             app:queryBackground="@null"
             app:queryHint="검색어"
-            app:searchIcon="@null"></androidx.appcompat.widget.SearchView>
+            app:searchIcon="@null" />
 
         <ImageView
             android:id="@+id/activity_search_search_btn"
@@ -48,7 +50,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:layout_marginRight="10dp"
             android:layout_toRightOf="@id/activity_search_searchview"
-            android:src="@drawable/ic_search_black_24dp" />
+            android:src="@drawable/ic_search_24dp" />
 
     </RelativeLayout>
 
@@ -59,8 +61,8 @@
         android:layout_below="@id/activity_search_header"
         app:tabIndicatorColor="@color/colorAccent"
         app:tabIndicatorFullWidth="false"
-        app:tabTextColor="@color/black"
-        android:background="@color/white">
+        app:tabTextColor="@color/white"
+        android:background="@color/light_black">
 
         <com.google.android.material.tabs.TabItem
             fontPath="@string/NanumBarunGothic_path"
@@ -86,7 +88,7 @@
         android:id="@+id/activity_search_viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
+        android:background="@color/light_black"
         android:layout_below="@id/activity_search_tabLayout">
     </androidx.viewpager.widget.ViewPager>
 </RelativeLayout>

@@ -21,7 +21,7 @@ import com.lusle.android.soon.Adapter.AllSearchActivityCompanyRecyclerViewAdapte
 import com.lusle.android.soon.Adapter.AllSearchActivityMovieRecyclerViewAdapter;
 import com.lusle.android.soon.Model.Schema.Movie;
 import com.lusle.android.soon.Model.Schema.MovieResult;
-import com.lusle.android.soon.View.Alarm.AlarmSettingActivity;
+import com.lusle.android.soon.View.Alarm.AlarmSettingFragment;
 import com.lusle.android.soon.View.Detail.DetailActivity;
 import com.lusle.android.soon.Model.Schema.Company;
 import com.lusle.android.soon.Model.Schema.CompanyResult;
@@ -149,7 +149,7 @@ public class AllSearchFragment extends Fragment implements SearchActivity.OnQuer
             startActivity(intent, options.toBundle());
         });
         movieAdapter.setOnBookButtonClickListener(movie -> {
-            Intent intent = new Intent(getContext(), AlarmSettingActivity.class);
+            Intent intent = new Intent(getContext(), AlarmSettingFragment.class);
             intent.putExtra("movie_info", movie);
             startActivity(intent);
         });

@@ -62,4 +62,9 @@
     <string name="select_country">Select a country</string>
     <string name="dismiss_button_content_description">Dismiss</string>
     <string name="clear_search_button_content_description">Clear search</string>
+    <string name="key_app_info">key_app_info</string>
+    <string name="key_company_alarm">key_company_alarm</string>
+    <string name="key_release_alarm">key_release_alarm</string>
+    <string name="text_company_alarm">제작사 알림</string>
+    <string name="text_release_alarm">개봉 알림</string>
 </resources>

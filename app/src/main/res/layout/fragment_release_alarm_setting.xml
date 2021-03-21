@@ -5,25 +5,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".View.Main.ThisMonthMovie.ThisMonthMovieFragment">
+    tools:context=".View.Main.Setting.ReleaseAlarm.ReleaseAlarmSettingFragment">
 
-    <TextView
-        style="@style/SoonAppTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/text_this_month" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/SoonAppTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_release_alarm" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/alarm_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="13dp"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/movie_list_recyclerView"
+            android:id="@+id/alarm_list_recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="none"
-            android:layout_marginStart="@dimen/margin_content_list"
-            android:layout_marginEnd="@dimen/margin_content_list" />
+            android:layout_height="match_parent" />
 
         <FrameLayout
             android:id="@+id/list_empty_view"
@@ -51,6 +61,5 @@
         </FrameLayout>
 
     </FrameLayout>
-
 
 </LinearLayout>

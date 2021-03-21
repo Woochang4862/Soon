@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.provider.SearchRecentSuggestions
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
+import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
@@ -31,8 +32,32 @@ public class PreferenceFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.preferences)
+        setUpReleaseAlarmPreference()
+        setUpCompanyAlarmPreference()
         setRegionPreference()
         setClearHistoryPreference()
+        setUpAppInfoPreference()
+    }
+
+    private fun setUpAppInfoPreference() {
+        findPreference<Preference>(getString(R.string.key_app_info))!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+            findNavController().navigate(R.id.action_preferenceFragment_to_appInfoFragment)
+            false
+        }
+    }
+
+    private fun setUpCompanyAlarmPreference() {
+        findPreference<Preference>(getString(R.string.key_company_alarm))!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+            findNavController().navigate(R.id.action_preferenceFragment_to_companyAlarmSettingFragment)
+            false
+        }
+    }
+
+    private fun setUpReleaseAlarmPreference() {
+        findPreference<Preference>(getString(R.string.key_release_alarm))!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+            findNavController().navigate(R.id.action_preferenceFragment_to_releaseAlarmSettingFragment)
+            false
+        }
     }
 
     private fun setUpRegion() {

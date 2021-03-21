@@ -15,7 +15,7 @@ import com.lusle.android.soon.Model.API.APIInterface;
 import com.lusle.android.soon.Adapter.SearchActivityMovieRecyclerViewAdapter;
 import com.lusle.android.soon.Model.Schema.Movie;
 import com.lusle.android.soon.Model.Schema.MovieResult;
-import com.lusle.android.soon.View.Alarm.AlarmSettingActivity;
+import com.lusle.android.soon.View.Alarm.AlarmSettingFragment;
 import com.lusle.android.soon.View.Detail.DetailActivity;
 import com.lusle.android.soon.Model.Schema.GenreResult;
 import com.lusle.android.soon.View.Dialog.MovieProgressDialog;
@@ -116,7 +116,7 @@ public class MovieSearchFragment extends Fragment implements SearchActivity.OnQu
             });
         }).start());
         adapter.setOnBookButtonClickListener(movie->{
-            Intent intent = new Intent(getContext(), AlarmSettingActivity.class);
+            Intent intent = new Intent(getContext(), AlarmSettingFragment.class);
             intent.putExtra("movie_info", movie);
             startActivity(intent);
         });

@@ -11,22 +11,24 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.lusle.android.soon.Model.Schema.Movie;
-import com.lusle.android.soon.View.BaseActivity;
 import com.lusle.android.soon.Model.Schema.Alarm;
+import com.lusle.android.soon.Model.Schema.Movie;
 import com.lusle.android.soon.R;
+import com.lusle.android.soon.View.BaseActivity;
 import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Type;
@@ -36,12 +38,18 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-import static android.content.Intent.FLAG_INCLUDE_STOPPED_PACKAGES;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
-public class AlarmSettingActivity extends BaseActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, View.OnClickListener {
+import static android.content.Context.ALARM_SERVICE;
+import static android.content.Intent.FLAG_INCLUDE_STOPPED_PACKAGES;
+import static androidx.navigation.fragment.FragmentKt.findNavController;
+
+public class AlarmSettingFragment extends Fragment implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, View.OnClickListener {
 
     private ImageView poster, closeBtn, deleteBtn;
-    private Switch aSwitch;
+    private SwitchMaterial aSwitch;
     private TextView title, releaseDate, date, time;
     private RelativeLayout dateSection, timeSection, hiddenSection;
     private Button saveBtn, weekBtn, mTenDayBtn, pTenDayBtn, mOneDayBtn, pOneDayBtn, mOneHourBtn, pOneHourBtn, mOneMinBtn, pOneMinBtn, AMPMBtn;
@@ -54,48 +62,56 @@ public class AlarmSettingActivity extends BaseActivity implements DatePickerDial
     private Alarm alarmData;
     private AlarmManager am;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_alarm_setting);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_alarm_setting, container, false);
+    }
 
-        mPrefs = getSharedPreferences("alarmPref", Context.MODE_PRIVATE);
-        am = (AlarmManager) getSystemService(ALARM_SERVICE);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        closeBtn = findViewById(R.id.close_btn);
-        saveBtn = findViewById(R.id.save_btn);
-        poster = findViewById(R.id.poster);
-        title = findViewById(R.id.title);
-        releaseDate = findViewById(R.id.release_date);
-        dateSection = findViewById(R.id.alarm_date_section);
-        date = findViewById(R.id.alarm_date);
-        timeSection = findViewById(R.id.alarm_time_section);
-        time = findViewById(R.id.alarm_time);
-        weekBtn = findViewById(R.id.weekBtn);
-        mTenDayBtn = findViewById(R.id.mTenDayBtn);
-        pTenDayBtn = findViewById(R.id.pTenDayBtn);
-        mOneDayBtn = findViewById(R.id.mOneDayBtn);
-        pOneDayBtn = findViewById(R.id.pOneDayBtn);
-        mOneHourBtn = findViewById(R.id.mOneHourBtn);
-        pOneHourBtn = findViewById(R.id.pOneHourBtn);
-        mOneMinBtn = findViewById(R.id.mOneMinBtn);
-        pOneMinBtn = findViewById(R.id.pOneMinBtn);
-        AMPMBtn = findViewById(R.id.AMPMBtn);
+        mPrefs = requireContext().getSharedPreferences("alarmPref", Context.MODE_PRIVATE);
+        am = (AlarmManager) requireContext().getSystemService(ALARM_SERVICE);
+
+        closeBtn = view.findViewById(R.id.close_btn);
+        saveBtn = view.findViewById(R.id.save_btn);
+        poster = view.findViewById(R.id.poster);
+        title = view.findViewById(R.id.title);
+        releaseDate = view.findViewById(R.id.release_date);
+        dateSection = view.findViewById(R.id.alarm_date_section);
+        date = view.findViewById(R.id.alarm_date);
+        timeSection = view.findViewById(R.id.alarm_time_section);
+        time = view.findViewById(R.id.alarm_time);
+        weekBtn = view.findViewById(R.id.weekBtn);
+        mTenDayBtn = view.findViewById(R.id.mTenDayBtn);
+        pTenDayBtn = view.findViewById(R.id.pTenDayBtn);
+        mOneDayBtn = view.findViewById(R.id.mOneDayBtn);
+        pOneDayBtn = view.findViewById(R.id.pOneDayBtn);
+        mOneHourBtn = view.findViewById(R.id.mOneHourBtn);
+        pOneHourBtn = view.findViewById(R.id.pOneHourBtn);
+        mOneMinBtn = view.findViewById(R.id.mOneMinBtn);
+        pOneMinBtn = view.findViewById(R.id.pOneMinBtn);
+        AMPMBtn = view.findViewById(R.id.AMPMBtn);
+        hiddenSection = view.findViewById(R.id.hidden_section);
+        aSwitch = view.findViewById(R.id.alarm_switch);
+        deleteBtn = view.findViewById(R.id.delete_btn);
 
 
-        movieData = (Movie) getIntent().getSerializableExtra("movie_info");
-        alarmData = (Alarm) getIntent().getSerializableExtra("alarm_info");
+        movieData = (Movie) requireArguments().getSerializable("movie_info");
+        alarmData = (Alarm) requireArguments().getSerializable("alarm_info");
         if (alarmData != null)
             movieData = alarmData.getMovie();
         binding();
         saveBtn.setOnClickListener(v -> save());
-        closeBtn.setOnClickListener(v -> finish());
+        closeBtn.setOnClickListener(v -> {});
         dateSection.setOnClickListener(v -> {
-            DatePickerDialog datePickerDialog = new DatePickerDialog(this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT, this, currentCal.get(Calendar.YEAR), currentCal.get(Calendar.MONTH), currentCal.get(Calendar.DAY_OF_MONTH));
+            DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(), AlertDialog.THEME_DEVICE_DEFAULT_LIGHT, this, currentCal.get(Calendar.YEAR), currentCal.get(Calendar.MONTH), currentCal.get(Calendar.DAY_OF_MONTH));
             datePickerDialog.show();
         });
         timeSection.setOnClickListener(v -> {
-            TimePickerDialog timePickerDialog = new TimePickerDialog(this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT, this, currentCal.get(Calendar.HOUR_OF_DAY), currentCal.get(Calendar.MINUTE), false);
+            TimePickerDialog timePickerDialog = new TimePickerDialog(requireContext(), AlertDialog.THEME_DEVICE_DEFAULT_LIGHT, this, currentCal.get(Calendar.HOUR_OF_DAY), currentCal.get(Calendar.MINUTE), false);
             timePickerDialog.show();
         });
         weekBtn.setOnClickListener(this);
@@ -113,22 +129,22 @@ public class AlarmSettingActivity extends BaseActivity implements DatePickerDial
     private void save() {
         alarmData = new Alarm(movieData, currentCal.getTimeInMillis(), alarmData == null ? movieData.hashCode() : alarmData.getPendingIntentID(), active);
 
-        registerReceiver(new AlarmReceiver(), new IntentFilter());
+        requireContext().registerReceiver(new AlarmReceiver(), new IntentFilter());
 
         Log.d("####", "save: "+alarmData);
-        Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
+        Intent intent = new Intent(requireContext(), AlarmReceiver.class);
         Bundle args = new Bundle();
         args.putSerializable("DATA", alarmData);
         intent.putExtra("alarm_info", args);
         intent.addFlags(FLAG_INCLUDE_STOPPED_PACKAGES);
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), alarmData.getPendingIntentID(), intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(requireContext(), alarmData.getPendingIntentID(), intent, 0);
 
         if (pendingIntent != null) {
             am.cancel(pendingIntent);
         }
 
-        pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), alarmData.getPendingIntentID(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        pendingIntent = PendingIntent.getBroadcast(requireContext(), alarmData.getPendingIntentID(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         am.set(AlarmManager.RTC_WAKEUP, currentCal.getTimeInMillis(), pendingIntent);
 
@@ -147,21 +163,19 @@ public class AlarmSettingActivity extends BaseActivity implements DatePickerDial
         prefsEditor.putString("alarms", _json);
         prefsEditor.apply();
 
-        Toast.makeText(this, "알림이 설정되었습니다", Toast.LENGTH_SHORT).show();
-        finish();
+        Toast.makeText(requireContext(), "알림이 설정되었습니다", Toast.LENGTH_SHORT).show();
+        {
+        }
     }
 
     private void binding() {
         if (alarmData != null) {
-            hiddenSection = findViewById(R.id.hidden_section);
             hiddenSection.setVisibility(View.VISIBLE);
-            aSwitch = findViewById(R.id.alarm_switch);
             active = alarmData.isActive();
             Log.d("#####", "binding: "+alarmData.isActive());
             aSwitch.setChecked(active);
             aSwitch.setOnCheckedChangeListener((buttonView, isChecked) ->{ active = isChecked;
                 Log.d("#####", "setOnCheckedChangeListener: "+active);});
-            deleteBtn = findViewById(R.id.delete_btn);
             deleteBtn.setOnClickListener(v -> delete());
         }
 
@@ -192,13 +206,13 @@ public class AlarmSettingActivity extends BaseActivity implements DatePickerDial
     }
 
     private void delete() {
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        AlertDialog.Builder alert = new AlertDialog.Builder(requireContext());
         alert.setTitle("삭제");
         alert.setMessage("정말 삭제하시겠습니까?");
         alert.setPositiveButton("Yes", (dialog, which) -> {
 
-            Intent intent = new Intent(this, AlarmReceiver.class);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), alarmData.getPendingIntentID(), intent, 0);
+            Intent intent = new Intent(requireContext(), AlarmReceiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(requireContext(), alarmData.getPendingIntentID(), intent, 0);
             am.cancel(pendingIntent);
 
             Type type = new TypeToken<ArrayList<Alarm>>() {
@@ -211,9 +225,10 @@ public class AlarmSettingActivity extends BaseActivity implements DatePickerDial
             prefsEditor.putString("alarms", _json);
             prefsEditor.apply();
 
-            Toast.makeText(this, "알림이 삭제되었습니다", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "알림이 삭제되었습니다", Toast.LENGTH_SHORT).show();
             dialog.dismiss();
-            finish();
+            {
+            }
         });
 
         alert.setNegativeButton("No", (dialog, which) -> dialog.dismiss());

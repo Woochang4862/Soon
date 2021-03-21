@@ -11,8 +11,8 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="28dp"
-        android:layout_marginRight="48.3dp" />
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="48.3dp" />
 
     <TextView
         android:id="@+id/title"
@@ -20,10 +20,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="17.7dp"
-        android:layout_toRightOf="@id/poster"
+        android:layout_toEndOf="@id/poster"
         android:letterSpacing="0.05"
         android:lineSpacingExtra="-3sp"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="9.8sp"
         tools:ignore="MissingPrefix"
         tools:text="스파이더맨:더 뉴 유니버스" />
@@ -37,7 +37,7 @@
         android:layout_toRightOf="@id/poster"
         android:letterSpacing="0.05"
         android:lineSpacingExtra="-3sp"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="9.8sp"
         tools:ignore="MissingPrefix"
         tools:text="개봉일 : " />
@@ -51,7 +51,7 @@
         android:layout_toRightOf="@id/release_date_label"
         android:letterSpacing="0.05"
         android:lineSpacingExtra="-3sp"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="9.8sp"
         tools:ignore="MissingPrefix"
         tools:text="2018-09-17" />
@@ -65,7 +65,7 @@
         android:layout_toRightOf="@id/poster"
         android:letterSpacing="0.05"
         android:lineSpacingExtra="-3sp"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="9.8sp"
         tools:ignore="MissingPrefix"
         tools:text="알림일 : " />
@@ -79,7 +79,7 @@
         android:layout_toRightOf="@id/alarm_date_label"
         android:letterSpacing="0.05"
         android:lineSpacingExtra="-3sp"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="9.8sp"
         tools:ignore="MissingPrefix"
         tools:text="2018-09-10" />
@@ -109,7 +109,7 @@
         android:letterSpacing="0.05"
         android:lineSpacingExtra="-3sp"
         android:text="일 전"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="9.8sp"
         tools:ignore="MissingPrefix" />
 </RelativeLayout>

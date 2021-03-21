@@ -9,6 +9,7 @@
     <ImageView
         android:id="@+id/logo"
         android:layout_width="50dp"
+        android:background="@drawable/background_white_circle"
         android:layout_height="match_parent"
         android:layout_marginLeft="15dp" />
 
@@ -19,7 +20,8 @@
         android:gravity="center"
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/logo"
-        android:text="" />
+        android:textColor="@color/white"
+        android:text="test" />
 
 
     <com.google.android.material.switchmaterial.SwitchMaterial

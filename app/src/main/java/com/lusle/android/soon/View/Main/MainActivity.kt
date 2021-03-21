@@ -42,6 +42,7 @@ class MainActivity : BaseActivity() {
 
     private fun setUpBottomNavigationBar() {
         bottomNavigationView = findViewById(R.id.navigation_view)
+        bottomNavigationView.menu.findItem(R.id.blank).isEnabled = false
         val navGraphIds = listOf(R.navigation.navigation_home, R.navigation.navigation_company, R.navigation.navigation_genre, R.navigation.navigation_settings)
 
         val controller = bottomNavigationView.setupWithNavController(

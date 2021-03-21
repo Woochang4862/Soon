@@ -1,10 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/settings"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/settings"
     app:startDestination="@id/preferenceFragment">
 
     <fragment
         android:id="@+id/preferenceFragment"
         android:name="com.lusle.android.soon.View.Main.Setting.PreferenceFragment"
-        android:label="PreferenceFragment" />
+        android:label="PreferenceFragment" >
+        <action
+            android:id="@+id/action_preferenceFragment_to_appInfoFragment"
+            app:destination="@id/appInfoFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"/>
+        <action
+            android:id="@+id/action_preferenceFragment_to_releaseAlarmSettingFragment"
+            app:destination="@id/releaseAlarmSettingFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"/>
+        <action
+            android:id="@+id/action_preferenceFragment_to_companyAlarmSettingFragment"
+            app:destination="@id/companyAlarmSettingFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"/>
+    </fragment>
+    <fragment
+        android:id="@+id/appInfoFragment"
+        android:name="com.lusle.android.soon.View.Main.Setting.AppInfo.AppInfoFragment"
+        android:label="fragment_app_info"
+        tools:layout="@layout/fragment_app_info" />
+    <fragment
+        android:id="@+id/alarmSettingFragment"
+        android:name="com.lusle.android.soon.View.Alarm.AlarmSettingFragment"
+        android:label="fragment_alarm_setting"
+        tools:layout="@layout/fragment_alarm_setting" />
+    <fragment
+        android:id="@+id/companyAlarmSettingFragment"
+        android:name="com.lusle.android.soon.View.Main.Setting.CompanyAlarm.CompanyAlarmSettingFragment"
+        android:label="fragment_company_alarm_setting"
+        tools:layout="@layout/fragment_company_alarm_setting" />
+    <fragment
+        android:id="@+id/releaseAlarmSettingFragment"
+        android:name="com.lusle.android.soon.View.Main.Setting.ReleaseAlarm.ReleaseAlarmSettingFragment"
+        android:label="fragment_release_alarm_setting"
+        tools:layout="@layout/fragment_release_alarm_setting" >
+        <action
+            android:id="@+id/action_releaseAlarmSettingFragment_to_alarmSettingFragment"
+            app:destination="@id/alarmSettingFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"/>
+    </fragment>
+    <action android:id="@+id/action_global_preferenceFragment" app:destination="@id/preferenceFragment"
+        app:enterAnim="@android:anim/fade_in"
+        app:exitAnim="@android:anim/fade_out"
+        app:popEnterAnim="@android:anim/fade_in"
+        app:popExitAnim="@android:anim/fade_out" />
 </navigation>

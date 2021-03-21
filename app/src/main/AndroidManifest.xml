@@ -18,22 +18,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".View.Main.Setting.AppInfo.AppInfoActivity">
-            <intent-filter>
-                <action android:name="com.lusle.android.soon.AppInfoActivity"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
-
-        <activity android:name=".View.Main.Setting.CompanyAlarm.CompanyAlarmSettingActivity">
-            <intent-filter>
-                <action android:name="com.lusle.android.soon.CompanyAlarmSettingActivity" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-
         <activity android:name=".View.Main.MainActivity"
             android:theme="@style/AppTheme">
             <intent-filter>
@@ -46,7 +30,7 @@
         <activity
             android:name=".View.Search.SearchActivity"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.Transparent"
+            android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -64,15 +48,6 @@
         <activity
             android:name=".View.YoutubePlayer.YoutubePlayerActivity"
             android:theme="@style/AppTheme" />
-
-        <activity android:name=".View.Alarm.AlarmSettingActivity"/>
-
-        <activity android:name=".View.Main.Setting.ReleaseAlarm.ReleaseAlarmSettingActivity">
-            <intent-filter>
-                <action android:name="com.lusle.android.soon.ReleaseAlarmSettingActivity" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
 
         <receiver
             android:name=".View.Alarm.AlarmReceiver"

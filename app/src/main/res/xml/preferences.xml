@@ -9,19 +9,17 @@
             android:key="@string/key_monthly_alarm"
             android:title="매월 영화 알림"
             app:iconSpaceReserved="false" />
-        <PreferenceScreen
+        <Preference
             android:summary="자신이 등록한 개봉 알림을 설정할 수 있습니다"
             android:title="개봉 알림"
-            app:iconSpaceReserved="false">
-            <intent android:action="com.lusle.android.soon.ReleaseAlarmSettingActivity" />
-        </PreferenceScreen>
+            android:key="@string/key_release_alarm"
+            app:iconSpaceReserved="false" />
 
-        <PreferenceScreen
+        <Preference
+            android:key="@string/key_company_alarm"
             android:summary="자신이 등록한 제작사 알림을 설정할 수 있습니다"
             android:title="제작사 알림"
-            app:iconSpaceReserved="false">
-            <intent android:action="com.lusle.android.soon.CompanyAlarmSettingActivity" />
-        </PreferenceScreen>
+            app:iconSpaceReserved="false" />
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -39,11 +37,10 @@
     <PreferenceCategory
         android:title="앱 정보"
         app:iconSpaceReserved="false">
-        <PreferenceScreen
+        <Preference
+            android:key="@string/key_app_info"
             android:title="앱 정보"
-            app:iconSpaceReserved="false">
-            <intent android:action="com.lusle.android.soon.AppInfoActivity" />
-        </PreferenceScreen>
+            app:iconSpaceReserved="false" />
         <!--<PreferenceScreen
             android:title="라이센스"
             app:iconSpaceReserved="false">

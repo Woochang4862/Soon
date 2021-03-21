@@ -13,7 +13,7 @@
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/navigation_view"
+        android:layout_above="@id/shadow"
         app:defaultNavHost="true" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -29,12 +29,20 @@
         app:srcCompat="@drawable/ic_search_white"
         android:contentDescription="@string/text_search" />
 
+    <View
+        android:id="@+id/shadow"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:orientation="horizontal"
+        android:layout_above="@id/navigation_view"
+        android:background="@color/shadow_color"/>
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigation_view"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"
-        app:backgroundTint="@color/lighter_black"
+        app:backgroundTint="@color/light_black"
         app:elevation="8dp"
         app:itemRippleColor="@color/colorPrimary"
         app:itemIconTint="@color/nav_item_state_list"
