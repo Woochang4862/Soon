@@ -9,5 +9,6 @@
     android:gravity="center"
     android:textSize="24sp"
     android:visibility="invisible"
+    android:textColor="@color/black"
     tools:text="A"
     tools:visibility="visible" />
