@@ -38,7 +38,7 @@ class CompanyAlarmSettingFragment : Fragment(), CompanyAlarmSettingContractor.Vi
     private lateinit var presenter: CompanyAlarmSettingPresenter
     private lateinit var dialog: MovieProgressDialog
     private val clickedByUser = true
-    private var reload = false
+    private var isPaused = false
     private lateinit var context: Context
 
     override fun onAttach(context: Context) {
@@ -118,16 +118,16 @@ class CompanyAlarmSettingFragment : Fragment(), CompanyAlarmSettingContractor.Vi
     }
 
     private fun reload() {
+        setAlarmSwitch()
         presenter.loadItems()
         Util.runLayoutAnimation(recyclerView)
-        reload = false
     }
 
     override fun onResume() {
         super.onResume()
-        if(reload) {
+        if (isPaused) {
             reload()
-            setAlarmSwitch()
+            isPaused = false
         }
     }
 
@@ -145,7 +145,7 @@ class CompanyAlarmSettingFragment : Fragment(), CompanyAlarmSettingContractor.Vi
 
     override fun onPause() {
         super.onPause()
-        reload = true
+        isPaused = true
     }
 
     override fun onDestroy() {

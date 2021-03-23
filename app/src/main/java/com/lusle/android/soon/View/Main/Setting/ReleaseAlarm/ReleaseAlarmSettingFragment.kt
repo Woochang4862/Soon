@@ -1,13 +1,10 @@
 package com.lusle.android.soon.View.Main.Setting.ReleaseAlarm
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CompoundButton
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -22,18 +19,18 @@ import com.lusle.android.soon.Adapter.ReleaseAlarmSettingsAdapter
 import com.lusle.android.soon.Model.Source.AlarmDataLocalSource
 import com.lusle.android.soon.R
 import com.lusle.android.soon.Util.Util
-import com.lusle.android.soon.View.Alarm.AlarmSettingFragment
 import com.lusle.android.soon.View.Main.Setting.ReleaseAlarm.Presenter.ReleaseAlarmSettingContractor
 import com.lusle.android.soon.View.Main.Setting.ReleaseAlarm.Presenter.ReleaseAlarmSettingPresenter
 
 class ReleaseAlarmSettingFragment : Fragment(), ReleaseAlarmSettingContractor.View {
+    private var isPaused: Boolean = false
+    private val TAG: String = this::class.java.simpleName
     private lateinit var aSwitch: SwitchMaterial
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ReleaseAlarmSettingsAdapter
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var emptyViewGroup: FrameLayout
     private lateinit var emptyAnim: LottieAnimationView
-    private var clickedByUser = true
     private lateinit var presenter: ReleaseAlarmSettingPresenter
     private lateinit var context: Context
 
@@ -70,21 +67,18 @@ class ReleaseAlarmSettingFragment : Fragment(), ReleaseAlarmSettingContractor.Vi
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
         setAlarmSwitch()
-        aSwitch.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-            if (clickedByUser) {
-                val alarms = presenter.alarms
-                for (alarm in alarms) alarm.isActive = isChecked
-                presenter.alarms = alarms
-                Toast.makeText(context, "알림이 " + if (isChecked) "전부 켜졌습니다" else "전부 꺼졌습니다", Toast.LENGTH_SHORT).show()
-                reload()
-            }
+        aSwitch.setOnClickListener {
+            val alarms = presenter.alarms
+            for (alarm in alarms) alarm.isActive = aSwitch.isChecked
+            presenter.alarms = alarms
+            Toast.makeText(context, "알림이 " + if (aSwitch.isChecked) "전부 켜졌습니다" else "전부 꺼졌습니다", Toast.LENGTH_SHORT).show()
+            reload()
         }
         presenter.loadItems()
         Util.runLayoutAnimation(recyclerView)
     }
 
     private fun setAlarmSwitch() {
-        clickedByUser = false
         var checked = false
         for (alarm in presenter.alarms) {
             if (alarm.isActive) {
@@ -93,18 +87,20 @@ class ReleaseAlarmSettingFragment : Fragment(), ReleaseAlarmSettingContractor.Vi
             }
         }
         aSwitch.isChecked = checked
-        clickedByUser = true
     }
 
     private fun reload() {
+        setAlarmSwitch()
         presenter.loadItems()
         Util.runLayoutAnimation(recyclerView)
     }
 
     override fun onResume() {
         super.onResume()
-        reload()
-        setAlarmSwitch()
+        if(isPaused) {
+            reload()
+            isPaused = false
+        }
     }
 
     override fun setRecyclerEmpty(isEmpty: Boolean) {
@@ -117,6 +113,11 @@ class ReleaseAlarmSettingFragment : Fragment(), ReleaseAlarmSettingContractor.Vi
             emptyViewGroup.visibility = View.GONE
             if (emptyAnim.isAnimating) emptyAnim.pauseAnimation()
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        isPaused = true
     }
 
     override fun onDestroy() {

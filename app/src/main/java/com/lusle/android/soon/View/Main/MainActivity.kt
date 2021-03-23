@@ -8,6 +8,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import com.example.android.navigationadvancedsample.setupWithNavController
 import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -60,10 +61,37 @@ class MainActivity : BaseActivity() {
         bottomNavigationView.setOnNavigationItemReselectedListener {
             when(it.itemId){
                 R.id.home -> {
-
+                    if(currentNavController != null && currentNavController!!.value != null) {
+                        val inflater = currentNavController!!.value!!.navInflater
+                        val graph = inflater.inflate(R.navigation.navigation_home)
+                        graph.startDestination = R.id.thisMonthMovieFragment
+                        currentNavController!!.value!!.graph = graph
+                    }
                 }
-                R.id.company -> {}
-                R.id.genre -> {}
+                R.id.company -> {
+                    if(currentNavController != null && currentNavController!!.value != null) {
+                        val inflater = currentNavController!!.value!!.navInflater
+                        val graph = inflater.inflate(R.navigation.navigation_company)
+                        graph.startDestination = R.id.companyFragment
+                        currentNavController!!.value!!.graph = graph
+                    }
+                }
+                R.id.genre -> {
+                    if(currentNavController != null && currentNavController!!.value != null) {
+                        val inflater = currentNavController!!.value!!.navInflater
+                        val graph = inflater.inflate(R.navigation.navigation_genre)
+                        graph.startDestination = R.id.genreFragment
+                        currentNavController!!.value!!.graph = graph
+                    }
+                }
+                R.id.settings -> {
+                    if(currentNavController != null && currentNavController!!.value != null) {
+                        val inflater = currentNavController!!.value!!.navInflater
+                        val graph = inflater.inflate(R.navigation.navigation_settings)
+                        graph.startDestination = R.id.preferenceFragment
+                        currentNavController!!.value!!.graph = graph
+                    }
+                }
             }
         }
     }

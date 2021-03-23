@@ -71,7 +71,8 @@ public class CompanyAlarmSettingPresenter implements CompanyAlarmSettingContract
 
     @Override
     public void loadItems() {
-        adapterModel.setList(getAlarms());
+        if (adapterModel != null)
+            adapterModel.setList(getAlarms());
     }
 
     @Override

@@ -105,7 +105,7 @@ public class AlarmSettingFragment extends Fragment implements DatePickerDialog.O
             movieData = alarmData.getMovie();
         binding();
         saveBtn.setOnClickListener(v -> save());
-        closeBtn.setOnClickListener(v -> {});
+        closeBtn.setOnClickListener(v -> findNavController(this).navigateUp());
         dateSection.setOnClickListener(v -> {
             DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(), AlertDialog.THEME_DEVICE_DEFAULT_LIGHT, this, currentCal.get(Calendar.YEAR), currentCal.get(Calendar.MONTH), currentCal.get(Calendar.DAY_OF_MONTH));
             datePickerDialog.show();
@@ -132,6 +132,7 @@ public class AlarmSettingFragment extends Fragment implements DatePickerDialog.O
         requireContext().registerReceiver(new AlarmReceiver(), new IntentFilter());
 
         Log.d("####", "save: "+alarmData);
+        Log.d("####", "save: "+alarmData.isActive());
         Intent intent = new Intent(requireContext(), AlarmReceiver.class);
         Bundle args = new Bundle();
         args.putSerializable("DATA", alarmData);
@@ -148,8 +149,7 @@ public class AlarmSettingFragment extends Fragment implements DatePickerDialog.O
 
         am.set(AlarmManager.RTC_WAKEUP, currentCal.getTimeInMillis(), pendingIntent);
 
-        Type type = new TypeToken<ArrayList<Alarm>>() {
-        }.getType();
+        Type type = new TypeToken<ArrayList<Alarm>>(){}.getType();
 
         String json = mPrefs.getString("alarms", "");
         ArrayList<Alarm> alarms = new Gson().fromJson(json, type);
@@ -164,8 +164,7 @@ public class AlarmSettingFragment extends Fragment implements DatePickerDialog.O
         prefsEditor.apply();
 
         Toast.makeText(requireContext(), "알림이 설정되었습니다", Toast.LENGTH_SHORT).show();
-        {
-        }
+        findNavController(this).navigateUp();
     }
 
     private void binding() {
@@ -215,8 +214,7 @@ public class AlarmSettingFragment extends Fragment implements DatePickerDialog.O
             PendingIntent pendingIntent = PendingIntent.getBroadcast(requireContext(), alarmData.getPendingIntentID(), intent, 0);
             am.cancel(pendingIntent);
 
-            Type type = new TypeToken<ArrayList<Alarm>>() {
-            }.getType();
+            Type type = new TypeToken<ArrayList<Alarm>>() {}.getType();
             String json = mPrefs.getString("alarms", "");
             ArrayList<Alarm> alarms = new Gson().fromJson(json, type);
             alarms.remove(this.alarmData);
@@ -227,8 +225,7 @@ public class AlarmSettingFragment extends Fragment implements DatePickerDialog.O
 
             Toast.makeText(requireContext(), "알림이 삭제되었습니다", Toast.LENGTH_SHORT).show();
             dialog.dismiss();
-            {
-            }
+            findNavController(this).navigateUp();
         });
 
         alert.setNegativeButton("No", (dialog, which) -> dialog.dismiss());

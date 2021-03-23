@@ -21,6 +21,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
+                android:background="@color/light_black"
                 android:layout_height="wrap_content">
 
                 <TextView
@@ -32,7 +33,7 @@
                     android:includeFontPadding="false"
                     android:lineSpacingExtra="2.7sp"
                     android:text="@string/relative_company"
-                    android:textColor="#000000"
+                    android:textColor="@color/white"
                     android:textSize="12sp"
                     tools:ignore="MissingPrefix" />
 
@@ -47,7 +48,7 @@
                     android:lineSpacingExtra="2.7sp"
                     android:padding="11dp"
                     android:text="총 10개의 결과 더보기"
-                    android:textColor="@color/defaultTextColor"
+                    android:textColor="@color/white"
                     android:textSize="12sp"
                     tools:ignore="MissingPrefix" />
 
@@ -56,7 +57,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/company_title"
-                    android:layout_marginTop="3dp"></androidx.recyclerview.widget.RecyclerView>
+                    android:layout_marginTop="3dp" />
 
                 <FrameLayout
                     android:id="@+id/list_empty_view_company"
@@ -108,7 +109,7 @@
                         android:layout_centerInParent="true"
                         android:includeFontPadding="false"
                         android:text="@string/more"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="12sp"
                         tools:ignore="MissingPrefix" />
 
@@ -125,11 +126,13 @@
             android:layout_marginTop="17.3dp"
             android:orientation="vertical"
             android:layout_marginBottom="17.3dp"
+            android:background="@color/light_black"
             android:visibility="gone"
             app:cardElevation="10dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
+                android:background="@color/light_black"
                 android:layout_height="wrap_content">
 
                 <TextView
@@ -141,7 +144,7 @@
                     android:includeFontPadding="false"
                     android:lineSpacingExtra="2.7sp"
                     android:text="@string/relative_movie"
-                    android:textColor="#000000"
+                    android:textColor="@color/white"
                     android:textSize="12sp"
                     tools:ignore="MissingPrefix" />
 
@@ -156,7 +159,7 @@
                     android:lineSpacingExtra="2.7sp"
                     android:padding="11dp"
                     android:text="총 100개의 결과 더보기"
-                    android:textColor="@color/defaultTextColor"
+                    android:textColor="@color/white"
                     android:textSize="12sp"
                     tools:ignore="MissingPrefix" />
 
@@ -165,7 +168,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/movie_title"
-                    android:layout_marginTop="3dp"></androidx.recyclerview.widget.RecyclerView>
+                    android:layout_marginTop="3dp" />
 
                 <FrameLayout
                     android:id="@+id/list_empty_view_movie"
@@ -217,7 +220,7 @@
                         android:layout_centerInParent="true"
                         android:includeFontPadding="false"
                         android:text="@string/more"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="12sp"
                         tools:ignore="MissingPrefix" />
 
