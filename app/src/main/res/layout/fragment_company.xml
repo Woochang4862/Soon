@@ -5,6 +5,8 @@
     android:id="@+id/scroll_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:scrollbars="none"
+    android:overScrollMode="never"
     android:fillViewport="false"
     tools:context=".View.Main.Company.CompanyFragment">
 
@@ -85,6 +87,18 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:layout_width="match_parent"
+                android:id="@+id/shimmer"
+                android:layout_marginStart="@dimen/margin_content_list"
+                android:layout_marginEnd="@dimen/margin_content_list"
+                android:visibility="gone"
+                android:layout_height="wrap_content">
+
+                <include layout="@layout/layout_movie_shimmer"/>
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/movie_list"

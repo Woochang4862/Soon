@@ -18,6 +18,7 @@ import androidx.paging.RxPagedListBuilder
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.lusle.android.soon.Adapter.Decoration.MovieItemDecoration
 import com.lusle.android.soon.Adapter.Listener.OnEmptyListener
 import com.lusle.android.soon.Adapter.Listener.OnItemClickListener
@@ -42,7 +43,7 @@ class ThisMonthMovieFragment : Fragment(), ThisMonthMovieContract.View {
     private lateinit var recyclerView: RecyclerView
     private var adapter: MoviePagedListAdapter? = null
     private var layoutManager: GridLayoutManager? = null
-    private var dialog: MovieProgressDialog? = null
+    private lateinit var shimmerFrameLayout: ShimmerFrameLayout
     private lateinit var presenter: ThisMonthMoviePresenter
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -53,7 +54,7 @@ class ThisMonthMovieFragment : Fragment(), ThisMonthMovieContract.View {
         presenter = ThisMonthMoviePresenter()
         //presenter.attachView(this)
         //presenter.setMovieModel(MovieDataRemoteSource.getInstance())
-        dialog = MovieProgressDialog(requireContext())
+        shimmerFrameLayout = view.findViewById(R.id.shimmer)
         emptyView = view.findViewById(R.id.list_empty_view)
         emptyAnim = view.findViewById(R.id.list_empty_anim)
         recyclerView = view.findViewById(R.id.movie_list_recyclerView)
@@ -88,6 +89,8 @@ class ThisMonthMovieFragment : Fragment(), ThisMonthMovieContract.View {
         builder.buildObservable()
                 .subscribe {
                     adapter!!.submitList(it)
+                    shimmerFrameLayout.stopShimmer()
+                    shimmerFrameLayout.visibility = View.GONE
                 }
         layoutManager = GridLayoutManager(context, 2)
         recyclerView.layoutManager = layoutManager
@@ -107,13 +110,7 @@ class ThisMonthMovieFragment : Fragment(), ThisMonthMovieContract.View {
     }
 
     override fun showDialog(show: Boolean) {
-        if (dialog!!.isShowing != show) {
-            if (show) {
-                dialog!!.dismiss()
-            } else {
-                dialog!!.show()
-            }
-        }
+
     }
 
     override fun runRecyclerViewAnimation() {

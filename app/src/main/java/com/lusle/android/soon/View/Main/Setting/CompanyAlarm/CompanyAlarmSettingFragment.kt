@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.firebase.iid.FirebaseInstanceId
@@ -23,7 +24,6 @@ import com.lusle.android.soon.Model.Source.FavoriteCompanyDataLocalSource
 import com.lusle.android.soon.Model.Source.SubscribeCheckDataRemoteSource
 import com.lusle.android.soon.R
 import com.lusle.android.soon.Util.Util
-import com.lusle.android.soon.View.Dialog.MovieProgressDialog
 import com.lusle.android.soon.View.Main.Setting.CompanyAlarm.Presenter.CompanyAlarmSettingContractor
 import com.lusle.android.soon.View.Main.Setting.CompanyAlarm.Presenter.CompanyAlarmSettingPresenter
 import java.util.*
@@ -36,7 +36,7 @@ class CompanyAlarmSettingFragment : Fragment(), CompanyAlarmSettingContractor.Vi
     private lateinit var emptyViewGroup: FrameLayout
     private lateinit var emptyAnim: LottieAnimationView
     private lateinit var presenter: CompanyAlarmSettingPresenter
-    private lateinit var dialog: MovieProgressDialog
+    private lateinit var shimmerFrameLayout: ShimmerFrameLayout
     private val clickedByUser = true
     private var isPaused = false
     private lateinit var context: Context
@@ -55,7 +55,7 @@ class CompanyAlarmSettingFragment : Fragment(), CompanyAlarmSettingContractor.Vi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        dialog = MovieProgressDialog(requireContext())
+        shimmerFrameLayout = view.findViewById(R.id.shimmer)
         presenter = CompanyAlarmSettingPresenter()
         presenter.attachView(this)
         presenter.setModel(FavoriteCompanyDataLocalSource.getInstance())
@@ -67,7 +67,7 @@ class CompanyAlarmSettingFragment : Fragment(), CompanyAlarmSettingContractor.Vi
         recyclerView = view.findViewById(R.id.company_alarm_list_recyclerView)
         layoutManager = LinearLayoutManager(requireContext())
         recyclerView.layoutManager = layoutManager
-        showDialog(true)
+        playShimmer(true)
         FirebaseInstanceId.getInstance().instanceId
                 .addOnCompleteListener(OnCompleteListener { task ->
                     if (!task.isSuccessful) {
@@ -88,13 +88,13 @@ class CompanyAlarmSettingFragment : Fragment(), CompanyAlarmSettingContractor.Vi
                 recyclerView.adapter = adapter
                 recyclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
                 presenter.loadItems()
-                showDialog(false)
+                playShimmer(false)
                 Util.runLayoutAnimation(recyclerView)
             }
 
             override fun onFailure(t: Throwable) {
                 t.printStackTrace()
-                showDialog(false)
+                playShimmer(false)
             }
         })
         setAlarmSwitch()
@@ -157,7 +157,13 @@ class CompanyAlarmSettingFragment : Fragment(), CompanyAlarmSettingContractor.Vi
         return context
     }
 
-    override fun showDialog(show: Boolean) {
-        if (show) dialog.show() else dialog.dismiss()
+    override fun playShimmer(show: Boolean) {
+        if (show) {
+            shimmerFrameLayout.startShimmer()
+            shimmerFrameLayout.visibility = View.VISIBLE
+        } else {
+            shimmerFrameLayout.stopShimmer()
+            shimmerFrameLayout.visibility = View.GONE
+        }
     }
 }

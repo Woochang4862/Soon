@@ -13,7 +13,7 @@ public interface CompanyContract {
     interface View {
         void showErrorToast();
 
-        void showDialog(boolean show);
+        void playShimmer(boolean show);
 
         Context getContext();
     }

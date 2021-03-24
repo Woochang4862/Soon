@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.lusle.android.soon.Adapter.Decoration.GenreItemDecoration
 import com.lusle.android.soon.Adapter.GenreListAdapter
 import com.lusle.android.soon.Adapter.Listener.OnEmptyListener
@@ -28,7 +29,7 @@ class GenreFragment : Fragment(), GenreContractor.View {
     private lateinit var recyclerView: RecyclerView
     private lateinit var emptyView: FrameLayout
     private lateinit var emptyAnim: LottieAnimationView
-    private lateinit var dialog: MovieProgressDialog
+    private lateinit var shimmerFrameLayout: ShimmerFrameLayout
     private lateinit var presenter: GenrePresenter
     private lateinit var gridLayoutManager: GridLayoutManager
     private lateinit var adapter: GenreListAdapter
@@ -37,7 +38,7 @@ class GenreFragment : Fragment(), GenreContractor.View {
         presenter = GenrePresenter()
         presenter.attachView(this)
         presenter.setModel(GenreDataRemoteSource.getInstance())
-        dialog = MovieProgressDialog(requireContext())
+        shimmerFrameLayout = view.findViewById(R.id.shimmer)
         recyclerView = view.findViewById(R.id.fragment_genre_genre_list)
         emptyView = view.findViewById(R.id.list_empty_view)
         emptyAnim = view.findViewById(R.id.list_empty_anim)
@@ -61,7 +62,6 @@ class GenreFragment : Fragment(), GenreContractor.View {
         presenter.setAdapterView(adapter)
         presenter.setAdapterModel(adapter)
         recyclerView.adapter = adapter
-        //presenter.loadItems()
 
         val disposable = MovieApi.create().getGenreList(Util.getRegionCode(requireContext()))
                 .subscribeOn(Schedulers.io())
@@ -69,6 +69,8 @@ class GenreFragment : Fragment(), GenreContractor.View {
                 .subscribe { result ->
                     adapter.setList(result.genres)
                     adapter.notifyAdapter()
+                    shimmerFrameLayout.stopShimmer()
+                    shimmerFrameLayout.visibility = View.GONE
                 }
         return view
     }
@@ -78,7 +80,7 @@ class GenreFragment : Fragment(), GenreContractor.View {
     }
 
     override fun showDialog(show: Boolean) {
-        if (show) dialog.show() else dialog.dismiss()
+        // delete loadItems(), onFinished(), onFailure()
     }
 
     override fun showErrorToast() {

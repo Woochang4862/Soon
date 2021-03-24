@@ -31,9 +31,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:layout_width="match_parent"
+            android:id="@+id/shimmer"
+            android:layout_marginStart="@dimen/margin_content_list"
+            android:layout_marginEnd="@dimen/margin_content_list"
+            android:layout_height="wrap_content">
+
+            <include layout="@layout/layout_companny_alarm_shimmer"/>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/company_alarm_list_recyclerView"
             android:layout_width="match_parent"
+            android:layout_marginStart="@dimen/margin_content_list"
+            android:layout_marginEnd="@dimen/margin_content_list"
             android:layout_height="match_parent" />
 
         <FrameLayout

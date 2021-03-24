@@ -19,7 +19,7 @@ public interface CompanyAlarmSettingContractor {
 
         Context getContext();
 
-        void showDialog(boolean show);
+        void playShimmer(boolean show);
     }
 
     interface Presenter {

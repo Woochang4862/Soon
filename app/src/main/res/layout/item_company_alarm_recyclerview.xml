@@ -10,8 +10,7 @@
         android:id="@+id/logo"
         android:layout_width="50dp"
         android:background="@drawable/background_white_circle"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="15dp" />
+        android:layout_height="match_parent" />
 
     <TextView
         android:id="@+id/company_name"

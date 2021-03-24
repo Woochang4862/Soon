@@ -56,14 +56,14 @@ public class CompanyPresenter implements CompanyContract.Presenter, MovieDataRem
 
     @Override
     public void loadItems() {
-        view.showDialog(true);
-        view.showDialog(false);
+        view.playShimmer(true);
+        view.playShimmer(false);
     }
 
     @Override
     public void loadItems(int page, boolean isSetting) {
         if (view != null)
-            view.showDialog(true);
+            view.playShimmer(true);
         this.isSetting = isSetting;
         movieModel.getThisMonthMovieResult(Util.getRegionCode(view.getContext()), movieAdapterModel.getPage());
     }
@@ -119,7 +119,7 @@ public class CompanyPresenter implements CompanyContract.Presenter, MovieDataRem
         movieAdapterView.onNotEmpty();
         movieAdapterView.setLoaded();
         if (view != null) {
-            view.showDialog(false);
+            view.playShimmer(false);
         }
     }
 
@@ -134,7 +134,7 @@ public class CompanyPresenter implements CompanyContract.Presenter, MovieDataRem
     public void onFailure(Throwable t) {
         if (view != null) {
             view.showErrorToast();
-            view.showDialog(false);
+            view.playShimmer(false);
         }
         movieAdapterView.setLoaded();
         movieAdapterView.onEmpty();

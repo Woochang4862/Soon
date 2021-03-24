@@ -5,6 +5,7 @@
     android:id="@+id/fragment_genre_nestedscrollview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:scrollbars="none"
     tools:context=".View.Main.Genre.GenreFragment">
 
     <RelativeLayout
@@ -24,13 +25,26 @@
             android:layout_height="match_parent"
             android:layout_below="@id/title">
 
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:layout_width="match_parent"
+                android:id="@+id/shimmer"
+                android:layout_marginStart="@dimen/margin_content_list"
+                android:layout_marginEnd="@dimen/margin_content_list"
+                app:shimmer_auto_start="true"
+                android:layout_height="wrap_content">
+
+                <include layout="@layout/layout_genre_shimmer"/>
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/fragment_genre_genre_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scrollbars="none"
                 android:layout_marginStart="@dimen/margin_content_list"
-                android:layout_marginEnd="@dimen/margin_content_list" />
+                android:layout_marginEnd="@dimen/margin_content_list"
+                android:overScrollMode="never"
+                android:scrollbars="none" />
 
             <FrameLayout
                 android:id="@+id/list_empty_view"
