@@ -91,7 +91,7 @@ public class MovieSearchFragment extends Fragment implements SearchActivity.OnQu
         });
         adapter.setOnLoadMoreListener(() -> new Thread(() -> {
             APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
-            Call<MovieResult> call = apiInterface.searchMovie(currentQuery, ++currentPage);
+            Call<MovieResult> call = apiInterface.searchMovie(currentQuery, Util.getRegionCode(getContext()), ++currentPage);
             call.enqueue(new Callback<MovieResult>() {
                 @Override
                 public void onResponse(Call<MovieResult> call, Response<MovieResult> response) {
@@ -115,7 +115,7 @@ public class MovieSearchFragment extends Fragment implements SearchActivity.OnQu
                 }
             });
         }).start());
-        adapter.setOnBookButtonClickListener(movie->{
+        adapter.setOnBookButtonClickListener(movie -> {
             Intent intent = new Intent(getContext(), AlarmSettingActivity.class);
             intent.putExtra("movie_info", movie);
             startActivity(intent);
@@ -148,7 +148,7 @@ public class MovieSearchFragment extends Fragment implements SearchActivity.OnQu
                     return;
                 }
             });
-            Call<MovieResult> call = apiInterface.searchMovie(query, currentPage);
+            Call<MovieResult> call = apiInterface.searchMovie(query, Util.getRegionCode(getContext()), currentPage);
             call.enqueue(new Callback<MovieResult>() {
                 @Override
                 public void onResponse(Call<MovieResult> call, Response<MovieResult> response) {
@@ -164,7 +164,7 @@ public class MovieSearchFragment extends Fragment implements SearchActivity.OnQu
 
                 @Override
                 public void onFailure(Call<MovieResult> call, Throwable t) {
-                    Log.d(call.request().url().toString()+":", t.getMessage());
+                    Log.d(call.request().url().toString() + ":", t.getMessage());
                     adapter.onEmpty();
                     dialog.dismiss();
                     DynamicToast.makeError(getContext(), getString(R.string.server_error_msg)).show();

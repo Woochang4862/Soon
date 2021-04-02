@@ -12,6 +12,9 @@ public interface AlarmSettingAdapterContract {
 
     interface Model extends BaseAdapterContract.Model {
         void setOnAlarmItemClickListener(OnAlarmItemClickListener onItemClickListener);
+
         void setList(ArrayList<Alarm> list);
+
+        Alarm getItem(int pos);
     }
 }

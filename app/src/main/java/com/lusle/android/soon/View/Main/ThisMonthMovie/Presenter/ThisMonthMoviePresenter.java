@@ -12,6 +12,7 @@ import com.lusle.android.soon.Model.Schema.Movie;
 import com.lusle.android.soon.Model.Schema.MovieResult;
 import com.lusle.android.soon.Model.Source.GenreDataRemoteSource;
 import com.lusle.android.soon.Model.Source.MovieDataRemoteSource;
+import com.lusle.android.soon.Util.Util;
 import com.lusle.android.soon.View.Alarm.AlarmSettingActivity;
 
 import java.util.ArrayList;
@@ -50,12 +51,12 @@ public class ThisMonthMoviePresenter implements ThisMonthMovieContract.Presenter
 
     @Override
     public void loadItems(int page, boolean isSetting) {
-        if(view!=null)
+        if (view != null)
             view.showDialog(true);
         if (this.isSetting = isSetting) {
             genreModel.getGenreList();
         } else {
-            movieModel.getThisMonthMovieResult(adapterModel.getPage());
+            movieModel.getThisMonthMovieResult(Util.getRegionCode(view.getContext()), adapterModel.getPage());
         }
     }
 
@@ -81,12 +82,12 @@ public class ThisMonthMoviePresenter implements ThisMonthMovieContract.Presenter
         adapterModel.setOnEmptyListener(new OnEmptyListener() {
             @Override
             public void onEmpty() {
-                if(view!=null) view.setRecyclerEmpty(true);
+                if (view != null) view.setRecyclerEmpty(true);
             }
 
             @Override
             public void onNotEmpty() {
-                if(view!=null) view.setRecyclerEmpty(false);
+                if (view != null) view.setRecyclerEmpty(false);
             }
         });
     }
@@ -109,25 +110,32 @@ public class ThisMonthMoviePresenter implements ThisMonthMovieContract.Presenter
 
     @Override
     public void onFinished(MovieResult movieArrayList) {
-        if (isSetting) {
-            adapterModel.setList(movieArrayList.getResults());
-            adapterModel.setItemLimit(movieArrayList.getTotalResults());
-        } else {
-            adapterModel.addItems(movieArrayList.getResults());
+        //TODO:empty
+        if (movieArrayList != null) {
+            if (isSetting) {
+                if(movieArrayList.getResults().isEmpty()) adapterView.onEmpty();
+                else {
+                    adapterModel.setList(movieArrayList.getResults());
+                    adapterModel.setItemLimit(movieArrayList.getTotalResults());
+                }
+            } else {
+                adapterModel.addItems(movieArrayList.getResults());
+            }
         }
         adapterView.onNotEmpty();
         adapterView.setLoaded();
-        if(view!=null) {
+        if (view != null) {
             view.runRecyclerViewAnimation();
             view.showDialog(false);
         }
+
     }
 
     @Override
     public void onFinished(ArrayList<Genre> genres) {
         adapterModel.setPage(1);
         adapterModel.setGenres(genres);
-        movieModel.getThisMonthMovieResult(adapterModel.getPage());
+        movieModel.getThisMonthMovieResult(Util.getRegionCode(view.getContext()), adapterModel.getPage());
     }
 
     @Override

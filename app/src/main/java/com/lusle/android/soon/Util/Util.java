@@ -19,11 +19,14 @@ import com.lusle.android.soon.Adapter.FavoriteListActivityRecyclerAdapter;
 import com.lusle.android.soon.Adapter.FragmentCompanyFavoriteRecyclerViewAdapter;
 import com.lusle.android.soon.Model.Schema.Company;
 import com.lusle.android.soon.R;
+import com.mukesh.countrypicker.Country;
+import com.mukesh.countrypicker.CountryPicker;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -159,5 +162,17 @@ public class Util {
 
         return px;
 
+    }
+
+    public static String getRegionCode(Context context) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        Country country = new Gson().fromJson(pref.getString(context.getString(R.string.key_region), ""), Country.class);
+        if (country == null)
+            pref.edit().putString(
+                    context.getString(R.string.key_region),
+                    new Gson().toJson(
+                            new CountryPicker.Builder().with(context).build().getCountryFromSIM()
+                    )).apply();
+        return country.getCode();
     }
 }

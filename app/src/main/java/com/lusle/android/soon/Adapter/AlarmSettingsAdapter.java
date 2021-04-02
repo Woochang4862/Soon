@@ -25,13 +25,13 @@ import androidx.recyclerview.widget.RecyclerView;
 public class AlarmSettingsAdapter extends BaseRecyclerAdapter<RecyclerView.ViewHolder> implements AlarmSettingAdapterContract.View, AlarmSettingAdapterContract.Model {
 
     private ArrayList<Alarm> list;
-    private OnAlarmItemClickListener onItemClickListener;
+    private OnAlarmItemClickListener onAlarmItemClickListener;
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_alarm, parent, false);
-        return new AlarmViewHolder(v, onItemClickListener, list);
+        return new AlarmViewHolder(v, onAlarmItemClickListener);
     }
 
     @Override
@@ -72,12 +72,17 @@ public class AlarmSettingsAdapter extends BaseRecyclerAdapter<RecyclerView.ViewH
     }
 
     @Override
-    public void setOnAlarmItemClickListener(OnAlarmItemClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
+    public Alarm getItem(int pos) {
+        return list.get(pos);
+    }
+
+    @Override
+    public void setOnAlarmItemClickListener(OnAlarmItemClickListener onAlarmItemClickListener) {
+        this.onAlarmItemClickListener = onAlarmItemClickListener;
     }
 
     @Override
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        this.onItemClickListener = (v, pos, alarm) -> onItemClickListener.onItemClick(v,pos);
+        this.onAlarmItemClickListener = (v, pos) -> onItemClickListener.onItemClick(v,pos);
     }
 }

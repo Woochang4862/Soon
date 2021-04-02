@@ -15,6 +15,7 @@ import com.lusle.android.soon.Model.Schema.Genre;
 import com.lusle.android.soon.Model.Schema.Movie;
 import com.lusle.android.soon.R;
 import com.lusle.android.soon.Util.Util;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
@@ -70,8 +71,21 @@ public class MovieListRecyclerViewAdapter extends BaseRecyclerAdapter<RecyclerVi
                     .load("https://image.tmdb.org/t/p/w500" + mList.get(position).getPosterPath())
                     .centerCrop()
                     .fit()
-                    .error(R.drawable.ic_broken_image)
-                    .into(((MovieViewHolder) holder).imageView);
+                    .into(((MovieViewHolder) holder).imageView, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            ((MovieViewHolder) holder).imageView.setVisibility(View.VISIBLE);
+                            ((MovieViewHolder) holder).lav.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            ((MovieViewHolder) holder).imageView.setVisibility(View.GONE);
+                            ((MovieViewHolder) holder).lav.setVisibility(View.VISIBLE);
+                            ((MovieViewHolder) holder).lav.setProgress(0);
+                            ((MovieViewHolder) holder).lav.playAnimation();
+                        }
+                    });
 
 
             ((MovieViewHolder) holder).title.setText(mList.get(position).getTitle());
@@ -110,13 +124,12 @@ public class MovieListRecyclerViewAdapter extends BaseRecyclerAdapter<RecyclerVi
                             onBookButtonClickListener.onBookButtonClicked(mList.get(position));
                     });
                 }
-            } catch (ParseException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 ((MovieViewHolder) holder).bookBtn.setText("---");
                 ((MovieViewHolder) holder).bookBtn.setEnabled(false);
             }
         } else {
-            Log.d("onScrolled", limit+" "+position);
             if (limit <= position) {
                 ((ProgressViewHolder) holder).progressBar.setVisibility(View.GONE);
             }

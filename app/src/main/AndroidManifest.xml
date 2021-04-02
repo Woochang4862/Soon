@@ -17,6 +17,10 @@
         android:roundIcon="@mipmap/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.SubTheme">
+        <activity android:name=".View.Main.Setting.Licence.LicenceActivity"></activity>
+        <activity android:name=".View.Main.Setting.CompanyAlarm.CompanyAlarmActivity" />
+        <activity android:name=".View.Main.Setting.AppInfo.AppInfoActivity" />
+
         <meta-data
             android:name="android.app.default_searchable"
             android:value="com.apkgetter.SearchResultsActivity" />
@@ -35,8 +39,10 @@
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable_config" />
@@ -56,18 +62,26 @@
         <activity android:name=".View.Alarm.AlarmSettingActivity">
             <intent-filter>
                 <action android:name="com.lusle.android.soon.ALARM_START" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".View.Main.Setting.ReleaseAlarm.ReleaseAlarmSettingActivity">
+            <intent-filter>
+                <action android:name="com.lusle.soon.ReleaseAlarmSettingActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
-        <service android:name=".View.Alarm.AlarmReceiverService"
-            android:exported="false"/>
+        <service
+            android:name=".View.Alarm.AlarmReceiverService"
+            android:exported="false" />
 
         <receiver
             android:name=".View.Alarm.AlarmReceiver"
             android:enabled="true"
-            android:exported="true"
-            android:process=":remote">
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.lusle.android.soon.ALARM_START" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -77,9 +91,7 @@
         <service
             android:name=".View.Alarm.AlarmService"
             android:enabled="true"
-            android:exported="true"
-            android:process=":remote" />
-
+            android:exported="false" />
         <service
             android:name=".View.Alarm.FirebaseInstanceIDService"
             android:exported="false">
@@ -88,6 +100,11 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
+        <provider
+            android:name=".MySuggestionProvider"
+            android:authorities="com.lusle.soon.MySuggestionProvider"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

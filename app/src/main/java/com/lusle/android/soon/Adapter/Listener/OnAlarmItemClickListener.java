@@ -5,5 +5,5 @@ import android.view.View;
 import com.lusle.android.soon.Model.Schema.Alarm;
 
 public interface OnAlarmItemClickListener {
-    void onItemClick(View v, int pos, Alarm alarm);
+    void onItemClick(View v, int pos);
 }

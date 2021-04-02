@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="213.3dp"
     android:layout_marginLeft="30dp"
-    android:layout_marginRight="30dp"
     android:layout_marginTop="10dp"
+    android:layout_marginRight="30dp"
     android:layout_marginBottom="10dp"
     app:cardCornerRadius="7dp"
     app:cardElevation="7dp">
@@ -16,13 +16,28 @@
         android:layout_height="match_parent"
         android:background="?attr/selectableItemBackground">
 
-        <ImageView
-            android:id="@+id/movie_list_recyclerview_poster"
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:transitionName="poster"
             android:layout_gravity="center_vertical"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:transitionName="poster">
+
+            <ImageView
+                android:id="@+id/movie_list_recyclerview_poster"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:transitionName="poster" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/movie_list_recyclerview_poster_empty"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:transitionName="poster"
+                android:visibility="gone"
+                app:lottie_fileName="lottie/poster_error.json"
+                app:lottie_loop="false" />
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="0dp"
@@ -45,9 +60,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
                     android:includeFontPadding="false"
-                    android:transitionName="title"
                     android:text="보헤미안 렙소디"
                     android:textSize="13dp"
+                    android:transitionName="title"
                     tools:ignore="MissingPrefix" />
 
                 <TextView

@@ -210,7 +210,7 @@ public class AllSearchFragment extends Fragment implements SearchActivity.OnQuer
         dialog.show();
 
         companyAdapter.clear();
-        apiInterface.searchCompany(query, 1).enqueue(new Callback<CompanyResult>() {
+        apiInterface.searchCompany(query, Util.getRegionCode(getContext()), 1).enqueue(new Callback<CompanyResult>() {
             @Override
             public void onResponse(Call<CompanyResult> call, Response<CompanyResult> response) {
                 CompanyResult result = response.body();
@@ -257,7 +257,7 @@ public class AllSearchFragment extends Fragment implements SearchActivity.OnQuer
             }
         });
         movieAdapter.clear();
-        apiInterface.searchMovie(query, 1).enqueue(new Callback<MovieResult>() {
+        apiInterface.searchMovie(query, Util.getRegionCode(getContext()), 1).enqueue(new Callback<MovieResult>() {
             @Override
             public void onResponse(Call<MovieResult> call, Response<MovieResult> response) {
                 MovieResult result = response.body();

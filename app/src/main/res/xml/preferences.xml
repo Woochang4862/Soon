@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:iconSpaceReserved="false">
+    <PreferenceCategory
+        android:title="@string/text_alarm"
+        app:iconSpaceReserved="false">
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="@string/key_monthly_alarm"
+            android:title="@string/text_monthly_alarm"
+            app:defaultValue="true"
+            app:iconSpaceReserved="false" />
+        <PreferenceScreen
+            android:summary="@string/text_release_alarm_detail"
+            android:title="@string/text_release_alarm"
+            app:iconSpaceReserved="false">
+            <intent android:action="com.lusle.soon.ReleaseAlarmSettingActivity"/>
+        </PreferenceScreen>
+        <PreferenceScreen
+            android:summary="@string/text_company_alarm_detail"
+            android:title="@string/text_company_alarm"
+            app:iconSpaceReserved="false">
+
+        </PreferenceScreen>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/text_privacy"
+        app:iconSpaceReserved="false">
+
+        <Preference
+            android:key="@string/key_region"
+            android:summary="region"
+            android:title="@string/text_region_setting"
+            app:iconSpaceReserved="false" />
+
+        <Preference
+            android:key="@string/key_clear_search_history"
+            android:title="@string/text_clear_search_history"
+            app:iconSpaceReserved="false" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/text_app_info"
+        app:iconSpaceReserved="false">
+
+        <PreferenceScreen
+            android:title="@string/text_app_info"
+            app:iconSpaceReserved="false">
+
+        </PreferenceScreen>
+
+        <PreferenceScreen
+            android:title="@string/text_licence"
+            app:iconSpaceReserved="false">
+
+        </PreferenceScreen>
+
+    </PreferenceCategory>
+</PreferenceScreen>

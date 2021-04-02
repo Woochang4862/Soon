@@ -26,8 +26,8 @@ public class MovieDataRemoteSource implements MovieDataRemoteSourceContract.Mode
     }
 
     @Override
-    public void getThisMonthMovieResult(int page) {
-        APIClient.getClient().create(APIInterface.class).getThisMonthMovie(page).enqueue(new Callback<MovieResult>() {
+    public void getThisMonthMovieResult(String region, int page) {
+        APIClient.getClient().create(APIInterface.class).getThisMonthMovie(region, page).enqueue(new Callback<MovieResult>() {
             @Override
             public void onResponse(Call<MovieResult> call, Response<MovieResult> response) {
                 onFinishedListener.onFinished(response.body());
@@ -41,8 +41,8 @@ public class MovieDataRemoteSource implements MovieDataRemoteSourceContract.Mode
     }
 
     @Override
-    public void discoverMovieWithDate(String date, int page){
-        APIClient.getClient().create(APIInterface.class).discoverMovieWithDate(date, page).enqueue(new Callback<MovieResult>() {
+    public void discoverMovieWithDate(String date, String region, int page){
+        APIClient.getClient().create(APIInterface.class).discoverMovieWithDate(date, region, page).enqueue(new Callback<MovieResult>() {
             @Override
             public void onResponse(Call<MovieResult> call, Response<MovieResult> response) {
                 onFinishedListener.onFinished(response.body());

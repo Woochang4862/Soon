@@ -5,6 +5,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -17,7 +18,7 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
     /**
      * 구글 토큰을 얻는 값입니다.
      * 아래 토큰은 앱이 설치된 디바이스에 대한 고유값으로 푸시를 보낼때 사용됩니다.
-     * **/
+     **/
 
     @Override
     public void onNewToken(String s) {
@@ -27,12 +28,14 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
 
     /**
      * 메세지를 받았을 경우 그 메세지에 대하여 구현하는 부분입니다.
-     * **/
+     **/
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        Log.d("####", "onMessageReceived: "+remoteMessage.getNotification());
+        Log.d("####", "onMessageReceived: " + remoteMessage.getNotification());
         if (remoteMessage != null && remoteMessage.getNotification() != null) {
-            sendNotification(remoteMessage);
+            if (PreferenceManager.getDefaultSharedPreferences(FirebaseInstanceIDService.this).getBoolean(getString(R.string.key_monthly_alarm), true)) {
+                sendNotification(remoteMessage);
+            }
         }
     }
 
@@ -40,7 +43,7 @@ public class FirebaseInstanceIDService extends FirebaseMessagingService {
     /**
      * remoteMessage 메세지 안애 getData와 getNotification이 있습니다.
      * 이부분은 차후 테스트 날릴때 설명 드리겠습니다.
-     * **/
+     **/
     private void sendNotification(RemoteMessage remoteMessage) {
 
         String title = remoteMessage.getNotification().getTitle();

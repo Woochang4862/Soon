@@ -18,6 +18,7 @@ import com.lusle.android.soon.Model.Schema.MovieResult;
 import com.lusle.android.soon.Model.Source.GenreDataRemoteSource;
 import com.lusle.android.soon.Model.Source.MovieDataRemoteSource;
 import com.lusle.android.soon.R;
+import com.lusle.android.soon.Util.Util;
 import com.lusle.android.soon.View.Alarm.AlarmSettingActivity;
 import com.lusle.android.soon.View.Detail.DetailActivity;
 
@@ -118,7 +119,7 @@ public class DatePresenter implements DateContract.Presenter, MovieDataRemoteSou
             genreModel.getGenreList();
         } else {
             view.showDialog(true);
-            movieModel.discoverMovieWithDate(date, adapterModel.getPage());
+            movieModel.discoverMovieWithDate(date, Util.getRegionCode(view.getContext()), adapterModel.getPage());
         }
     }
 
@@ -139,7 +140,7 @@ public class DatePresenter implements DateContract.Presenter, MovieDataRemoteSou
     @Override
     public void onFinished(ArrayList<Genre> genres) {
         adapterModel.setGenres(genres);
-        movieModel.discoverMovieWithDate(date, adapterModel.getPage());
+        movieModel.discoverMovieWithDate(date, Util.getRegionCode(view.getContext()), adapterModel.getPage());
     }
 
     @Override

@@ -27,4 +27,18 @@
     <string name="save">저장</string>
     <string name="search">검색어</string>
     <string name="speak_voice">말하세요</string>
+    <string name="text_alarm">알림</string>
+    <string name="key_monthly_alarm">key_monthly_alarm</string>
+    <string name="text_monthly_alarm">매월 영화 알림</string>
+    <string name="text_release_alarm">개봉 알림</string>
+    <string name="text_release_alarm_detail">자신이 등록한 개봉 알림을 설정할 수 있습니다</string>
+    <string name="text_company_alarm_detail">자신이 등록한 제작사 알림을 설정할 수 있습니다</string>
+    <string name="text_company_alarm">제작사 알림</string>
+    <string name="text_privacy">개인 정보</string>
+    <string name="text_region_setting">지역 설정</string>
+    <string name="key_region">key_region</string>
+    <string name="key_clear_search_history">key_clear_search_history</string>
+    <string name="text_clear_search_history">검색 기록 삭제</string>
+    <string name="text_app_info">앱 정보</string>
+    <string name="text_licence">약관</string>
 </resources>

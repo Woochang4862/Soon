@@ -88,7 +88,7 @@ public class CompanySearchFragment extends Fragment implements SearchActivity.On
         });
         adapter.setOnLoadMoreListener(() -> new Thread(() -> {
             APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
-            Call<CompanyResult> call = apiInterface.searchCompany(currentQuery, ++currentPage);
+            Call<CompanyResult> call = apiInterface.searchCompany(currentQuery, Util.getRegionCode(getContext()), ++currentPage);
             call.enqueue(new Callback<CompanyResult>() {
                 @Override
                 public void onResponse(Call<CompanyResult> call, Response<CompanyResult> response) {
@@ -131,7 +131,7 @@ public class CompanySearchFragment extends Fragment implements SearchActivity.On
         dialog.show();
         new Thread(() -> {
             APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
-            Call<CompanyResult> call = apiInterface.searchCompany(query, currentPage);
+            Call<CompanyResult> call = apiInterface.searchCompany(query, Util.getRegionCode(getContext()), currentPage);
             call.enqueue(new Callback<CompanyResult>() {
                 @Override
                 public void onResponse(Call<CompanyResult> call, Response<CompanyResult> response) {

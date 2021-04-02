@@ -18,11 +18,11 @@ public class AlarmViewHolder extends RecyclerView.ViewHolder {
     public ImageView poster;
     public TextView title, releaseDate, alarmDate, dateRemaining;
 
-    public AlarmViewHolder(@NonNull View itemView, OnAlarmItemClickListener onItemClickListener, ArrayList<Alarm> list) {
+    public AlarmViewHolder(@NonNull View itemView, OnAlarmItemClickListener onAlarmItemClickListener) {
         super(itemView);
         itemView.setOnClickListener(v -> {
-            if(onItemClickListener!=null){
-                onItemClickListener.onItemClick(v,getLayoutPosition(),list.get(getLayoutPosition()));
+            if(onAlarmItemClickListener!=null){
+                onAlarmItemClickListener.onItemClick(v,getLayoutPosition());
             }
         });
 

@@ -8,11 +8,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.lusle.android.soon.Adapter.Listener.OnBookButtonClickListener;
 import com.lusle.android.soon.Model.Schema.Genre;
 import com.lusle.android.soon.Model.Schema.Movie;
 import com.lusle.android.soon.R;
 import com.lusle.android.soon.Util.Util;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
@@ -42,6 +44,7 @@ public class AllSearchActivityMovieRecyclerViewAdapter extends BaseRecyclerAdapt
     public class SearchMovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public ImageView imageView;
+        public LottieAnimationView lav;
         public TextView title, adult, genre, overview, release;
         public Button bookBtn;
 
@@ -49,6 +52,7 @@ public class AllSearchActivityMovieRecyclerViewAdapter extends BaseRecyclerAdapt
             super(itemView);
             itemView.setOnClickListener(this);
             imageView = itemView.findViewById(R.id.movie_list_recyclerview_poster);
+            lav = itemView.findViewById(R.id.movie_list_recyclerview_poster_empty);
             title = itemView.findViewById(R.id.movie_list_recyclerView_title);
             adult = itemView.findViewById(R.id.movie_list_recyclerview_adult);
             genre = itemView.findViewById(R.id.movie_list_recyclerview_genre);
@@ -79,8 +83,21 @@ public class AllSearchActivityMovieRecyclerViewAdapter extends BaseRecyclerAdapt
                 .load("https://image.tmdb.org/t/p/w500" + list.get(position).getPosterPath())
                 .centerCrop()
                 .fit()
-                .error(R.drawable.ic_broken_image)
-                .into(((SearchMovieViewHolder) holder).imageView);
+                .into(((SearchMovieViewHolder) holder).imageView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        ((SearchMovieViewHolder) holder).imageView.setVisibility(View.VISIBLE);
+                        ((SearchMovieViewHolder) holder).lav.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        ((SearchMovieViewHolder) holder).imageView.setVisibility(View.GONE);
+                        ((SearchMovieViewHolder) holder).lav.setVisibility(View.VISIBLE);
+                        ((SearchMovieViewHolder) holder).lav.setProgress(0);
+                        ((SearchMovieViewHolder) holder).lav.playAnimation();
+                    }
+                });
 
 
         ((SearchMovieViewHolder) holder).title.setText(list.get(position).getTitle());
@@ -121,7 +138,7 @@ public class AllSearchActivityMovieRecyclerViewAdapter extends BaseRecyclerAdapt
                         onBookButtonClickListener.onBookButtonClicked(list.get(position));
                 });
             }
-        } catch (ParseException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             ((SearchMovieViewHolder) holder).bookBtn.setText("---");
             ((SearchMovieViewHolder) holder).bookBtn.setEnabled(false);

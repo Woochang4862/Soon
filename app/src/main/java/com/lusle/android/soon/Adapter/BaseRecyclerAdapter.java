@@ -36,7 +36,10 @@ public abstract class BaseRecyclerAdapter<ViewHolder extends RecyclerView.ViewHo
                     super.onScrolled(recyclerView, dx, dy);
                     totalItemCount = linearLayoutManager.getItemCount();
                     lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
-                    Log.d("onScrolled", "loading : "+loading+", totalItemCount : "+totalItemCount+", lastVisibleItem : "+lastVisibleItem+", visibleThreshold : "+visibleThreshold+" => "+String.valueOf(totalItemCount <= (lastVisibleItem + visibleThreshold)));
+                    Log.d("onScrolled", "loading : "+loading+
+                            ", totalItemCount : "+totalItemCount+
+                            ", lastVisibleItem : "+lastVisibleItem+
+                            ", visibleThreshold : "+visibleThreshold+" => "+ (totalItemCount <= (lastVisibleItem + visibleThreshold)));
                     if (!loading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
                         // End has been reached
                         // Do something

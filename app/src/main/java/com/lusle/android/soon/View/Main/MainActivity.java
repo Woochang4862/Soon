@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -14,27 +14,27 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.lusle.android.soon.R;
 import com.lusle.android.soon.View.BaseActivity;
-import com.lusle.android.soon.View.Search.SearchActivity;
 import com.lusle.android.soon.View.Main.Company.CompanyFragment;
 import com.lusle.android.soon.View.Main.Date.DateFragment;
 import com.lusle.android.soon.View.Main.Genre.GenreFragment;
-import com.lusle.android.soon.View.Main.Setting.SettingFragment;
+import com.lusle.android.soon.View.Main.Setting.PreferenceFragment;
 import com.lusle.android.soon.View.Main.ThisMonthMovie.ThisMonthMovieFragment;
-import com.lusle.android.soon.R;
+import com.lusle.android.soon.View.Search.SearchActivity;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity {
 
     private BottomNavigationView bottomNavigationView;
     private FloatingActionButton mSearchFab;
     private AdView adView;
+    private LottieAnimationView seasonEffectView;
 
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
@@ -47,7 +47,6 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
         init();
     }
 
@@ -136,7 +135,7 @@ public class MainActivity extends BaseActivity {
                     selectedFragment = DateFragment.newInstance();
                     break;
                 case R.id.settings:
-                    selectedFragment = SettingFragment.newInstance();
+                    selectedFragment = PreferenceFragment.newInstance();
                     break;
             }
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -150,6 +149,9 @@ public class MainActivity extends BaseActivity {
         transaction.commit();
 
         bottomNavigationView.getMenu().getItem(0).setChecked(true);
+
+        seasonEffectView = findViewById(R.id.season_effect);
+        setSeasonEffect();
     }
 
     @Override
@@ -175,5 +177,15 @@ public class MainActivity extends BaseActivity {
         intent.putExtra(SearchActivity.EXTRA_CIRCULAR_REVEAL_Y, revealY);
 
         ActivityCompat.startActivityForResult(this, intent, requestCode, options.toBundle());
+    }
+
+    public void setSeasonEffect() {
+        if (false) {
+            seasonEffectView.setVisibility(View.VISIBLE);
+            seasonEffectView.playAnimation();
+        } else {
+            seasonEffectView.setVisibility(View.GONE);
+            seasonEffectView.cancelAnimation();
+        }
     }
 }

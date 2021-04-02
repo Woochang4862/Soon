@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -152,6 +153,7 @@ public class AlarmSettingActivity extends BaseActivity implements DatePickerDial
             hiddenSection.setVisibility(View.VISIBLE);
             aSwitch = findViewById(R.id.alarm_switch);
             active = this.alarmData.isActive();
+            Log.d("AlarmSettingActivity", "binding: "+active+" "+alarmData.isActive());
             aSwitch.setChecked(active);
             aSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> active = isChecked);
             deleteBtn = findViewById(R.id.delete_btn);
