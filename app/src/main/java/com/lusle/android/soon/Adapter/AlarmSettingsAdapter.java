@@ -83,6 +83,6 @@ public class AlarmSettingsAdapter extends BaseRecyclerAdapter<RecyclerView.ViewH
 
     @Override
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        this.onAlarmItemClickListener = (v, pos) -> onItemClickListener.onItemClick(v,pos);
+        this.onAlarmItemClickListener = onItemClickListener::onItemClick;
     }
 }

@@ -18,8 +18,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".View.Main.MainActivity"
-            android:theme="@style/AppTheme">
+        <meta-data
+            android:name="android.app.default_searchable"
+            android:value="com.apkgetter.SearchResultsActivity" />
+
+        <activity android:name=".View.Main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

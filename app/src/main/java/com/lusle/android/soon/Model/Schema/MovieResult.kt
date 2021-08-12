@@ -18,7 +18,7 @@ data class MovieResult(
 
         @SerializedName("results")
         @Expose
-        val results: List<Movie>
+        val results: ArrayList<Movie>
 ) {
 
 }

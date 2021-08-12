@@ -11,8 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.lusle.android.soon.Adapter.Contract.CompanyAlarmSettingAdapterContract;
 import com.lusle.android.soon.Adapter.Holder.CompanyAlarmViewHolder;
 import com.lusle.android.soon.Adapter.Listener.OnItemClickListener;
@@ -79,25 +78,24 @@ public class CompanyAlarmSettingsAdapter extends BaseRecyclerAdapter<RecyclerVie
         companyAlarmViewHolder.companyAlarmActive.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                FirebaseInstanceId.getInstance().getInstanceId()
-                        .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                                if (!task.isSuccessful()) {
-                                    Log.w(TAG, "getInstanceId failed", task.getException());
-                                    return;
-                                }
+                FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
 
-                                // Get new Instance ID token
-                                String token = task.getResult().getToken();
+                        // Get new Instance ID token
+                        String token = task.getResult().toString();
 
-                                if (isChecked) {
-                                    presenter.addCompanyAlarm(token, list.get(position).getId().toString());
-                                } else {
-                                    presenter.removeCompanyAlarm(token, list.get(position).getId().toString());
-                                }
-                            }
-                        });
+                        if (isChecked) {
+                            presenter.addCompanyAlarm(token, list.get(position).getId().toString());
+                        } else {
+                            presenter.removeCompanyAlarm(token, list.get(position).getId().toString());
+                        }
+                    }
+                });
             }
         });
 

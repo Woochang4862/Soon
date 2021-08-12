@@ -8,14 +8,11 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
 import com.example.android.navigationadvancedsample.setupWithNavController
 import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.FirebaseApp
-import com.google.firebase.iid.FirebaseInstanceId
-import com.google.firebase.iid.InstanceIdResult
 import com.google.firebase.messaging.FirebaseMessaging
 import com.lusle.android.soon.R
 import com.lusle.android.soon.View.BaseActivity
@@ -64,7 +61,7 @@ class MainActivity : BaseActivity() {
                     if(currentNavController != null && currentNavController!!.value != null) {
                         val inflater = currentNavController!!.value!!.navInflater
                         val graph = inflater.inflate(R.navigation.navigation_home)
-                        graph.startDestination = R.id.thisMonthMovieFragment
+                        graph.setStartDestination(R.id.thisMonthMovieFragment)
                         currentNavController!!.value!!.graph = graph
                     }
                 }
@@ -72,7 +69,7 @@ class MainActivity : BaseActivity() {
                     if(currentNavController != null && currentNavController!!.value != null) {
                         val inflater = currentNavController!!.value!!.navInflater
                         val graph = inflater.inflate(R.navigation.navigation_company)
-                        graph.startDestination = R.id.companyFragment
+                        graph.setStartDestination(R.id.companyFragment)
                         currentNavController!!.value!!.graph = graph
                     }
                 }
@@ -80,7 +77,7 @@ class MainActivity : BaseActivity() {
                     if(currentNavController != null && currentNavController!!.value != null) {
                         val inflater = currentNavController!!.value!!.navInflater
                         val graph = inflater.inflate(R.navigation.navigation_genre)
-                        graph.startDestination = R.id.genreFragment
+                        graph.setStartDestination(R.id.genreFragment)
                         currentNavController!!.value!!.graph = graph
                     }
                 }
@@ -88,7 +85,7 @@ class MainActivity : BaseActivity() {
                     if(currentNavController != null && currentNavController!!.value != null) {
                         val inflater = currentNavController!!.value!!.navInflater
                         val graph = inflater.inflate(R.navigation.navigation_settings)
-                        graph.startDestination = R.id.preferenceFragment
+                        graph.setStartDestination(R.id.preferenceFragment)
                         currentNavController!!.value!!.graph = graph
                     }
                 }
@@ -104,19 +101,18 @@ class MainActivity : BaseActivity() {
         //MobileAds.initialize(this, "ca-app-pub-2329923322434251~4419072683");
         FirebaseApp.initializeApp(this)
         FirebaseMessaging.getInstance().subscribeToTopic("all")
-        FirebaseInstanceId.getInstance().instanceId
-                .addOnCompleteListener { task: Task<InstanceIdResult> ->
-                    if (!task.isSuccessful) {
-                        Log.w("FCM Token", "getInstanceId failed", task.exception)
-                        return@addOnCompleteListener
-                    }
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w("FCM Token", "getInstanceId failed", task.exception)
+                return@addOnCompleteListener
+            }
 
-                    // Get new Instance ID token
-                    val token = task.result.token
+            // Get new Instance ID token
+            val token = task.result.toString()
 
-                    // Log and toast
-                    Log.d("FCM Token", token)
-                }
+            // Log and toast
+            Log.d("FCM Token", token)
+        }
         searchFab = findViewById(R.id.floatingActionButton)
         searchFab.setOnClickListener(View.OnClickListener { view: View -> presentActivity(view) })
     }

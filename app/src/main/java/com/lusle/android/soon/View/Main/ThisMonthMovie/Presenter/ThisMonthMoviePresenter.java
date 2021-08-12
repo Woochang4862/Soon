@@ -1,7 +1,6 @@
 package com.lusle.android.soon.View.Main.ThisMonthMovie.Presenter;
 
 import com.lusle.android.soon.Adapter.Contract.MovieListRecyclerAdapterContract;
-import com.lusle.android.soon.Adapter.Listener.OnEmptyListener;
 import com.lusle.android.soon.Adapter.Listener.OnItemClickListener;
 import com.lusle.android.soon.Model.Contract.GenreDataRemoteSourceContract;
 import com.lusle.android.soon.Model.Contract.MovieDataRemoteSourceContract;
@@ -60,7 +59,7 @@ public class ThisMonthMoviePresenter implements ThisMonthMovieContract.Presenter
 
     @Override
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        adapterModel.setOnItemClickListener(onItemClickListener);
+        adapterView.setOnItemClickListener(onItemClickListener);
     }
 
     @Override
@@ -69,7 +68,7 @@ public class ThisMonthMoviePresenter implements ThisMonthMovieContract.Presenter
 
     @Override
     public void setOnLoadMoreListener() {
-        adapterModel.setOnLoadMoreListener(() -> {
+        adapterView.setOnLoadMoreListener(() -> {
             loadItems(adapterModel.getPage(), false);
         });
     }

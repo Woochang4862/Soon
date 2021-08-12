@@ -70,7 +70,7 @@ public class CompanyPresenter implements CompanyContract.Presenter, MovieDataRem
 
     @Override
     public void setOnLoadMoreListener() {
-        movieAdapterModel.setOnLoadMoreListener(() -> {
+        movieAdapterView.setOnLoadMoreListener(() -> {
             Log.d("TAG", "setOnLoadMoreListener: "+movieAdapterModel.getPage());
             loadItems(movieAdapterModel.getPage(), false);
         });
@@ -94,7 +94,7 @@ public class CompanyPresenter implements CompanyContract.Presenter, MovieDataRem
 
     @Override
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        movieAdapterModel.setOnItemClickListener(onItemClickListener);
+        movieAdapterView.setOnItemClickListener(onItemClickListener);
     }
 
     @Override

@@ -28,7 +28,6 @@ import com.google.gson.reflect.TypeToken;
 import com.lusle.android.soon.Model.Schema.Alarm;
 import com.lusle.android.soon.Model.Schema.Movie;
 import com.lusle.android.soon.R;
-import com.lusle.android.soon.View.BaseActivity;
 import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Type;

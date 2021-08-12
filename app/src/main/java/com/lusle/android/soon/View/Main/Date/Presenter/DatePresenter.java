@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.view.View;
 
 import com.lusle.android.soon.Adapter.Contract.MovieListRecyclerAdapterContract;
-import com.lusle.android.soon.Adapter.Listener.OnEmptyListener;
 import com.lusle.android.soon.Model.Contract.GenreDataRemoteSourceContract;
 import com.lusle.android.soon.Model.Contract.MovieDataRemoteSourceContract;
 import com.lusle.android.soon.Model.Schema.Genre;
@@ -53,7 +52,7 @@ public class DatePresenter implements DateContract.Presenter, MovieDataRemoteSou
 
     @Override
     public void setOnItemClickListener() {
-        adapterModel.setOnItemClickListener((v, position) -> {
+        adapterView.setOnItemClickListener((v, position) -> {
             Intent intent = new Intent(view.getContext(), DetailActivity.class);
             intent.putExtra("movie_id", adapterModel.getItem(position).getId());
             Pair<View, String> poster = Pair.create(v.findViewById(R.id.movie_list_recyclerview_poster), ViewCompat.getTransitionName(v.findViewById(R.id.movie_list_recyclerview_poster)));
@@ -68,7 +67,7 @@ public class DatePresenter implements DateContract.Presenter, MovieDataRemoteSou
 
     @Override
     public void setOnLoadMoreListener(String date) {
-        adapterModel.setOnLoadMoreListener(() -> loadItems(date, false));
+        adapterView.setOnLoadMoreListener(() -> loadItems(date, false));
     }
 
     @Override

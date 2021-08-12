@@ -20,7 +20,6 @@ import com.lusle.android.soon.Model.Schema.MovieResult;
 import com.lusle.android.soon.Util.Util;
 import com.lusle.android.soon.View.Dialog.MovieProgressDialog;
 import com.lusle.android.soon.R;
-import com.lusle.android.soon.View.Alarm.AlarmSettingActivity;
 import com.lusle.android.soon.View.BaseActivity;
 import com.lusle.android.soon.View.Detail.DetailActivity;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
@@ -92,9 +91,9 @@ public class MovieListActivity extends BaseActivity {
             startActivity(intent, options.toBundle());
         });
         adapter.setOnBookButtonClickListener(movie -> {
-            Intent intent = new Intent(this, AlarmSettingActivity.class);
+            /*Intent intent = new Intent(this, AlarmSettingActivity.class);
             intent.putExtra("movie_info", movie);
-            startActivity(intent);
+            startActivity(intent);*/
         });
         adapter.setOnEmptyListener(new OnEmptyListener() {
             @Override

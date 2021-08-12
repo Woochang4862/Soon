@@ -16,7 +16,7 @@ import com.airbnb.lottie.LottieAnimationView
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.switchmaterial.SwitchMaterial
-import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.messaging.FirebaseMessaging
 import com.lusle.android.soon.Adapter.CompanyAlarmSettingsAdapter
 import com.lusle.android.soon.Model.Contract.SubscribeCheckDataRemoteSourceContract
 import com.lusle.android.soon.Model.Source.CompanyAlarmManagerRemoteSource
@@ -78,17 +78,16 @@ class CompanyAlarmSettingFragment : Fragment(), CompanyAlarmSettingContractor.Vi
             e.printStackTrace()
         }
         playShimmer(true)
-        FirebaseInstanceId.getInstance().instanceId
-                .addOnCompleteListener(OnCompleteListener { task ->
-                    if (!task.isSuccessful) {
-                        Log.w("", "getInstanceId failed", task.exception)
-                        return@OnCompleteListener
-                    }
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w("", "getInstanceId failed", task.exception)
+                return@addOnCompleteListener
+            }
 
-                    // Get new Instance ID token
-                    val token = task.result.token
-                    presenter.checkSubscribedTopics(token)
-                })
+            // Get new Instance ID token
+            val token = task.result.toString()
+            presenter.checkSubscribedTopics(token)
+        }
         presenter.setOnFinishedListener(object : SubscribeCheckDataRemoteSourceContract.Model.OnFinishedListener {
             override fun onFinished(topics: ArrayList<String>) {
                 presenter.topics = topics

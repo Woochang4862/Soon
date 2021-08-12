@@ -2,13 +2,11 @@ package com.lusle.android.soon.View.Main.Company
 
 import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -16,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.hugocastelani.waterfalltoolbar.WaterfallToolbar
@@ -117,25 +115,24 @@ class ManageCompanyFragment : Fragment(), ManageCompanyListAdapter.OnItemManageL
     override fun onItemDismiss(deletedItem: Company, position: Int) {
         showUndoSnackBar(deletedItem, position)
         checkSaveBtn()
-        FirebaseInstanceId.getInstance().instanceId
-                .addOnCompleteListener(OnCompleteListener { task ->
-                    if (!task.isSuccessful) {
-                        Log.w("####", "getInstanceId failed", task.exception)
-                        return@OnCompleteListener
-                    }
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w("####", "getInstanceId failed", task.exception)
+                return@OnCompleteListener
+            }
 
-                    // Get new Instance ID token
-                    val token = task.result.token
-                    val body = HashMap<String, String>()
-                    body["company_id"] = deletedItem.id.toString()
-                    body["token"] = token
-                    APIClient.getClient().create(APIInterface::class.java).removeCompanyAlarm(body).enqueue(object : Callback<ResponseBody?> {
-                        override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {}
-                        override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
-                            t.printStackTrace()
-                        }
-                    })
-                })
+            // Get new Instance ID token
+            val token = task.result.toString()
+            val body = HashMap<String, String>()
+            body["company_id"] = deletedItem.id.toString()
+            body["token"] = token
+            APIClient.getClient().create(APIInterface::class.java).removeCompanyAlarm(body).enqueue(object : Callback<ResponseBody?> {
+                override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {}
+                override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+                    t.printStackTrace()
+                }
+            })
+        })
     }
 
     override fun onItemMove(fromPosition: Int, toPosition: Int) {

@@ -1,6 +1,5 @@
 package com.lusle.android.soon.Adapter;
 
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,16 +13,8 @@ import com.lusle.android.soon.Adapter.Holder.ProgressViewHolder;
 import com.lusle.android.soon.Model.Schema.Genre;
 import com.lusle.android.soon.Model.Schema.Movie;
 import com.lusle.android.soon.R;
-import com.lusle.android.soon.Util.Util;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,69 +57,7 @@ public class MovieListRecyclerViewAdapter extends BaseRecyclerAdapter<RecyclerVi
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof MovieViewHolder) {
-            Picasso
-                    .get()
-                    .load("https://image.tmdb.org/t/p/w500" + mList.get(position).getPosterPath())
-                    .centerCrop()
-                    .fit()
-                    .into(((MovieViewHolder) holder).imageView, new Callback() {
-                        @Override
-                        public void onSuccess() {
-                            ((MovieViewHolder) holder).imageView.setVisibility(View.VISIBLE);
-                            ((MovieViewHolder) holder).lav.setVisibility(View.GONE);
-                        }
-
-                        @Override
-                        public void onError(Exception e) {
-                            ((MovieViewHolder) holder).imageView.setVisibility(View.GONE);
-                            ((MovieViewHolder) holder).lav.setVisibility(View.VISIBLE);
-                            ((MovieViewHolder) holder).lav.setProgress(0);
-                            ((MovieViewHolder) holder).lav.playAnimation();
-                        }
-                    });
-
-
-            ((MovieViewHolder) holder).title.setText(mList.get(position).getTitle());
-            ((MovieViewHolder) holder).adult.setVisibility(mList.get(position).getAdult() ? View.VISIBLE : View.GONE);
-
-
-            ArrayList<String> genreList = new ArrayList<>();
-            for (Integer id : mList.get(position).getGenreIds()) {
-                genreList.add(this.genres.get(id));
-            }
-            ((MovieViewHolder) holder).genre.setText(TextUtils.join(",", genreList));
-
-            if (mList.get(position).getOverview().length() <= 40)
-                ((MovieViewHolder) holder).overview.setText(mList.get(position).getOverview());
-            else
-                ((MovieViewHolder) holder).overview.setText(mList.get(position).getOverview().substring(0, 41));
-            Log.d("DateFragment", ((MovieViewHolder) holder).overview.getText().toString());
-
-            ((MovieViewHolder) holder).release.setText("개봉일 : " + mList.get(position).getReleaseDate());
-
-
-            try {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                Date date = sdf.parse(mList.get(position).getReleaseDate());
-                Calendar releaseDate = new GregorianCalendar();
-                releaseDate.setTime(date);
-                int day = Util.calDDay(releaseDate);
-                if (day <= 0) {
-                    ((MovieViewHolder) holder).bookBtn.setEnabled(false);
-                    ((MovieViewHolder) holder).bookBtn.setText("개봉함");
-                } else {
-                    ((MovieViewHolder) holder).bookBtn.setEnabled(true);
-                    ((MovieViewHolder) holder).bookBtn.setText("DAY - " + day);
-                    ((MovieViewHolder) holder).bookBtn.setOnClickListener(v -> {
-                        if (onBookButtonClickListener != null)
-                            onBookButtonClickListener.onBookButtonClicked(mList.get(position));
-                    });
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                ((MovieViewHolder) holder).bookBtn.setText("---");
-                ((MovieViewHolder) holder).bookBtn.setEnabled(false);
-            }
+            ((MovieViewHolder) holder).bind(mList.get(position));
         } else {
             if (limit <= position) {
                 ((ProgressViewHolder) holder).progressBar.setVisibility(View.GONE);

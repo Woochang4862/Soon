@@ -35,4 +35,5 @@ class CompanyListAdapter(private val onItemClickListener: OnItemClickListener, p
     fun onEmpty() = onEmptyListener.onEmpty()
 
     fun onNotEmpty() = onEmptyListener.onNotEmpty()
+
 }
