@@ -33,6 +33,10 @@ public class CompanyAlarmSettingsAdapter extends BaseRecyclerAdapter<RecyclerVie
     private CompanyAlarmSettingContractor.Presenter presenter;
     private ArrayList<String> topics;
 
+    public CompanyAlarmSettingsAdapter(CompanyAlarmSettingContractor.Presenter presenter) {
+        this.presenter = presenter;
+    }
+
     public CompanyAlarmSettingsAdapter(CompanyAlarmSettingContractor.Presenter presenter, ArrayList<String> topics) {
         this.presenter = presenter;
         this.topics = topics;
@@ -97,6 +101,16 @@ public class CompanyAlarmSettingsAdapter extends BaseRecyclerAdapter<RecyclerVie
             }
         });
 
+    }
+
+    @Override
+    public ArrayList<String> getTopics() {
+        return topics;
+    }
+
+    @Override
+    public void setTopics(ArrayList<String> topics) {
+        this.topics = topics;
     }
 
     @Override

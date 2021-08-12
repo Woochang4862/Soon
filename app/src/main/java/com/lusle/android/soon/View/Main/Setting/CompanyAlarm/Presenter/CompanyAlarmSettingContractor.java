@@ -52,5 +52,9 @@ public interface CompanyAlarmSettingContractor {
         void addCompanyAlarm(String token, String topic);
 
         void removeCompanyAlarm(String token, String topic);
+
+        void setTopics(ArrayList<String> topics);
+
+        ArrayList<String> getTopics();
     }
 }

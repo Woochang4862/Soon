@@ -6,10 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".View.YoutubePlayer.YoutubePlayerActivity">
 
-    <com.google.android.youtube.player.YouTubePlayerView
+    <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
         android:id="@+id/youtube_player"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:transitionName="video"/>
+        android:transitionName="video"
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

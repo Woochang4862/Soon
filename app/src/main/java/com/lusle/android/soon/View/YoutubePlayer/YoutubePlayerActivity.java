@@ -2,16 +2,16 @@ package com.lusle.android.soon.View.YoutubePlayer;
 
 import android.os.Bundle;
 
-import com.google.android.youtube.player.YouTubeBaseActivity;
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerView;
 import com.lusle.android.soon.R;
+import com.lusle.android.soon.View.BaseActivity;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
-public class YoutubePlayerActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
+import androidx.annotation.NonNull;
 
-    private static final String API_KEY = "AIzaSyB0mE0W4sFxkT2eUlELg7AZwWRJgpvO8mo";
+public class YoutubePlayerActivity extends BaseActivity {
 
     private String VIDEO_ID;
 
@@ -23,75 +23,16 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements YouTub
         VIDEO_ID = getIntent().getStringExtra("VIDEO_ID");
 
         YouTubePlayerView youTubePlayerView = findViewById(R.id.youtube_player);
-        youTubePlayerView.initialize(API_KEY, this);
+        getLifecycle().addObserver(youTubePlayerView);
+
+        youTubePlayerView.enterFullScreen();
+
+        youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+            @Override
+            public void onReady(@NonNull YouTubePlayer youTubePlayer) {
+                youTubePlayer.loadVideo(VIDEO_ID, 0);
+                youTubePlayer.play();
+            }
+        });
     }
-
-    @Override
-    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored) {
-        /** add listeners to YouTubePlayer instance **/
-        youTubePlayer.setPlayerStateChangeListener(playerStateChangeListener);
-        youTubePlayer.setPlaybackEventListener(playbackEventListener);
-
-        /** Start buffering **/
-        if (!wasRestored) {
-            youTubePlayer.loadVideo(VIDEO_ID);
-            youTubePlayer.setFullscreen(true);
-        }
-    }
-
-    @Override
-    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-        DynamicToast.makeError(this, "동영상을 불러오지 못 했습니다").show();
-    }
-
-    private YouTubePlayer.PlaybackEventListener playbackEventListener = new YouTubePlayer.PlaybackEventListener() {
-
-        @Override
-        public void onBuffering(boolean arg0) {
-        }
-
-        @Override
-        public void onPaused() {
-        }
-
-        @Override
-        public void onPlaying() {
-        }
-
-        @Override
-        public void onSeekTo(int arg0) {
-        }
-
-        @Override
-        public void onStopped() {
-        }
-
-    };
-
-    private YouTubePlayer.PlayerStateChangeListener playerStateChangeListener = new YouTubePlayer.PlayerStateChangeListener() {
-
-        @Override
-        public void onAdStarted() {
-        }
-
-        @Override
-        public void onError(YouTubePlayer.ErrorReason arg0) {
-        }
-
-        @Override
-        public void onLoaded(String arg0) {
-        }
-
-        @Override
-        public void onLoading() {
-        }
-
-        @Override
-        public void onVideoEnded() {
-        }
-
-        @Override
-        public void onVideoStarted() {
-        }
-    };
 }

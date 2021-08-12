@@ -67,6 +67,16 @@ class CompanyAlarmSettingFragment : Fragment(), CompanyAlarmSettingContractor.Vi
         recyclerView = view.findViewById(R.id.company_alarm_list_recyclerView)
         layoutManager = LinearLayoutManager(requireContext())
         recyclerView.layoutManager = layoutManager
+        adapter = CompanyAlarmSettingsAdapter(presenter)
+        presenter.setAdapterView(adapter)
+        presenter.setAdapterModel(adapter)
+        presenter.setOnEmptyListener()
+        recyclerView.adapter = adapter
+        try {
+            recyclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
+        } catch (e:IllegalStateException){
+            e.printStackTrace()
+        }
         playShimmer(true)
         FirebaseInstanceId.getInstance().instanceId
                 .addOnCompleteListener(OnCompleteListener { task ->
@@ -81,12 +91,7 @@ class CompanyAlarmSettingFragment : Fragment(), CompanyAlarmSettingContractor.Vi
                 })
         presenter.setOnFinishedListener(object : SubscribeCheckDataRemoteSourceContract.Model.OnFinishedListener {
             override fun onFinished(topics: ArrayList<String>) {
-                adapter = CompanyAlarmSettingsAdapter(presenter, topics)
-                presenter.setAdapterView(adapter)
-                presenter.setAdapterModel(adapter)
-                presenter.setOnEmptyListener()
-                recyclerView.adapter = adapter
-                recyclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
+                presenter.topics = topics
                 presenter.loadItems()
                 playShimmer(false)
                 Util.runLayoutAnimation(recyclerView)
@@ -161,9 +166,11 @@ class CompanyAlarmSettingFragment : Fragment(), CompanyAlarmSettingContractor.Vi
         if (show) {
             shimmerFrameLayout.startShimmer()
             shimmerFrameLayout.visibility = View.VISIBLE
+            recyclerView.visibility = View.GONE
         } else {
             shimmerFrameLayout.stopShimmer()
             shimmerFrameLayout.visibility = View.GONE
+            recyclerView.visibility = View.VISIBLE
         }
     }
 }

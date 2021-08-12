@@ -11,6 +11,10 @@ public interface CompanyAlarmSettingAdapterContract {
     }
 
     interface Model extends BaseAdapterContract.Model {
+        ArrayList<String> getTopics();
+
+        void setTopics(ArrayList<String> topics);
+
         void setList(ArrayList<Company> list);
         void setPresenter(CompanyAlarmSettingPresenter presenter);
     }

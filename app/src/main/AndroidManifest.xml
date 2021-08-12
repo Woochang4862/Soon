@@ -47,7 +47,9 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".View.YoutubePlayer.YoutubePlayerActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme.Transparent"
+            android:screenOrientation="landscape"
+            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"/>
 
         <receiver
             android:name=".View.Alarm.AlarmReceiver"

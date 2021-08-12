@@ -85,7 +85,7 @@ dependencies {
     implementation 'io.github.inflationx:calligraphy3:3.1.1'
     implementation 'io.github.inflationx:viewpump:2.0.3'
     implementation 'com.github.sundeepk:compact-calendar-view:3.0.0'
-    implementation 'com.github.davidmigloz:youtube-android-player-api-gradle:1.2.2.1'
+    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
     implementation 'androidx.preference:preference-ktx:1.1.1'
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
 
@@ -98,6 +98,9 @@ dependencies {
 
     // CountryPicker
     implementation 'io.michaelrocks:libphonenumber-android:8.12.17'
+
+    //Play Core Library
+    implementation 'com.google.android.play:core-ktx:1.8.1'
 
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
 }

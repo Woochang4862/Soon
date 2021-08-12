@@ -96,6 +96,16 @@ public class CompanyAlarmSettingPresenter implements CompanyAlarmSettingContract
     }
 
     @Override
+    public void setTopics(ArrayList<String> topics) {
+        adapterModel.setTopics(topics);
+    }
+
+    @Override
+    public ArrayList<String> getTopics() {
+        return adapterModel.getTopics();
+    }
+
+    @Override
     public void setOnFinishedListener(SubscribeCheckDataRemoteSourceContract.Model.OnFinishedListener onFinishedListener) {
         subscribeCheckModel.setOnFinishedListener(onFinishedListener);
     }
