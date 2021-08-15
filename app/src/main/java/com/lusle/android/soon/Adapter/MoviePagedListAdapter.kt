@@ -1,6 +1,5 @@
 package com.lusle.android.soon.Adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter

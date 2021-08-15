@@ -26,6 +26,7 @@
         app:backgroundTint="@color/colorPrimary"
         app:elevation="12dp"
         app:fabSize="normal"
+        android:layout_marginTop="5dp"
         app:srcCompat="@drawable/ic_search_white"
         android:contentDescription="@string/text_search" />
 

@@ -21,19 +21,17 @@ import com.airbnb.lottie.LottieAnimationView
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.lusle.android.soon.Adapter.Decoration.MovieItemDecoration
 import com.lusle.android.soon.Adapter.Listener.OnEmptyListener
-import com.lusle.android.soon.Adapter.Listener.OnItemClickListener
 import com.lusle.android.soon.Adapter.MoviePagedListAdapter
 import com.lusle.android.soon.Model.API.MovieApi
 import com.lusle.android.soon.Model.Schema.Movie
-import com.lusle.android.soon.Model.Source.MovieDataRemoteSource
 import com.lusle.android.soon.Model.Source.TMMPageKeyDataSource
 import com.lusle.android.soon.R
 import com.lusle.android.soon.Util.Util
 import com.lusle.android.soon.View.Detail.DetailActivity
-import com.lusle.android.soon.View.Dialog.MovieProgressDialog
 import com.lusle.android.soon.View.Main.ThisMonthMovie.Presenter.ThisMonthMovieContract
 import com.lusle.android.soon.View.Main.ThisMonthMovie.Presenter.ThisMonthMoviePresenter
 import com.pranavpandey.android.dynamic.toasts.DynamicToast
+import io.reactivex.disposables.Disposable
 
 class ThisMonthMovieFragment : Fragment(), ThisMonthMovieContract.View {
     private val movieApi = MovieApi.create()
@@ -45,9 +43,7 @@ class ThisMonthMovieFragment : Fragment(), ThisMonthMovieContract.View {
     private var layoutManager: GridLayoutManager? = null
     private lateinit var shimmerFrameLayout: ShimmerFrameLayout
     private lateinit var presenter: ThisMonthMoviePresenter
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
+    private lateinit var listDisposable: Disposable
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_this_month_movie, container, false)
@@ -86,7 +82,7 @@ class ThisMonthMovieFragment : Fragment(), ThisMonthMovieContract.View {
             }
         })
         recyclerView.adapter = adapter
-        builder.buildObservable()
+        listDisposable = builder.buildObservable()
                 .subscribe {
                     adapter!!.submitList(it)
                     shimmerFrameLayout.stopShimmer()
@@ -106,12 +102,13 @@ class ThisMonthMovieFragment : Fragment(), ThisMonthMovieContract.View {
 
     override fun onDestroy() {
         super.onDestroy()
+        if (listDisposable.isDisposed){
+            listDisposable.dispose()
+        }
         presenter.detachView()
     }
 
-    override fun showDialog(show: Boolean) {
-
-    }
+    override fun showDialog(show: Boolean) = Unit
 
     override fun runRecyclerViewAnimation() {
         Util.runLayoutAnimation(recyclerView)

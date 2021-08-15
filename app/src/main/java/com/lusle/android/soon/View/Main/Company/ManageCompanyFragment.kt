@@ -54,7 +54,7 @@ class ManageCompanyFragment : Fragment(), ManageCompanyListAdapter.OnItemManageL
         companyList.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
         val callback: ItemTouchHelper.Callback = SimpleItemTouchHelperCallback(favoriteListActivityRecyclerAdapter)
         mItemTouchHelper = ItemTouchHelper(callback)
-        mItemTouchHelper!!.attachToRecyclerView(companyList)
+        mItemTouchHelper?.attachToRecyclerView(companyList)
         waterfallToolbar = view.findViewById(R.id.waterfallToolbar)
         waterfallToolbar.recyclerView = companyList
         saveBtn = view.findViewById(R.id.saveBtn)
@@ -62,21 +62,20 @@ class ManageCompanyFragment : Fragment(), ManageCompanyListAdapter.OnItemManageL
             val dialog = MovieProgressDialog(requireContext())
             dialog.show()
             val type = object : TypeToken<ArrayList<Company?>?>() {}.type
-            val list = Gson().toJson((companyList.adapter as ManageCompanyListAdapter?)!!.list, type)
+            val list = Gson().toJson((companyList.adapter as ManageCompanyListAdapter?)?.list, type)
             val pref = requireActivity().getSharedPreferences("pref", MODE_PRIVATE)
             val editor = pref.edit()
             editor.putString("favorite_company", list)
             editor.apply()
             dialog.dismiss()
             saveBtn.visibility = View.GONE
-            startList = (companyList.adapter as ManageCompanyListAdapter?)!!.list
+            startList = (companyList.adapter as ManageCompanyListAdapter?)?.list
         }
         if (!Util.bindingData(requireContext(), companyList, "FavoriteMore")) {
             DynamicToast.makeError(requireContext(), "즐겨찾기 정보를 불러 올 수 없습니다.").show()
         }
 
-        //TODO:캐스트 없이 잘 작동하는지 테스
-        startList = (companyList.adapter as ManageCompanyListAdapter?)!!.list
+        startList = (companyList.adapter as ManageCompanyListAdapter?)?.list?.clone() as ArrayList<Company>
     }
 
     /*override fun onBackPressed() {
@@ -94,17 +93,22 @@ class ManageCompanyFragment : Fragment(), ManageCompanyListAdapter.OnItemManageL
     }*/
 
     private fun showUndoSnackBar(deletedItem: Company, pos: Int) {
-        Snackbar.make(companyList, deletedItem.name + "이(가) 삭제되었습니다.", Snackbar.LENGTH_LONG)
-                .setAction("UNDO") { (companyList.adapter as ManageCompanyListAdapter?)!!.insertItem(deletedItem, pos) }.show()
+        Snackbar.make(requireView(), deletedItem.name + "이(가) 삭제되었습니다.", Snackbar.LENGTH_INDEFINITE)
+                .setAction("UNDO") {
+                    (companyList.adapter as ManageCompanyListAdapter?)?.insertItem(deletedItem, pos)
+                }
+                .setAnchorView(requireActivity().findViewById(R.id.floatingActionButton))
+                .setGestureInsetBottomIgnored(true)
+                .show()
     }
 
     private fun checkSaveBtn() {
-        saveBtn.visibility = if ((companyList.adapter as ManageCompanyListAdapter?)!!.list == startList) View.GONE else View.VISIBLE
+        saveBtn.visibility = if ((companyList.adapter as ManageCompanyListAdapter?)?.list == startList) View.GONE else View.VISIBLE
     }
 
     override fun onDragStarted(viewHolder: RecyclerView.ViewHolder?) {
         if (viewHolder != null) {
-            mItemTouchHelper!!.startDrag(viewHolder)
+            mItemTouchHelper?.startDrag(viewHolder)
         }
     }
 
