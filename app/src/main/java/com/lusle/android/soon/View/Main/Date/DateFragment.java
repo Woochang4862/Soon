@@ -21,7 +21,7 @@ import com.lusle.android.soon.Adapter.MoviePagedListAdapter;
 import com.lusle.android.soon.Model.Source.GenreDataRemoteSource;
 import com.lusle.android.soon.Model.Source.MovieDataRemoteSource;
 import com.lusle.android.soon.R;
-import com.lusle.android.soon.Util.Util;
+import com.lusle.android.soon.Util.Utils;
 import com.lusle.android.soon.View.Detail.DetailActivity;
 import com.lusle.android.soon.View.Dialog.MovieProgressDialog;
 import com.lusle.android.soon.View.Main.Date.Presenter.DateContract;
@@ -205,7 +205,7 @@ public class DateFragment extends Fragment implements DateContract.View {
 
     @Override
     public void runRecyclerViewAnimation() {
-        Util.runLayoutAnimation(mMovieList);
+        Utils.runLayoutAnimation(mMovieList);
     }
 
     @Override

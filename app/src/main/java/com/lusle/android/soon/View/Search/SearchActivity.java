@@ -125,6 +125,7 @@ public class SearchActivity extends BaseActivity {
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
+                s = s.trim();
                 if (s.equals("")) {
                     DynamicToast.makeWarning(SearchActivity.this, getString(R.string.please_input_query)).show();
                 } else {

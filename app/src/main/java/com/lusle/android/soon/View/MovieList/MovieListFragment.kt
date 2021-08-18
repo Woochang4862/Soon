@@ -6,20 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.navArgs
 import androidx.paging.DataSource
 import androidx.paging.PagedList
 import androidx.paging.RxPagedListBuilder
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
-import com.hugocastelani.waterfalltoolbar.WaterfallToolbar
 import com.lusle.android.soon.Adapter.Decoration.MovieItemDecoration
 import com.lusle.android.soon.Adapter.Listener.OnEmptyListener
 import com.lusle.android.soon.Adapter.MoviePagedListAdapter
@@ -30,7 +27,7 @@ import com.lusle.android.soon.Model.Schema.Movie
 import com.lusle.android.soon.Model.Source.CompanyPageKeyDataSource
 import com.lusle.android.soon.Model.Source.GenrePageKeyDataSource
 import com.lusle.android.soon.R
-import com.lusle.android.soon.Util.Util
+import com.lusle.android.soon.Util.Utils
 import com.lusle.android.soon.View.Detail.DetailActivity
 import com.lusle.android.soon.View.Main.Company.CompanyFragment.Companion.PAGE_SIZE
 
@@ -67,14 +64,14 @@ class MovieListFragment : Fragment() {
             keyword.text = genre!!.name
 
             factory = object : DataSource.Factory<Int, Movie>() {
-                override fun create(): DataSource<Int, Movie> = GenrePageKeyDataSource(movieApi = movieApi, region = Util.getRegionCode(requireContext()), genre!!.id)
+                override fun create(): DataSource<Int, Movie> = GenrePageKeyDataSource(movieApi = movieApi, region = Utils.getRegionCode(requireContext()), genre!!.id)
             }
         } else if (obj is Company) {
             company = obj
             keyword.text = company!!.name
 
             factory = object : DataSource.Factory<Int, Movie>() {
-                override fun create(): DataSource<Int, Movie> = CompanyPageKeyDataSource(movieApi = movieApi, region = Util.getRegionCode(requireContext()), company!!.id)
+                override fun create(): DataSource<Int, Movie> = CompanyPageKeyDataSource(movieApi = movieApi, region = Utils.getRegionCode(requireContext()), company!!.id)
             }
         }
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)

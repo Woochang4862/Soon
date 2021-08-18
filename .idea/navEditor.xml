@@ -182,6 +182,11 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
+                  <entry key="action_global_preferenceFragment">
+                    <value>
+                      <LayoutPositions />
+                    </value>
+                  </entry>
                   <entry key="alarmSettingFragment">
                     <value>
                       <LayoutPositions>
@@ -218,6 +223,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="licenseFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-362" />
+                            <option name="y" value="547" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="preferenceFragment">
                     <value>
                       <LayoutPositions>
@@ -235,6 +252,11 @@
                               </value>
                             </entry>
                             <entry key="action_preferenceFragment_to_companyAlarmSettingFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_preferenceFragment_to_licenseFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -257,6 +279,15 @@
                             <option name="x" value="-609" />
                             <option name="y" value="-315" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_releaseAlarmSettingFragment_to_alarmSettingFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>

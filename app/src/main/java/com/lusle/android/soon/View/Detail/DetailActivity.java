@@ -12,7 +12,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.lusle.android.soon.Util.Util;
+import com.lusle.android.soon.Util.Utils;
 import com.lusle.android.soon.View.BaseActivity;
 import com.lusle.android.soon.View.YoutubePlayer.YoutubePlayerActivity;
 import com.lusle.android.soon.Adapter.Listener.OnEmptyListener;
@@ -139,7 +139,7 @@ public class DetailActivity extends BaseActivity {
 
         Integer id = getIntent().getIntExtra("movie_id", -1);
 
-        APIClient.getClient().create(APIInterface.class).getMovieDetails(Util.getRegionCode(this), id).enqueue(new retrofit2.Callback<MovieDetail>() {
+        APIClient.getClient().create(APIInterface.class).getMovieDetails(Utils.getRegionCode(this), id).enqueue(new retrofit2.Callback<MovieDetail>() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(Call<MovieDetail> call, Response<MovieDetail> response) {

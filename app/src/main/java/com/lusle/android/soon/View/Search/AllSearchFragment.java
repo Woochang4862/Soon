@@ -6,12 +6,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.lusle.android.soon.Adapter.Listener.OnEmptyListener;
@@ -28,7 +26,7 @@ import com.lusle.android.soon.Model.Schema.CompanyResult;
 import com.lusle.android.soon.Model.Schema.GenreResult;
 import com.lusle.android.soon.View.Dialog.MovieProgressDialog;
 import com.lusle.android.soon.R;
-import com.lusle.android.soon.Util.Util;
+import com.lusle.android.soon.Util.Utils;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -40,6 +38,7 @@ import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.util.Pair;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import retrofit2.Call;
@@ -55,16 +54,13 @@ public class AllSearchFragment extends Fragment implements SearchActivity.OnQuer
     private RecyclerView companyRecyclerView, movieRecyclerView;
     private AllSearchActivityCompanyRecyclerViewAdapter companyAdapter;
     private AllSearchActivityMovieRecyclerViewAdapter movieAdapter;
-    private LinearLayoutManager companyLayoutManager, movieLayoutManager;
     private RelativeLayout companyMoreBtn, movieMoreBtn;
     private boolean isCompanyExpanded = false, isMovieExpanded = false;
-    private APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
+    private final APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
     private ArrayList<Company> companyExpandArrayList, companyCollapseArrayList;
     private ArrayList<Movie> movieExpandArrayList, movieCollapseArrayList;
-    private FrameLayout companyEmptyViewGroup;
-    private LottieAnimationView companyEmptyAnim;
-    private FrameLayout movieEmptyViewGroup;
-    private LottieAnimationView movieEmptyAnim;
+    private View topSpace, bottomSpace, middleSpace;
+    private MutableLiveData<Pair<Integer, Integer>> sectionVisibility;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,20 +77,36 @@ public class AllSearchFragment extends Fragment implements SearchActivity.OnQuer
 
         companySection = view.findViewById(R.id.company_section);
         movieSection = view.findViewById(R.id.movie_section);
+        topSpace = view.findViewById(R.id.top_space);
+        middleSpace = view.findViewById(R.id.middle_space);
+        bottomSpace = view.findViewById(R.id.bottom_space);
         companyResults = view.findViewById(R.id.company_results_more);
         movieResults = view.findViewById(R.id.movie_results_more);
         companyRecyclerView = view.findViewById(R.id.company_recyclerView);
         movieRecyclerView = view.findViewById(R.id.movie_recyclerView);
         companyMoreBtn = view.findViewById(R.id.company_more);
         movieMoreBtn = view.findViewById(R.id.movie_more);
-        companyEmptyViewGroup = view.findViewById(R.id.list_empty_view_company);
-        companyEmptyAnim = view.findViewById(R.id.list_empty_anim_company);
-        movieEmptyViewGroup = view.findViewById(R.id.list_empty_view_movie);
-        movieEmptyAnim = view.findViewById(R.id.list_empty_anim_movie);
 
+        companySection.setVisibility(View.GONE);
+        movieSection.setVisibility(View.GONE);
+        topSpace.setVisibility(View.GONE);
+        middleSpace.setVisibility(View.GONE);
+        bottomSpace.setVisibility(View.GONE);
 
-        companyLayoutManager = new LinearLayoutManager(getContext());
-        movieLayoutManager = new LinearLayoutManager(getContext());
+        sectionVisibility = new MutableLiveData<>(new Pair<>(View.GONE, View.GONE));
+        sectionVisibility.observe(getViewLifecycleOwner(), integerIntegerPair -> {
+            topSpace.setVisibility(integerIntegerPair.first);
+            middleSpace.setVisibility(integerIntegerPair.second);
+
+            if(integerIntegerPair.first == View.GONE && integerIntegerPair.second == View.GONE){
+                bottomSpace.setVisibility(View.GONE);
+            } else {
+                bottomSpace.setVisibility(View.VISIBLE);
+            }
+        });
+
+        LinearLayoutManager companyLayoutManager = new LinearLayoutManager(getContext());
+        LinearLayoutManager movieLayoutManager = new LinearLayoutManager(getContext());
 
         companyAdapter = new AllSearchActivityCompanyRecyclerViewAdapter();
         companyAdapter.setOnClickFavoriteListener(listTobeSaved -> {
@@ -109,16 +121,17 @@ public class AllSearchFragment extends Fragment implements SearchActivity.OnQuer
         companyAdapter.setOnEmptyListener(new OnEmptyListener() {
             @Override
             public void onEmpty() {
+                companySection.setVisibility(View.GONE);
+                sectionVisibility.postValue(getPairOfVisibilityOfSection());
+                companyMoreBtn.setVisibility(View.GONE);
                 companyRecyclerView.setVisibility(View.GONE);
-                companyEmptyViewGroup.setVisibility(View.VISIBLE);
-                companyEmptyAnim.playAnimation();
             }
 
             @Override
             public void onNotEmpty() {
                 companyRecyclerView.setVisibility(View.VISIBLE);
-                companyEmptyViewGroup.setVisibility(View.GONE);
-                if (companyEmptyAnim.isAnimating()) companyEmptyAnim.pauseAnimation();
+                companySection.setVisibility(View.VISIBLE);
+                sectionVisibility.postValue(getPairOfVisibilityOfSection());
             }
         });
         companyRecyclerView.setAdapter(companyAdapter);
@@ -129,15 +142,16 @@ public class AllSearchFragment extends Fragment implements SearchActivity.OnQuer
             @Override
             public void onEmpty() {
                 movieRecyclerView.setVisibility(View.GONE);
-                movieEmptyViewGroup.setVisibility(View.VISIBLE);
-                movieEmptyAnim.playAnimation();
+                movieSection.setVisibility(View.GONE);
+                sectionVisibility.postValue(getPairOfVisibilityOfSection());
+                movieMoreBtn.setVisibility(View.GONE);
             }
 
             @Override
             public void onNotEmpty() {
                 movieRecyclerView.setVisibility(View.VISIBLE);
-                movieEmptyViewGroup.setVisibility(View.GONE);
-                if (movieEmptyAnim.isAnimating()) movieEmptyAnim.pauseAnimation();
+                movieSection.setVisibility(View.VISIBLE);
+                sectionVisibility.postValue(getPairOfVisibilityOfSection());
             }
         });
         movieAdapter.setOnClickListener((v, i) -> {
@@ -167,13 +181,13 @@ public class AllSearchFragment extends Fragment implements SearchActivity.OnQuer
                 ((TextView) companyMoreBtn.findViewById(R.id.company_more_text)).setText("더 알아보기");
                 ((ImageView) companyMoreBtn.findViewById(R.id.company_more_image)).setImageDrawable(getResources().getDrawable(R.drawable.ic_expand_more));
                 companyAdapter.setList(companyCollapseArrayList);
-                Util.runLayoutAnimation(companyRecyclerView);
+                Utils.runLayoutAnimation(companyRecyclerView);
                 isCompanyExpanded = false;
             } else {
                 ((TextView) companyMoreBtn.findViewById(R.id.company_more_text)).setText("접기");
                 ((ImageView) companyMoreBtn.findViewById(R.id.company_more_image)).setImageDrawable(getResources().getDrawable(R.drawable.ic_expand_reverse));
                 companyAdapter.setList(companyExpandArrayList);
-                Util.runLayoutAnimation(companyRecyclerView);
+                Utils.runLayoutAnimation(companyRecyclerView);
                 isCompanyExpanded = true;
             }
         });
@@ -183,18 +197,22 @@ public class AllSearchFragment extends Fragment implements SearchActivity.OnQuer
                 ((TextView) movieMoreBtn.findViewById(R.id.movie_more_text)).setText("더 알아보기");
                 ((ImageView) movieMoreBtn.findViewById(R.id.movie_more_image)).setImageDrawable(getResources().getDrawable(R.drawable.ic_expand_more));
                 movieAdapter.setList(movieCollapseArrayList);
-                Util.runLayoutAnimation(movieRecyclerView);
+                Utils.runLayoutAnimation(movieRecyclerView);
                 isMovieExpanded = false;
             } else {
                 ((TextView) movieMoreBtn.findViewById(R.id.movie_more_text)).setText("접기");
                 ((ImageView) movieMoreBtn.findViewById(R.id.movie_more_image)).setImageDrawable(getResources().getDrawable(R.drawable.ic_expand_reverse));
                 movieAdapter.setList(movieExpandArrayList);
-                Util.runLayoutAnimation(movieRecyclerView);
+                Utils.runLayoutAnimation(movieRecyclerView);
                 isMovieExpanded = true;
             }
         });
 
         return view;
+    }
+
+    private Pair<Integer, Integer> getPairOfVisibilityOfSection() {
+        return new Pair<>(companySection.getVisibility(), movieSection.getVisibility());
     }
 
     @Override
@@ -203,31 +221,31 @@ public class AllSearchFragment extends Fragment implements SearchActivity.OnQuer
         String list = pref.getString("favorite_company", "");
         Type type = new TypeToken<ArrayList<Company>>() {
         }.getType();
-        ArrayList<Company> tempList = new Gson().fromJson(list, type);
-        if (tempList == null) tempList = new ArrayList<>();
-        companyAdapter.setTempFavorite(tempList);
-        MovieProgressDialog dialog = new MovieProgressDialog(getContext());
-        dialog.show();
+        ArrayList<Company> favoriteCompanyList = new Gson().fromJson(list, type);
+        if (favoriteCompanyList == null) favoriteCompanyList = new ArrayList<>();
+        companyAdapter.setTempFavorite(favoriteCompanyList);
 
         companyAdapter.clear();
-        apiInterface.searchCompany(query, Util.getRegionCode(getContext()), 1).enqueue(new Callback<CompanyResult>() {
+        movieAdapter.clear();
+
+        MovieProgressDialog dialog = new MovieProgressDialog(getContext());
+        dialog.show();
+        apiInterface.searchCompany(query, Utils.getRegionCode(getContext()), 1).enqueue(new Callback<CompanyResult>() {
             @Override
-            public void onResponse(Call<CompanyResult> call, Response<CompanyResult> response) {
+            public void onResponse(@NonNull Call<CompanyResult> call, @NonNull Response<CompanyResult> response) {
                 CompanyResult result = response.body();
                 if (result.getTotalResults() == 0) {
-                    companySection.setVisibility(View.GONE);
-                } else if (result.getTotalResults() != 0 && result.getTotalResults() <= 3) {
-                    companySection.setVisibility(View.VISIBLE);
-                    companyAdapter.setList(result.getResults());
-                    companyResults.setText("총 " + result.getTotalResults() + "개의 결과 더보기");
-                } else if (result.getTotalResults() != 0) {
-                    companySection.setVisibility(View.VISIBLE);
-                    companyExpandArrayList = result.getResults();
-                    companyCollapseArrayList = new ArrayList<>();
-                    for (int i = 0; i < 3; i++)
-                        companyCollapseArrayList.add(result.getResults().get(i));
-                    companyAdapter.setList(companyCollapseArrayList);
-                    companyMoreBtn.setVisibility(View.VISIBLE);
+                    companyAdapter.onEmpty();
+                } else {
+                    companyAdapter.onNotEmpty();
+                    if (result.getTotalResults() <= 3) {
+                        companyAdapter.setList(result.getResults());
+                    } else {
+                        companyExpandArrayList = result.getResults();
+                        companyCollapseArrayList = new ArrayList<>(result.getResults().subList(0, 4));
+                        companyAdapter.setList(companyCollapseArrayList);
+                        companyMoreBtn.setVisibility(View.VISIBLE);
+                    }
                     companyResults.setText("총 " + result.getTotalResults() + "개의 결과 더보기");
                 }
                 companyAdapter.notifyDataSetChanged();
@@ -236,56 +254,52 @@ public class AllSearchFragment extends Fragment implements SearchActivity.OnQuer
 
             @Override
             public void onFailure(Call<CompanyResult> call, Throwable t) {
-                //TODO: Failure processing
                 companyAdapter.onEmpty();
                 dialog.dismiss();
             }
         });
 
-        MovieProgressDialog dialog1 = new MovieProgressDialog(getContext());
-        dialog1.show();
+        dialog.show();
         apiInterface.getGenreList().enqueue(new Callback<GenreResult>() {
             @Override
-            public void onResponse(Call<GenreResult> call, Response<GenreResult> response) {
+            public void onResponse(@NonNull Call<GenreResult> call, @NonNull Response<GenreResult> response) {
                 movieAdapter.setGenres(response.body().getGenres());
+                apiInterface.searchMovie(query, Utils.getRegionCode(getContext()), 1).enqueue(new Callback<MovieResult>() {
+                    @Override
+                    public void onResponse(@NonNull Call<MovieResult> call, @NonNull Response<MovieResult> response) {
+                        MovieResult result = response.body();
+                        if (result.getTotalResults() == 0) {
+                            movieAdapter.onEmpty();
+                        } else {
+                            movieAdapter.onNotEmpty();
+                            if (result.getTotalResults() <= 3) {
+                                movieAdapter.setList(result.getResults());
+                            } else {
+                                movieExpandArrayList = result.getResults();
+                                movieCollapseArrayList = new ArrayList<>(result.getResults().subList(0, 4));
+                                movieAdapter.setList(movieCollapseArrayList);
+                                movieMoreBtn.setVisibility(View.VISIBLE);
+                            }
+                            movieResults.setText("총 " + result.getTotalResults() + "개의 결과 더보기");
+                            movieAdapter.notifyDataSetChanged();
+                        }
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<MovieResult> call, @NonNull Throwable t) {
+                        companyAdapter.onEmpty();
+                        dialog.dismiss();
+                    }
+                });
             }
 
             @Override
-            public void onFailure(Call<GenreResult> call, Throwable t) {
+            public void onFailure(@NonNull Call<GenreResult> call, @NonNull Throwable t) {
                 companyAdapter.onEmpty();
-                dialog1.dismiss();
+                dialog.dismiss();
             }
         });
-        movieAdapter.clear();
-        apiInterface.searchMovie(query, Util.getRegionCode(getContext()), 1).enqueue(new Callback<MovieResult>() {
-            @Override
-            public void onResponse(Call<MovieResult> call, Response<MovieResult> response) {
-                MovieResult result = response.body();
-                if (result.getTotalResults() == 0) {
-                    movieSection.setVisibility(View.GONE);
-                } else if (result.getTotalResults() != 0 && result.getTotalResults() <= 3) {
-                    movieSection.setVisibility(View.VISIBLE);
-                    movieAdapter.setList(new ArrayList(result.getResults()));
-                    movieResults.setText("총 " + result.getTotalResults() + "개의 결과 더보기");
-                } else if (result.getTotalResults() != 0) {
-                    movieSection.setVisibility(View.VISIBLE);
-                    movieExpandArrayList = new ArrayList(result.getResults());
-                    movieCollapseArrayList = new ArrayList<>();
-                    for (int i = 0; i < 3; i++)
-                        movieCollapseArrayList.add(result.getResults().get(i));
-                    movieAdapter.setList(movieCollapseArrayList);
-                    movieMoreBtn.setVisibility(View.VISIBLE);
-                    movieResults.setText("총 " + result.getTotalResults() + "개의 결과 더보기");
-                }
-                movieAdapter.notifyDataSetChanged();
-                dialog1.dismiss();
-            }
 
-            @Override
-            public void onFailure(Call<MovieResult> call, Throwable t) {
-                companyAdapter.onEmpty();
-                dialog1.dismiss();
-            }
-        });
     }
 }

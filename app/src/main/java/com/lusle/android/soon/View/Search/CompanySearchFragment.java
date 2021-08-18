@@ -3,7 +3,6 @@ package com.lusle.android.soon.View.Search;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,7 @@ import com.lusle.android.soon.Model.Schema.Company;
 import com.lusle.android.soon.Model.Schema.CompanyResult;
 import com.lusle.android.soon.View.Dialog.MovieProgressDialog;
 import com.lusle.android.soon.R;
-import com.lusle.android.soon.Util.Util;
+import com.lusle.android.soon.Util.Utils;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
 import java.lang.reflect.Type;
@@ -88,7 +87,7 @@ public class CompanySearchFragment extends Fragment implements SearchActivity.On
         });
         adapter.setOnLoadMoreListener(() -> new Thread(() -> {
             APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
-            Call<CompanyResult> call = apiInterface.searchCompany(currentQuery, Util.getRegionCode(getContext()), ++currentPage);
+            Call<CompanyResult> call = apiInterface.searchCompany(currentQuery, Utils.getRegionCode(getContext()), ++currentPage);
             call.enqueue(new Callback<CompanyResult>() {
                 @Override
                 public void onResponse(Call<CompanyResult> call, Response<CompanyResult> response) {
@@ -131,7 +130,7 @@ public class CompanySearchFragment extends Fragment implements SearchActivity.On
         dialog.show();
         new Thread(() -> {
             APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
-            Call<CompanyResult> call = apiInterface.searchCompany(query, Util.getRegionCode(getContext()), currentPage);
+            Call<CompanyResult> call = apiInterface.searchCompany(query, Utils.getRegionCode(getContext()), currentPage);
             call.enqueue(new Callback<CompanyResult>() {
                 @Override
                 public void onResponse(Call<CompanyResult> call, Response<CompanyResult> response) {
@@ -139,7 +138,7 @@ public class CompanySearchFragment extends Fragment implements SearchActivity.On
                     adapter.setItemLimit(response.body().getTotalResults());
                     adapter.setList(list);
                     getActivity().runOnUiThread(() -> {
-                        Util.runLayoutAnimation(recyclerView);
+                        Utils.runLayoutAnimation(recyclerView);
                         dialog.dismiss();
                         currentQuery = query;
                     });

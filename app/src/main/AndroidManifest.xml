@@ -18,6 +18,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+            android:theme="@style/AppTheme.License" />
+
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
+            android:theme="@style/AppTheme.License" />
+
         <meta-data
             android:name="android.app.default_searchable"
             android:value="com.apkgetter.SearchResultsActivity" />

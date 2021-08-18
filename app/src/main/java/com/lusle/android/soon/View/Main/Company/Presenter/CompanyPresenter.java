@@ -12,7 +12,7 @@ import com.lusle.android.soon.Model.Schema.Movie;
 import com.lusle.android.soon.Model.Schema.MovieResult;
 import com.lusle.android.soon.Model.Source.FavoriteCompanyDataLocalSource;
 import com.lusle.android.soon.Model.Source.MovieDataRemoteSource;
-import com.lusle.android.soon.Util.Util;
+import com.lusle.android.soon.Util.Utils;
 
 import java.util.ArrayList;
 
@@ -56,16 +56,17 @@ public class CompanyPresenter implements CompanyContract.Presenter, MovieDataRem
 
     @Override
     public void loadItems() {
-        view.playShimmer(true);
-        view.playShimmer(false);
+        //view.playShimmer(true);
+        //view.playShimmer(false);
     }
 
     @Override
     public void loadItems(int page, boolean isSetting) {
-        if (view != null)
-            view.playShimmer(true);
+        if (view != null) {
+            //view.playShimmer(true);
+        }
         this.isSetting = isSetting;
-        movieModel.getThisMonthMovieResult(Util.getRegionCode(view.getContext()), movieAdapterModel.getPage());
+        movieModel.getThisMonthMovieResult(Utils.getRegionCode(view.getContext()), movieAdapterModel.getPage());
     }
 
     @Override
@@ -119,7 +120,7 @@ public class CompanyPresenter implements CompanyContract.Presenter, MovieDataRem
         movieAdapterView.onNotEmpty();
         movieAdapterView.setLoaded();
         if (view != null) {
-            view.playShimmer(false);
+            //view.playShimmer(false);
         }
     }
 
@@ -127,14 +128,14 @@ public class CompanyPresenter implements CompanyContract.Presenter, MovieDataRem
     public void onFinished(ArrayList<Genre> genres) {
         movieAdapterModel.setPage(1);
         if (view != null)
-            movieModel.getThisMonthMovieResult(Util.getRegionCode(view.getContext()), movieAdapterModel.getPage());
+            movieModel.getThisMonthMovieResult(Utils.getRegionCode(view.getContext()), movieAdapterModel.getPage());
     }
 
     @Override
     public void onFailure(Throwable t) {
         if (view != null) {
             view.showErrorToast();
-            view.playShimmer(false);
+            //view.playShimmer(false);
         }
         movieAdapterView.setLoaded();
         movieAdapterView.onEmpty();

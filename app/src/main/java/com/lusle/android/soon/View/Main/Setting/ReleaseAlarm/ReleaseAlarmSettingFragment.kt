@@ -18,7 +18,7 @@ import com.lusle.android.soon.Adapter.Listener.OnItemClickListener
 import com.lusle.android.soon.Adapter.ReleaseAlarmSettingsAdapter
 import com.lusle.android.soon.Model.Source.AlarmDataLocalSource
 import com.lusle.android.soon.R
-import com.lusle.android.soon.Util.Util
+import com.lusle.android.soon.Util.Utils
 import com.lusle.android.soon.View.Main.Setting.ReleaseAlarm.Presenter.ReleaseAlarmSettingContractor
 import com.lusle.android.soon.View.Main.Setting.ReleaseAlarm.Presenter.ReleaseAlarmSettingPresenter
 
@@ -75,7 +75,7 @@ class ReleaseAlarmSettingFragment : Fragment(), ReleaseAlarmSettingContractor.Vi
             reload()
         }
         presenter.loadItems()
-        Util.runLayoutAnimation(recyclerView)
+        Utils.runLayoutAnimation(recyclerView)
     }
 
     private fun setAlarmSwitch() {
@@ -92,7 +92,7 @@ class ReleaseAlarmSettingFragment : Fragment(), ReleaseAlarmSettingContractor.Vi
     private fun reload() {
         setAlarmSwitch()
         presenter.loadItems()
-        Util.runLayoutAnimation(recyclerView)
+        Utils.runLayoutAnimation(recyclerView)
     }
 
     override fun onResume() {

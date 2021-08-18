@@ -26,7 +26,7 @@ import com.lusle.android.soon.Model.API.MovieApi
 import com.lusle.android.soon.Model.Schema.Movie
 import com.lusle.android.soon.Model.Source.TMMPageKeyDataSource
 import com.lusle.android.soon.R
-import com.lusle.android.soon.Util.Util
+import com.lusle.android.soon.Util.Utils
 import com.lusle.android.soon.View.Detail.DetailActivity
 import com.lusle.android.soon.View.Main.ThisMonthMovie.Presenter.ThisMonthMovieContract
 import com.lusle.android.soon.View.Main.ThisMonthMovie.Presenter.ThisMonthMoviePresenter
@@ -61,7 +61,7 @@ class ThisMonthMovieFragment : Fragment(), ThisMonthMovieContract.View {
                 .build()
 
         val factory = object : DataSource.Factory<Int, Movie>() {
-            override fun create(): DataSource<Int, Movie> = TMMPageKeyDataSource(movieApi = movieApi, region = Util.getRegionCode(requireContext()))
+            override fun create(): DataSource<Int, Movie> = TMMPageKeyDataSource(movieApi = movieApi, region = Utils.getRegionCode(requireContext()))
         }
 
         val builder = RxPagedListBuilder(factory, config)
@@ -111,7 +111,7 @@ class ThisMonthMovieFragment : Fragment(), ThisMonthMovieContract.View {
     override fun showDialog(show: Boolean) = Unit
 
     override fun runRecyclerViewAnimation() {
-        Util.runLayoutAnimation(recyclerView)
+        Utils.runLayoutAnimation(recyclerView)
     }
 
     override fun getContext(): Context? {

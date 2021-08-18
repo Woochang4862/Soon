@@ -24,7 +24,7 @@ import com.lusle.android.soon.Model.API.APIInterface
 import com.lusle.android.soon.Model.Schema.Company
 import com.lusle.android.soon.R
 import com.lusle.android.soon.Util.ItemTouchHelper.SimpleItemTouchHelperCallback
-import com.lusle.android.soon.Util.Util
+import com.lusle.android.soon.Util.Utils
 import com.lusle.android.soon.View.Dialog.MovieProgressDialog
 import com.pranavpandey.android.dynamic.toasts.DynamicToast
 import okhttp3.ResponseBody
@@ -71,7 +71,7 @@ class ManageCompanyFragment : Fragment(), ManageCompanyListAdapter.OnItemManageL
             saveBtn.visibility = View.GONE
             startList = (companyList.adapter as ManageCompanyListAdapter?)?.list
         }
-        if (!Util.bindingData(requireContext(), companyList, "FavoriteMore")) {
+        if (!Utils.bindingData(requireContext(), companyList, "FavoriteMore")) {
             DynamicToast.makeError(requireContext(), "즐겨찾기 정보를 불러 올 수 없습니다.").show()
         }
 

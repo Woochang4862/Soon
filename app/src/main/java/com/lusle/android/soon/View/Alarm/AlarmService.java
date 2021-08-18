@@ -21,7 +21,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.lusle.android.soon.Model.Schema.Alarm;
 import com.lusle.android.soon.R;
-import com.lusle.android.soon.Util.Util;
+import com.lusle.android.soon.Util.Utils;
 import com.lusle.android.soon.View.Detail.DetailActivity;
 
 import java.lang.reflect.Type;
@@ -113,12 +113,12 @@ public class AlarmService extends Service {
             long[] pattern = {0, 1000, 0};
             NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
             bigText.bigText("자세히 보기");
-            bigText.setBigContentTitle(data.getMovie().getTitle() + "개봉일까지 " + Util.calDDay(releaseDate) + "일 전입니다");
+            bigText.setBigContentTitle(data.getMovie().getTitle() + "개봉일까지 " + Utils.calDDay(releaseDate) + "일 전입니다");
             bigText.setSummaryText("Soon");
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                     .setSmallIcon(R.mipmap.icon)
                     .setContentTitle(data.getMovie().getTitle())
-                    .setContentText("개봉일까지 " + Util.calDDay(releaseDate) + "일 전입니다")
+                    .setContentText("개봉일까지 " + Utils.calDDay(releaseDate) + "일 전입니다")
                     .setPriority(Notification.PRIORITY_HIGH)
                     .setContentIntent(pi)
                     .setAutoCancel(true)

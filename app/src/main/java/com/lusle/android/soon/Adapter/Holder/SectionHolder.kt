@@ -26,7 +26,7 @@ import com.lusle.android.soon.Model.Schema.Section.Companion.VIEW_COMPANY
 import com.lusle.android.soon.Model.Schema.Section.Companion.VIEW_MOVIE
 import com.lusle.android.soon.Model.Source.TMMPageKeyDataSource
 import com.lusle.android.soon.R
-import com.lusle.android.soon.Util.Util
+import com.lusle.android.soon.Util.Utils
 import com.lusle.android.soon.View.Detail.DetailActivity
 import com.lusle.android.soon.View.Main.Company.ManageCompanyFragment
 import com.lusle.android.soon.View.Main.Company.CompanyFragment.Companion.PAGE_SIZE
@@ -60,7 +60,7 @@ class SectionHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val factory = object : DataSource.Factory<Int, Movie>() {
                 override fun create(): DataSource<Int, Movie> {
                     val movieApi = MovieApi.create()
-                    return TMMPageKeyDataSource(movieApi = movieApi, region = Util.getRegionCode(context))
+                    return TMMPageKeyDataSource(movieApi = movieApi, region = Utils.getRegionCode(context))
                 }
             }
 

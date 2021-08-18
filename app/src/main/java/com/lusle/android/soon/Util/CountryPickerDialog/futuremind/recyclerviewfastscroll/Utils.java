@@ -1,8 +1,12 @@
 package com.lusle.android.soon.Util.CountryPickerDialog.futuremind.recyclerviewfastscroll;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.View;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 public class Utils {
 

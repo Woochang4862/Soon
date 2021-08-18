@@ -1,38 +1,23 @@
 package com.lusle.android.soon.View.Main.Company
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
-import androidx.core.app.ActivityOptionsCompat
-import androidx.core.util.Pair
-import androidx.core.view.ViewCompat
-import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.airbnb.lottie.LottieAnimationView
-import com.facebook.shimmer.ShimmerFrameLayout
 import com.lusle.android.soon.Adapter.CompanyListAdapter
-import com.lusle.android.soon.Adapter.Decoration.MovieItemDecoration
 import com.lusle.android.soon.Adapter.Listener.OnEmptyListener
-import com.lusle.android.soon.Adapter.MovieListAdapter
 import com.lusle.android.soon.Model.API.MovieApi
 import com.lusle.android.soon.Model.Source.FavoriteCompanyDataLocalSource
 import com.lusle.android.soon.R
-import com.lusle.android.soon.Util.Util
-import com.lusle.android.soon.View.Detail.DetailActivity
 import com.lusle.android.soon.View.Main.Company.Presenter.CompanyContract
 import com.lusle.android.soon.View.Main.Company.Presenter.CompanyPresenter
 import com.pranavpandey.android.dynamic.toasts.DynamicToast
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 
 class CompanyFragment : Fragment(), CompanyContract.View {
     private val spanCount: Int = 2
@@ -42,15 +27,15 @@ class CompanyFragment : Fragment(), CompanyContract.View {
     private val movieApi: MovieApi = MovieApi.create()
     private lateinit var presenter: CompanyPresenter
     private lateinit var companyAdapter: CompanyListAdapter
-    private lateinit var movieAdapter: MovieListAdapter
-    private lateinit var shimmerFrameLayout: ShimmerFrameLayout
+    //private lateinit var movieAdapter: MovieListAdapter
+    //private lateinit var shimmerFrameLayout: ShimmerFrameLayout
     private lateinit var companyList: RecyclerView
-    private lateinit var movieList: RecyclerView
+    //private lateinit var movieList: RecyclerView
     private lateinit var manageButton: TextView
-    private lateinit var scrollView: NestedScrollView
+    //private lateinit var scrollView: NestedScrollView
     private lateinit var companyEmptyView: FrameLayout
-    private lateinit var movieEmptyView: FrameLayout
-    private lateinit var movieEmptyAnim: LottieAnimationView
+    //private lateinit var movieEmptyView: FrameLayout
+    //private lateinit var movieEmptyAnim: LottieAnimationView
 
     companion object {
         val PAGE_SIZE: Int = 20
@@ -74,7 +59,7 @@ class CompanyFragment : Fragment(), CompanyContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        shimmerFrameLayout = view.findViewById(R.id.shimmer)
+        //shimmerFrameLayout = view.findViewById(R.id.shimmer)
 
         // 등록 제작사 설정
         // CompanyStart
@@ -104,7 +89,7 @@ class CompanyFragment : Fragment(), CompanyContract.View {
         // 예정작 설정
         // MovieStart
         try {
-            movieEmptyView = view.findViewById(R.id.movie_empty_view)
+            /*movieEmptyView = view.findViewById(R.id.movie_empty_view)
             movieEmptyAnim = view.findViewById(R.id.movie_empty_anim)
             movieList = view.findViewById(R.id.movie_list)
             val layoutManager = GridLayoutManager(requireContext(), spanCount)
@@ -125,14 +110,14 @@ class CompanyFragment : Fragment(), CompanyContract.View {
                     setMovieRecyclerEmpty(false)
                 }
             })
-            movieList.adapter = movieAdapter
+            movieList.adapter = movieAdapter*/
         } catch (e: IllegalStateException) {
             e.printStackTrace()
         }
         // MovieEnd
 
         // PaginationStart
-        scrollView = view.findViewById(R.id.scroll_view)
+        /*scrollView = view.findViewById(R.id.scroll_view)
         scrollView.viewTreeObserver.addOnScrollChangedListener {
             val lastChildView = scrollView.getChildAt(scrollView.childCount - 1)
             val diff = (lastChildView.bottom - (scrollView.height + scrollView.scrollY))
@@ -168,20 +153,20 @@ class CompanyFragment : Fragment(), CompanyContract.View {
                     e.printStackTrace()
                 }
             }
-        }
+        }*/
         // PaginationEnd
 
         // BindStart
         FavoriteCompanyDataLocalSource.getInstance().getFavoriteCompany(context).apply {
             if (isEmpty()) {
                 companyAdapter.onEmpty()
-                movieAdapter.onEmpty()
+                //movieAdapter.onEmpty()
             } else {
                 companyAdapter.onNotEmpty()
                 companyAdapter.list.addAll(this)
                 companyAdapter.notifyDataSetChanged()
 
-                try {
+                /*try {
                     playShimmer(true)
                     val disposable = movieApi.discoverMovieWithCompany(this[0].id, Util.getRegionCode(requireContext()), 1).subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
@@ -206,7 +191,7 @@ class CompanyFragment : Fragment(), CompanyContract.View {
                             )
                 } catch (e: IllegalStateException) {
                     e.printStackTrace()
-                }
+                }*/
             }
         }
         // BindEnd
@@ -220,13 +205,13 @@ class CompanyFragment : Fragment(), CompanyContract.View {
         FavoriteCompanyDataLocalSource.getInstance().getFavoriteCompany(context).apply {
             if (isEmpty()) {
                 companyAdapter.onEmpty()
-                movieAdapter.onEmpty()
+                //movieAdapter.onEmpty()
             } else {
                 companyAdapter.onNotEmpty()
                 companyAdapter.list.addAll(this)
                 companyAdapter.notifyDataSetChanged()
 
-                try {
+                /*try {
                     playShimmer(true)
                     val disposable = movieApi.discoverMovieWithCompany(this[0].id, Util.getRegionCode(requireContext()), 1).subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
@@ -252,7 +237,7 @@ class CompanyFragment : Fragment(), CompanyContract.View {
                             )
                 } catch (e:IllegalStateException){
                     e.printStackTrace()
-                }
+                }*/
             }
         }
     }
@@ -270,7 +255,7 @@ class CompanyFragment : Fragment(), CompanyContract.View {
         }
     }
 
-    override fun playShimmer(show: Boolean) {
+    /*override fun playShimmer(show: Boolean) {
         if (show) {
             shimmerFrameLayout.startShimmer()
             shimmerFrameLayout.visibility = View.VISIBLE
@@ -278,7 +263,7 @@ class CompanyFragment : Fragment(), CompanyContract.View {
             shimmerFrameLayout.stopShimmer()
             shimmerFrameLayout.visibility = View.GONE
         }
-    }
+    }*/
 
     fun setCompanyRecyclerEmpty(visibility: Boolean) {
         if (visibility) {
@@ -292,7 +277,7 @@ class CompanyFragment : Fragment(), CompanyContract.View {
         }
     }
 
-    fun setMovieRecyclerEmpty(visibility: Boolean) {
+    /*fun setMovieRecyclerEmpty(visibility: Boolean) {
         // 프래그먼트 바로 전환시 에러
         if (visibility) {
             movieList.visibility = View.GONE
@@ -305,5 +290,5 @@ class CompanyFragment : Fragment(), CompanyContract.View {
             movieEmptyAnim.visibility = View.GONE
             if (movieEmptyAnim.isAnimating) movieEmptyAnim.pauseAnimation()
         }
-    }
+    }*/
 }

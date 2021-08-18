@@ -17,8 +17,7 @@ import com.lusle.android.soon.Adapter.Listener.OnEmptyListener
 import com.lusle.android.soon.Model.API.MovieApi
 import com.lusle.android.soon.Model.Source.GenreDataRemoteSource
 import com.lusle.android.soon.R
-import com.lusle.android.soon.Util.Util
-import com.lusle.android.soon.View.Dialog.MovieProgressDialog
+import com.lusle.android.soon.Util.Utils
 import com.lusle.android.soon.View.Main.Genre.Presenter.GenreContractor
 import com.lusle.android.soon.View.Main.Genre.Presenter.GenrePresenter
 import com.pranavpandey.android.dynamic.toasts.DynamicToast
@@ -63,7 +62,7 @@ class GenreFragment : Fragment(), GenreContractor.View {
         presenter.setAdapterModel(adapter)
         recyclerView.adapter = adapter
 
-        val disposable = MovieApi.create().getGenreList(Util.getRegionCode(requireContext()))
+        val disposable = MovieApi.create().getGenreList(Utils.getRegionCode(requireContext()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { result ->
@@ -76,7 +75,7 @@ class GenreFragment : Fragment(), GenreContractor.View {
     }
 
     override fun runRecyclerViewAnimation() {
-        Util.runLayoutAnimation(recyclerView)
+        Utils.runLayoutAnimation(recyclerView)
     }
 
     override fun showDialog(show: Boolean) {

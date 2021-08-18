@@ -15,7 +15,7 @@ import com.lusle.android.soon.Util.ItemTouchHelper.SimpleItemTouchHelperCallback
 import com.lusle.android.soon.Model.Schema.Company;
 import com.lusle.android.soon.View.Dialog.MovieProgressDialog;
 import com.lusle.android.soon.R;
-import com.lusle.android.soon.Util.Util;
+import com.lusle.android.soon.Util.Utils;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
 import java.lang.reflect.Type;
@@ -77,7 +77,7 @@ public class FavoriteListActivity extends AppCompatActivity implements FavoriteL
             startList = (ArrayList<Company>) ((FavoriteListActivityRecyclerAdapter) favoriteList.getAdapter()).getList().clone();
         });
 
-        if (!Util.bindingData(this, favoriteList, "FavoriteMore")) {
+        if (!Utils.bindingData(this, favoriteList, "FavoriteMore")) {
             DynamicToast.makeError(this, "즐겨찾기 정보를 불러 올 수 없습니다.").show();
         }
         startList = (ArrayList<Company>) ((FavoriteListActivityRecyclerAdapter) favoriteList.getAdapter()).getList().clone();

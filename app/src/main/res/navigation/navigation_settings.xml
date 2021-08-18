@@ -30,6 +30,13 @@
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out"/>
+        <!--<action
+            android:id="@+id/action_preferenceFragment_to_licenseFragment"
+            app:destination="@id/licenseFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"/>-->
     </fragment>
     <fragment
         android:id="@+id/appInfoFragment"
@@ -64,4 +71,9 @@
         app:exitAnim="@android:anim/fade_out"
         app:popEnterAnim="@android:anim/fade_in"
         app:popExitAnim="@android:anim/fade_out" />
+    <!--<fragment
+        android:id="@+id/licenseFragment"
+        android:name="com.lusle.android.soon.View.Main.Setting.License.LicenseFragment"
+        android:label="LicenseFragment"
+        tools:layout="@layout/fragment_license"/>-->
 </navigation>

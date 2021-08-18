@@ -13,7 +13,7 @@ import com.lusle.android.soon.Adapter.Listener.OnBookButtonClickListener;
 import com.lusle.android.soon.Model.Schema.Genre;
 import com.lusle.android.soon.Model.Schema.Movie;
 import com.lusle.android.soon.R;
-import com.lusle.android.soon.Util.Util;
+import com.lusle.android.soon.Util.Utils;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -125,7 +125,7 @@ public class AllSearchActivityMovieRecyclerViewAdapter extends BaseRecyclerAdapt
             Date date = sdf.parse(list.get(position).getReleaseDate());
             Calendar releaseDate = new GregorianCalendar();
             releaseDate.setTime(date);
-            int day = Util.calDDay(releaseDate);
+            int day = Utils.calDDay(releaseDate);
             if (day <= 0) {
                 ((SearchMovieViewHolder) holder).bookBtn.setEnabled(false);
                 ((SearchMovieViewHolder) holder).bookBtn.setText("개봉함");

@@ -17,7 +17,7 @@ import com.lusle.android.soon.Model.Schema.Company;
 import com.lusle.android.soon.Model.Schema.Genre;
 import com.lusle.android.soon.Model.Schema.GenreResult;
 import com.lusle.android.soon.Model.Schema.MovieResult;
-import com.lusle.android.soon.Util.Util;
+import com.lusle.android.soon.Util.Utils;
 import com.lusle.android.soon.View.Dialog.MovieProgressDialog;
 import com.lusle.android.soon.R;
 import com.lusle.android.soon.View.BaseActivity;
@@ -35,7 +35,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.lusle.android.soon.Util.Util.runLayoutAnimation;
+import static com.lusle.android.soon.Util.Utils.runLayoutAnimation;
 
 public class MovieListActivity extends BaseActivity {
 
@@ -129,7 +129,7 @@ public class MovieListActivity extends BaseActivity {
             }
         });
         if (genre != null) {
-            Call<MovieResult> call = apiInterface.discoverMovieWithGenre(genre.getId(), Util.getRegionCode(this), currPage);
+            Call<MovieResult> call = apiInterface.discoverMovieWithGenre(genre.getId(), Utils.getRegionCode(this), currPage);
             call.enqueue(new Callback<MovieResult>() {
                 @Override
                 public void onResponse(Call<MovieResult> call, Response<MovieResult> response) {
@@ -148,7 +148,7 @@ public class MovieListActivity extends BaseActivity {
             });
             adapter.setOnLoadMoreListener(() -> new Thread(() -> {
                 currPage++;
-                apiInterface.discoverMovieWithGenre(genre.getId(), Util.getRegionCode(this), currPage).enqueue(new Callback<MovieResult>() {
+                apiInterface.discoverMovieWithGenre(genre.getId(), Utils.getRegionCode(this), currPage).enqueue(new Callback<MovieResult>() {
                     @Override
                     public void onResponse(Call<MovieResult> call, Response<MovieResult> response) {
                         adapter.addItems(response.body().getResults());
@@ -165,7 +165,7 @@ public class MovieListActivity extends BaseActivity {
                 });
             }).start());
         } else {
-            Call<MovieResult> call = apiInterface.discoverMovieWithCompany(company.getId(), Util.getRegionCode(this), currPage);
+            Call<MovieResult> call = apiInterface.discoverMovieWithCompany(company.getId(), Utils.getRegionCode(this), currPage);
             call.enqueue(new Callback<MovieResult>() {
                 @Override
                 public void onResponse(Call<MovieResult> call, Response<MovieResult> response) {
@@ -184,7 +184,7 @@ public class MovieListActivity extends BaseActivity {
             });
             adapter.setOnLoadMoreListener(() -> new Thread(() -> {
                 currPage++;
-                apiInterface.discoverMovieWithCompany(company.getId(), Util.getRegionCode(this), currPage).enqueue(new Callback<MovieResult>() {
+                apiInterface.discoverMovieWithCompany(company.getId(), Utils.getRegionCode(this), currPage).enqueue(new Callback<MovieResult>() {
                     @Override
                     public void onResponse(Call<MovieResult> call, Response<MovieResult> response) {
                         adapter.addItems(response.body().getResults());

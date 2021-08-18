@@ -62,7 +62,7 @@
         app:tabIndicatorColor="@color/colorAccent"
         app:tabIndicatorFullWidth="false"
         app:tabTextColor="@color/white"
-        android:visibility="gone"
+        android:visibility="visible"
         android:background="@color/light_black">
 
         <com.google.android.material.tabs.TabItem
@@ -88,6 +88,7 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/activity_search_viewPager"
         android:layout_width="match_parent"
+        android:background="@color/light_black"
         android:layout_height="match_parent"
         android:layout_below="@id/activity_search_tabLayout">
     </androidx.viewpager.widget.ViewPager>

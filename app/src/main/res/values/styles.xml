@@ -14,6 +14,9 @@
         <item name="colorOnSecondary">@color/white</item>
     </style>
 
+    <style name="AppTheme.License" parent="Theme.MaterialComponents">
+    </style>
+
     <style name="SnackbarWithMargin" parent="Widget.MaterialComponents.Snackbar">
         <item name="android:layout_margin">10dp</item>
     </style>

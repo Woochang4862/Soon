@@ -4,33 +4,127 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import com.example.android.navigationadvancedsample.setupWithNavController
-import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.play.core.appupdate.AppUpdateInfo
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.AppUpdateType.IMMEDIATE
+import com.google.android.play.core.install.model.InstallStatus
+import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.FirebaseApp
 import com.google.firebase.messaging.FirebaseMessaging
 import com.lusle.android.soon.R
 import com.lusle.android.soon.View.BaseActivity
 import com.lusle.android.soon.View.Search.SearchActivity
 
+
 class MainActivity : BaseActivity() {
+    private val REQUEST_CODE_UPDATE: Int = 200
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var searchFab: FloatingActionButton
-    private val requestCode = 666
     private var currentNavController: LiveData<NavController>? = null
+    private var appUpdateManager: AppUpdateManager? = null
+    private var snackbarForProgressBar : Snackbar? = null
     private val TAG = MainActivity::class.java.simpleName
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         if(savedInstanceState == null){
             setUpBottomNavigationBar()
         }
+
+        appUpdateManager = AppUpdateManagerFactory.create(this)
+        appUpdateManager?.let {
+            it.registerListener { state ->
+                if (state.installStatus() == InstallStatus.DOWNLOADING) {
+                    val bytesDownloaded = state.bytesDownloaded()
+                    val totalBytesToDownload = state.totalBytesToDownload()
+                    snackbarForProgressBar?.setText("업데이트 중 ... (${(bytesDownloaded / totalBytesToDownload) * 100}%)")
+                }
+                if (state.installStatus() == InstallStatus.DOWNLOADED) {
+                    // After the update is downloaded, show a notification
+                    // and request user confirmation to restart the app.
+                    popupSnackbarForCompleteUpdate()
+                }
+            }
+            it.appUpdateInfo.addOnSuccessListener { appUpdateInfo: AppUpdateInfo ->
+                if(appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                        && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE))
+                {
+                    popupSnackbarForProgressBar()
+                    it.startUpdateFlowForResult(
+                            appUpdateInfo,
+                            AppUpdateType.FLEXIBLE,
+                            this,
+                            REQUEST_CODE_UPDATE
+                    )
+                }
+            }
+        }
+
         init()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == REQUEST_CODE_UPDATE){
+            if(resultCode != RESULT_OK){
+                Log.e("MY_APP", "Update flow failed! Result code: $resultCode")
+                snackbarForProgressBar?.dismiss()
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        appUpdateManager?.let {
+            it.appUpdateInfo
+                .addOnSuccessListener { appUpdateInfo ->
+                    // If the update is downloaded but not installed,
+                    // notify the user to complete the update.
+                    if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+                        popupSnackbarForCompleteUpdate()
+                    }
+                }
+        }
+
+    }
+
+    private fun popupSnackbarForCompleteUpdate() {
+        Snackbar.make(
+                findViewById(android.R.id.content),
+                "업데이트를 위한 다운로드가 완료되었습니다.",
+                Snackbar.LENGTH_INDEFINITE
+        ).apply {
+            anchorView = findViewById(R.id.floatingActionButton)
+            setAction("재시작") { appUpdateManager?.completeUpdate() }
+            show()
+        }
+    }
+
+    private fun popupSnackbarForProgressBar() {
+        Snackbar.make(
+                findViewById(android.R.id.content),
+                "업데이트 중 ... (0%)",
+                Snackbar.LENGTH_INDEFINITE
+        ).apply {
+            snackbarForProgressBar = this
+            anchorView = findViewById(R.id.floatingActionButton)
+            (view.findViewById<View>(com.google.android.material.R.id.snackbar_action).parent as ViewGroup).addView(ProgressBar(this@MainActivity))
+            show()
+        }
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -58,7 +152,7 @@ class MainActivity : BaseActivity() {
         bottomNavigationView.setOnNavigationItemReselectedListener {
             when(it.itemId){
                 R.id.home -> {
-                    if(currentNavController != null && currentNavController!!.value != null) {
+                    if (currentNavController != null && currentNavController!!.value != null) {
                         val inflater = currentNavController!!.value!!.navInflater
                         val graph = inflater.inflate(R.navigation.navigation_home)
                         graph.setStartDestination(R.id.thisMonthMovieFragment)
@@ -66,7 +160,7 @@ class MainActivity : BaseActivity() {
                     }
                 }
                 R.id.company -> {
-                    if(currentNavController != null && currentNavController!!.value != null) {
+                    if (currentNavController != null && currentNavController!!.value != null) {
                         val inflater = currentNavController!!.value!!.navInflater
                         val graph = inflater.inflate(R.navigation.navigation_company)
                         graph.setStartDestination(R.id.companyFragment)
@@ -74,7 +168,7 @@ class MainActivity : BaseActivity() {
                     }
                 }
                 R.id.genre -> {
-                    if(currentNavController != null && currentNavController!!.value != null) {
+                    if (currentNavController != null && currentNavController!!.value != null) {
                         val inflater = currentNavController!!.value!!.navInflater
                         val graph = inflater.inflate(R.navigation.navigation_genre)
                         graph.setStartDestination(R.id.genreFragment)
@@ -82,7 +176,7 @@ class MainActivity : BaseActivity() {
                     }
                 }
                 R.id.settings -> {
-                    if(currentNavController != null && currentNavController!!.value != null) {
+                    if (currentNavController != null && currentNavController!!.value != null) {
                         val inflater = currentNavController!!.value!!.navInflater
                         val graph = inflater.inflate(R.navigation.navigation_settings)
                         graph.setStartDestination(R.id.preferenceFragment)
@@ -98,7 +192,6 @@ class MainActivity : BaseActivity() {
     }
 
     private fun init() {
-        //MobileAds.initialize(this, "ca-app-pub-2329923322434251~4419072683");
         FirebaseApp.initializeApp(this)
         FirebaseMessaging.getInstance().subscribeToTopic("all")
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
@@ -114,7 +207,7 @@ class MainActivity : BaseActivity() {
             Log.d("FCM Token", token)
         }
         searchFab = findViewById(R.id.floatingActionButton)
-        searchFab.setOnClickListener(View.OnClickListener { view: View -> presentActivity(view) })
+        searchFab.setOnClickListener { view: View -> presentActivity(view) }
     }
 
     private fun presentActivity(view: View) {
@@ -124,6 +217,6 @@ class MainActivity : BaseActivity() {
         val intent = Intent(this, SearchActivity::class.java)
         intent.putExtra(SearchActivity.EXTRA_CIRCULAR_REVEAL_X, revealX)
         intent.putExtra(SearchActivity.EXTRA_CIRCULAR_REVEAL_Y, revealY)
-        ActivityCompat.startActivityForResult(this, intent, requestCode, options.toBundle())
+        ActivityCompat.startActivity(this, intent, options.toBundle())
     }
 }

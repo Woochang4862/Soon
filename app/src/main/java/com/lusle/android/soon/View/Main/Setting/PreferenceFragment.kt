@@ -1,22 +1,22 @@
 package com.lusle.android.soon.View.Main.Setting
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.provider.SearchRecentSuggestions
-import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.gson.Gson
 import com.lusle.android.soon.MySuggestionProvider
 import com.lusle.android.soon.R
 import com.lusle.android.soon.Util.CountryPickerDialog.CCPCountry
 import com.lusle.android.soon.Util.CountryPickerDialog.CountryCodeDialog
 import com.lusle.android.soon.Util.CountryPickerDialog.CountryCodePicker
-import com.lusle.android.soon.Util.Util
 
 /**
  * A simple [Fragment] subclass.
@@ -37,6 +37,14 @@ public class PreferenceFragment : PreferenceFragmentCompat() {
         setRegionPreference()
         setClearHistoryPreference()
         setUpAppInfoPreference()
+        setLincensePreference()
+    }
+
+    private fun setLincensePreference() {
+        findPreference<Preference>(getString(R.string.key_license))!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+            startActivity(Intent(requireContext(), OssLicensesMenuActivity::class.java))
+            false
+        }
     }
 
     private fun setUpAppInfoPreference() {

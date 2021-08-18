@@ -20,7 +20,7 @@ import com.lusle.android.soon.View.Detail.DetailActivity;
 import com.lusle.android.soon.Model.Schema.GenreResult;
 import com.lusle.android.soon.View.Dialog.MovieProgressDialog;
 import com.lusle.android.soon.R;
-import com.lusle.android.soon.Util.Util;
+import com.lusle.android.soon.Util.Utils;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
 import java.util.ArrayList;
@@ -91,7 +91,7 @@ public class MovieSearchFragment extends Fragment implements SearchActivity.OnQu
         });
         adapter.setOnLoadMoreListener(() -> new Thread(() -> {
             APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
-            Call<MovieResult> call = apiInterface.searchMovie(currentQuery, Util.getRegionCode(getContext()), ++currentPage);
+            Call<MovieResult> call = apiInterface.searchMovie(currentQuery, Utils.getRegionCode(getContext()), ++currentPage);
             call.enqueue(new Callback<MovieResult>() {
                 @Override
                 public void onResponse(Call<MovieResult> call, Response<MovieResult> response) {
@@ -148,7 +148,7 @@ public class MovieSearchFragment extends Fragment implements SearchActivity.OnQu
                     return;
                 }
             });
-            Call<MovieResult> call = apiInterface.searchMovie(query, Util.getRegionCode(getContext()), currentPage);
+            Call<MovieResult> call = apiInterface.searchMovie(query, Utils.getRegionCode(getContext()), currentPage);
             call.enqueue(new Callback<MovieResult>() {
                 @Override
                 public void onResponse(Call<MovieResult> call, Response<MovieResult> response) {
@@ -156,7 +156,7 @@ public class MovieSearchFragment extends Fragment implements SearchActivity.OnQu
                     adapter.setItemLimit(response.body().getTotalResults());
                     adapter.setList(list);
                     getActivity().runOnUiThread(() -> {
-                        Util.runLayoutAnimation(recyclerView);
+                        Utils.runLayoutAnimation(recyclerView);
                         dialog.dismiss();
                         currentQuery = query;
                     });

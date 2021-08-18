@@ -8,7 +8,7 @@ import com.lusle.android.soon.Model.Schema.Genre;
 import com.lusle.android.soon.Model.Schema.Movie;
 import com.lusle.android.soon.Model.Schema.MovieResult;
 import com.lusle.android.soon.Model.Source.MovieDataRemoteSource;
-import com.lusle.android.soon.Util.Util;
+import com.lusle.android.soon.Util.Utils;
 
 import java.util.ArrayList;
 
@@ -48,7 +48,7 @@ public class ThisMonthMoviePresenter implements ThisMonthMovieContract.Presenter
         if (view != null)
             view.showDialog(true);
         this.isSetting = isSetting;
-        movieModel.getThisMonthMovieResult(Util.getRegionCode(view.getContext()), adapterModel.getPage());
+        movieModel.getThisMonthMovieResult(Utils.getRegionCode(view.getContext()), adapterModel.getPage());
     }
 
     @Override
@@ -93,7 +93,7 @@ public class ThisMonthMoviePresenter implements ThisMonthMovieContract.Presenter
     public void onFinished(ArrayList<Genre> genres) {
         adapterModel.setPage(1);
         if (view != null)
-            movieModel.getThisMonthMovieResult(Util.getRegionCode(view.getContext()), adapterModel.getPage());
+            movieModel.getThisMonthMovieResult(Utils.getRegionCode(view.getContext()), adapterModel.getPage());
     }
 
     @Override

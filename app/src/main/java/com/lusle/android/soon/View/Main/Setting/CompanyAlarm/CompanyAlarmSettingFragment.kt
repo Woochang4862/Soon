@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
 import com.facebook.shimmer.ShimmerFrameLayout
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.firebase.messaging.FirebaseMessaging
 import com.lusle.android.soon.Adapter.CompanyAlarmSettingsAdapter
@@ -23,7 +22,7 @@ import com.lusle.android.soon.Model.Source.CompanyAlarmManagerRemoteSource
 import com.lusle.android.soon.Model.Source.FavoriteCompanyDataLocalSource
 import com.lusle.android.soon.Model.Source.SubscribeCheckDataRemoteSource
 import com.lusle.android.soon.R
-import com.lusle.android.soon.Util.Util
+import com.lusle.android.soon.Util.Utils
 import com.lusle.android.soon.View.Main.Setting.CompanyAlarm.Presenter.CompanyAlarmSettingContractor
 import com.lusle.android.soon.View.Main.Setting.CompanyAlarm.Presenter.CompanyAlarmSettingPresenter
 import java.util.*
@@ -93,7 +92,7 @@ class CompanyAlarmSettingFragment : Fragment(), CompanyAlarmSettingContractor.Vi
                 presenter.topics = topics
                 presenter.loadItems()
                 playShimmer(false)
-                Util.runLayoutAnimation(recyclerView)
+                Utils.runLayoutAnimation(recyclerView)
             }
 
             override fun onFailure(t: Throwable) {
@@ -124,7 +123,7 @@ class CompanyAlarmSettingFragment : Fragment(), CompanyAlarmSettingContractor.Vi
     private fun reload() {
         setAlarmSwitch()
         presenter.loadItems()
-        Util.runLayoutAnimation(recyclerView)
+        Utils.runLayoutAnimation(recyclerView)
     }
 
     override fun onResume() {

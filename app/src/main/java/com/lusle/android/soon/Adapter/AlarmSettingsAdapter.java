@@ -11,7 +11,7 @@ import com.lusle.android.soon.Adapter.Listener.OnItemClickListener;
 import com.lusle.android.soon.Model.Schema.Alarm;
 import com.lusle.android.soon.R;
 import com.lusle.android.soon.Util.CircleTransform;
-import com.lusle.android.soon.Util.Util;
+import com.lusle.android.soon.Util.Utils;
 import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
@@ -50,7 +50,7 @@ public class AlarmSettingsAdapter extends BaseRecyclerAdapter<RecyclerView.ViewH
         try {
             Calendar cal = Calendar.getInstance();
             cal.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(list.get(position).getMovie().getReleaseDate()));
-            alarmViewHolder.dateRemaining.setText(Util.calDDay(cal) + "");
+            alarmViewHolder.dateRemaining.setText(Utils.calDDay(cal) + "");
         } catch (ParseException e) {
             e.printStackTrace();
             alarmViewHolder.dateRemaining.setText("-");

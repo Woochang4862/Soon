@@ -67,4 +67,5 @@
     <string name="key_release_alarm">key_release_alarm</string>
     <string name="text_company_alarm">제작사 알림</string>
     <string name="text_release_alarm">개봉 알림</string>
+    <string name="key_license">key_license</string>
 </resources>

@@ -41,11 +41,9 @@
             android:key="@string/key_app_info"
             android:title="앱 정보"
             app:iconSpaceReserved="false" />
-        <!--<PreferenceScreen
-            android:title="라이센스"
-            app:iconSpaceReserved="false">
-
-        </PreferenceScreen>-->
-
+        <Preference
+            android:key="@string/key_license"
+            android:title="라이센스 정보"
+            app:iconSpaceReserved="false" />
     </PreferenceCategory>
 </PreferenceScreen>

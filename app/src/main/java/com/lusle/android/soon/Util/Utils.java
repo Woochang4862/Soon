@@ -22,6 +22,8 @@ import com.lusle.android.soon.R;
 import com.lusle.android.soon.Util.CountryPickerDialog.CCPCountry;
 import com.lusle.android.soon.Util.CountryPickerDialog.CountryCodePicker;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -30,7 +32,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class Util {
+public class Utils {
 
     public static boolean bindingData(Context context, RecyclerView recyclerView, String what) {
         Runnable runnable;
