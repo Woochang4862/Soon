@@ -30,12 +30,18 @@ import com.lusle.android.soon.Model.Schema.Movie;
 import com.lusle.android.soon.R;
 import com.squareup.picasso.Picasso;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Period;
+import org.joda.time.PeriodType;
+
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -106,11 +112,11 @@ public class AlarmSettingFragment extends Fragment implements DatePickerDialog.O
         saveBtn.setOnClickListener(v -> save());
         closeBtn.setOnClickListener(v -> findNavController(this).navigateUp());
         dateSection.setOnClickListener(v -> {
-            DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(), AlertDialog.THEME_DEVICE_DEFAULT_LIGHT, this, currentCal.get(Calendar.YEAR), currentCal.get(Calendar.MONTH), currentCal.get(Calendar.DAY_OF_MONTH));
+            DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(), AlertDialog.THEME_DEVICE_DEFAULT_DARK, this, currentCal.get(Calendar.YEAR), currentCal.get(Calendar.MONTH), currentCal.get(Calendar.DAY_OF_MONTH));
             datePickerDialog.show();
         });
         timeSection.setOnClickListener(v -> {
-            TimePickerDialog timePickerDialog = new TimePickerDialog(requireContext(), AlertDialog.THEME_DEVICE_DEFAULT_LIGHT, this, currentCal.get(Calendar.HOUR_OF_DAY), currentCal.get(Calendar.MINUTE), false);
+            TimePickerDialog timePickerDialog = new TimePickerDialog(requireContext(), AlertDialog.THEME_DEVICE_DEFAULT_DARK, this, currentCal.get(Calendar.HOUR_OF_DAY), currentCal.get(Calendar.MINUTE), false);
             timePickerDialog.show();
         });
         weekBtn.setOnClickListener(this);
@@ -126,16 +132,22 @@ public class AlarmSettingFragment extends Fragment implements DatePickerDialog.O
     }
 
     private void save() {
+        TimeZone tz = currentCal.getTimeZone();
+        DateTimeZone jodaTz = DateTimeZone.forID(tz.getID());
+        DateTime dateTime = new DateTime(currentCal.getTimeInMillis(), jodaTz);
+        DateTime now = DateTime.now();
+        long diff = now.getMillis() - dateTime.getMillis();
+        if (diff >= 0) {
+            Toast.makeText(requireContext(), "현재 시간 이후로 설정해 주세요", Toast.LENGTH_SHORT).show();
+            return;
+        }
         alarmData = new Alarm(movieData, currentCal.getTimeInMillis(), alarmData == null ? movieData.hashCode() : alarmData.getPendingIntentID(), active);
 
         requireContext().registerReceiver(new AlarmReceiver(), new IntentFilter());
 
-        Log.d("####", "save: "+alarmData);
-        Log.d("####", "save: "+alarmData.isActive());
+        Log.d("####", "save: " + alarmData);
         Intent intent = new Intent(requireContext(), AlarmReceiver.class);
-        Bundle args = new Bundle();
-        args.putSerializable("DATA", alarmData);
-        intent.putExtra("alarm_info", args);
+        intent.putExtra("alarm_info", alarmData);
         intent.addFlags(FLAG_INCLUDE_STOPPED_PACKAGES);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(requireContext(), alarmData.getPendingIntentID(), intent, 0);
@@ -148,7 +160,8 @@ public class AlarmSettingFragment extends Fragment implements DatePickerDialog.O
 
         am.set(AlarmManager.RTC_WAKEUP, currentCal.getTimeInMillis(), pendingIntent);
 
-        Type type = new TypeToken<ArrayList<Alarm>>(){}.getType();
+        Type type = new TypeToken<ArrayList<Alarm>>() {
+        }.getType();
 
         String json = mPrefs.getString("alarms", "");
         ArrayList<Alarm> alarms = new Gson().fromJson(json, type);
@@ -163,17 +176,24 @@ public class AlarmSettingFragment extends Fragment implements DatePickerDialog.O
         prefsEditor.apply();
 
         Toast.makeText(requireContext(), "알림이 설정되었습니다", Toast.LENGTH_SHORT).show();
-        findNavController(this).navigateUp();
+        try {
+            findNavController(this).navigateUp();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+            requireActivity().finish();
+        }
     }
 
     private void binding() {
         if (alarmData != null) {
             hiddenSection.setVisibility(View.VISIBLE);
             active = alarmData.isActive();
-            Log.d("#####", "binding: "+alarmData.isActive());
+            Log.d("#####", "binding: " + alarmData.isActive());
             aSwitch.setChecked(active);
-            aSwitch.setOnCheckedChangeListener((buttonView, isChecked) ->{ active = isChecked;
-                Log.d("#####", "setOnCheckedChangeListener: "+active);});
+            aSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                active = isChecked;
+                Log.d("#####", "setOnCheckedChangeListener: " + active);
+            });
             deleteBtn.setOnClickListener(v -> delete());
         }
 
@@ -186,7 +206,7 @@ public class AlarmSettingFragment extends Fragment implements DatePickerDialog.O
         if (!movieData.getReleaseDate().equals("")) {
             try {
                 releaseDate.setText(dateFormat.format(formatD.parse(movieData.getReleaseDate())));
-                if(alarmData == null) {
+                if (alarmData == null) {
                     date.setText(dateFormat.format(formatD.parse(movieData.getReleaseDate())));
                     currentCal.setTime(formatD.parse(movieData.getReleaseDate()));
                     currentCal.set(Calendar.HOUR_OF_DAY, Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
@@ -213,7 +233,8 @@ public class AlarmSettingFragment extends Fragment implements DatePickerDialog.O
             PendingIntent pendingIntent = PendingIntent.getBroadcast(requireContext(), alarmData.getPendingIntentID(), intent, 0);
             am.cancel(pendingIntent);
 
-            Type type = new TypeToken<ArrayList<Alarm>>() {}.getType();
+            Type type = new TypeToken<ArrayList<Alarm>>() {
+            }.getType();
             String json = mPrefs.getString("alarms", "");
             ArrayList<Alarm> alarms = new Gson().fromJson(json, type);
             alarms.remove(this.alarmData);

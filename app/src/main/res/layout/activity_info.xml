@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="12.3dp"
+    android:paddingEnd="12.3dp"
+    android:scrollbars="none"
+    tools:context=".View.Detail.InfoActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/SoonAppTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:text="영화정보" />
+
+        <TextView
+            android:id="@+id/main_info"
+            fontPath="@string/NanumBarunGothicBold_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title"
+            android:layout_marginBottom="11dp"
+            android:includeFontPadding="false"
+            android:lineSpacingExtra="2.7sp"
+            android:text="주요 정보"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            tools:ignore="MissingPrefix" />
+
+        <TextView
+            android:id="@+id/vote_count"
+            fontPath="@string/NanumBarunGothic_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/main_info"
+            android:layout_marginBottom="5dp"
+            android:includeFontPadding="false"
+            android:text="100"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            tools:ignore="MissingPrefix" />
+
+        <TextView
+            android:id="@+id/vote_label"
+            fontPath="@string/NanumBarunGothic_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/main_info"
+            android:layout_marginBottom="5dp"
+            android:layout_toRightOf="@id/vote_count"
+            android:includeFontPadding="false"
+            android:text="명의 평균 점수"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            tools:ignore="MissingPrefix" />
+
+        <RatingBar
+            android:id="@+id/vote_average"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/vote_label"
+            android:layout_marginBottom="10dp"
+            android:isIndicator="true"
+            android:numStars="10" />
+
+        <TextView
+            android:id="@+id/vote_average_text"
+            fontPath="@string/NanumBarunGothic_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/vote_label"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toEndOf="@id/vote_average"
+            android:includeFontPadding="false"
+            android:text="0/10"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            tools:ignore="MissingPrefix" />
+
+        <TextView
+            android:id="@+id/genre_label"
+            fontPath="@string/NanumBarunGothic_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/vote_average"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="10dp"
+            android:includeFontPadding="false"
+            android:text="장르 : "
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            tools:ignore="MissingPrefix" />
+
+        <TextView
+            android:id="@+id/genre"
+            fontPath="@string/NanumBarunGothic_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/vote_average"
+            android:layout_toRightOf="@id/genre_label"
+            android:includeFontPadding="false"
+            android:text="액션"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            tools:ignore="MissingPrefix" />
+
+        <TextView
+            android:id="@+id/release_date_label"
+            fontPath="@string/NanumBarunGothic_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/genre_label"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="10dp"
+            android:includeFontPadding="false"
+            android:text="개봉일 : "
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            tools:ignore="MissingPrefix" />
+
+        <TextView
+            android:id="@+id/release_date"
+            fontPath="@string/NanumBarunGothic_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/genre_label"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toRightOf="@id/release_date_label"
+            android:includeFontPadding="false"
+            android:text="2019-04-23"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            tools:ignore="MissingPrefix" />
+
+        <TextView
+            android:id="@+id/runtime_label"
+            fontPath="@string/NanumBarunGothic_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/release_date_label"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="10dp"
+            android:includeFontPadding="false"
+            android:text="상영시간 : "
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            tools:ignore="MissingPrefix" />
+
+        <TextView
+            android:id="@+id/runtime"
+            fontPath="@string/NanumBarunGothic_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/release_date_label"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toRightOf="@id/runtime_label"
+            android:includeFontPadding="false"
+            android:text="150분"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            tools:ignore="MissingPrefix" />
+
+        <TextView
+            android:id="@+id/overviewTitle"
+            fontPath="@string/NanumBarunGothic_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/runtime_label"
+            android:layout_marginBottom="10dp"
+            android:includeFontPadding="false"
+            android:lineSpacingExtra="2.7sp"
+            android:text="줄거리"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            tools:ignore="MissingPrefix" />
+
+        <TextView
+            android:id="@+id/overview"
+            fontPath="@string/NanumBarunGothic_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/overviewTitle"
+            android:layout_marginBottom="10dp"
+            android:includeFontPadding="false"
+            android:text="해당 정보 없음"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            tools:ignore="MissingPrefix" />
+
+        <TextView
+            android:id="@+id/collection_label"
+            style="@style/SoonAppContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/overview"
+            android:text="컬렉션" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/collection_recyclerview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/collection_label" />
+
+        <TextView
+            android:id="@+id/TMI"
+            fontPath="@string/NanumBarunGothicBold_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/collection_recyclerview"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="11dp"
+            android:includeFontPadding="false"
+            android:lineSpacingExtra="2.7sp"
+            android:text="기타 정보"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            tools:ignore="MissingPrefix" />
+
+        <TextView
+            android:id="@+id/homepage_label"
+            fontPath="@string/NanumBarunGothic_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/TMI"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="10dp"
+            android:includeFontPadding="false"
+            android:text="홈페이지 : "
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            tools:ignore="MissingPrefix" />
+
+        <TextView
+            android:id="@+id/homepage"
+            fontPath="@string/NanumBarunGothic_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/TMI"
+            android:layout_marginEnd="5dp"
+            android:linksClickable="true"
+            android:autoLink="web"
+            android:layout_marginBottom="10dp"
+            android:layout_toEndOf="@id/homepage_label"
+            android:includeFontPadding="false"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            tools:ignore="MissingPrefix" />
+
+        <TextView
+            android:id="@+id/revenue_label"
+            fontPath="@string/NanumBarunGothic_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/homepage_label"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="10dp"
+            android:includeFontPadding="false"
+            android:text="수익 : "
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            tools:ignore="MissingPrefix" />
+
+        <TextView
+            android:id="@+id/revenue"
+            fontPath="@string/NanumBarunGothic_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/homepage_label"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toRightOf="@id/revenue_label"
+            android:includeFontPadding="false"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            tools:ignore="MissingPrefix" />
+
+
+        <TextView
+            android:id="@+id/budget_label"
+            fontPath="@string/NanumBarunGothic_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/revenue_label"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="10dp"
+            android:includeFontPadding="false"
+            android:text="제작비 : "
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            tools:ignore="MissingPrefix" />
+
+        <TextView
+            android:id="@+id/budget"
+            fontPath="@string/NanumBarunGothic_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/revenue_label"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toRightOf="@id/budget_label"
+            android:includeFontPadding="false"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            tools:ignore="MissingPrefix" />
+
+        <TextView
+            android:id="@+id/original_lang_label"
+            fontPath="@string/NanumBarunGothic_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/budget_label"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="10dp"
+            android:includeFontPadding="false"
+            android:text="원어 : "
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            tools:ignore="MissingPrefix" />
+
+        <TextView
+            android:id="@+id/original_lang"
+            fontPath="@string/NanumBarunGothic_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/budget_label"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toRightOf="@id/original_lang_label"
+            android:includeFontPadding="false"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            tools:ignore="MissingPrefix" />
+
+        <TextView
+            android:id="@+id/original_title_label"
+            fontPath="@string/NanumBarunGothic_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/original_lang_label"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="10dp"
+            android:includeFontPadding="false"
+            android:text="원제 : "
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            tools:ignore="MissingPrefix" />
+
+        <TextView
+            android:id="@+id/original_title"
+            fontPath="@string/NanumBarunGothic_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/original_lang_label"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toRightOf="@id/original_title_label"
+            android:includeFontPadding="false"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            tools:ignore="MissingPrefix" />
+
+        <TextView
+            android:id="@+id/production_countries_label"
+            fontPath="@string/NanumBarunGothic_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/original_title_label"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="10dp"
+            android:includeFontPadding="false"
+            android:text="국가 : "
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            tools:ignore="MissingPrefix" />
+
+        <TextView
+            android:id="@+id/production_countries"
+            fontPath="@string/NanumBarunGothic_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/original_title_label"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toEndOf="@id/production_countries_label"
+            android:includeFontPadding="false"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            tools:ignore="MissingPrefix" />
+
+        <TextView
+            android:id="@+id/spoken_languages_label"
+            fontPath="@string/NanumBarunGothic_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/production_countries_label"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="10dp"
+            android:includeFontPadding="false"
+            android:text="언어 : "
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            tools:ignore="MissingPrefix" />
+
+        <TextView
+            android:id="@+id/spoken_languages"
+            fontPath="@string/NanumBarunGothic_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/production_countries_label"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toEndOf="@id/spoken_languages_label"
+            android:includeFontPadding="false"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            tools:ignore="MissingPrefix" />
+
+        <TextView
+            android:id="@+id/popularity_label"
+            fontPath="@string/NanumBarunGothic_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/spoken_languages_label"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="10dp"
+            android:includeFontPadding="false"
+            android:text="우선 순위 : "
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            tools:ignore="MissingPrefix" />
+
+        <TextView
+            android:id="@+id/popularity"
+            fontPath="@string/NanumBarunGothic_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/spoken_languages_label"
+            android:layout_marginBottom="10dp"
+            android:layout_toEndOf="@id/popularity_label"
+            android:includeFontPadding="false"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            tools:ignore="MissingPrefix" />
+
+        <TextView
+            android:id="@+id/priority_description"
+            fontPath="@string/NanumBarunGothic_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/popularity_label"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="10dp"
+            android:includeFontPadding="false"
+            android:text="@string/text_priority_description"
+            android:textColor="@color/grey"
+            android:textSize="12sp"
+            tools:ignore="MissingPrefix" />
+    </RelativeLayout>
+</ScrollView>

@@ -10,14 +10,14 @@ import com.lusle.android.soon.Adapter.Listener.OnItemClickListener
 import com.lusle.android.soon.Model.Schema.Movie
 import com.lusle.android.soon.R
 
-val diffItemCallback = object : DiffUtil.ItemCallback<Movie>() {
+val diffMovieItemCallback = object : DiffUtil.ItemCallback<Movie>() {
     override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean = oldItem.id == newItem.id
 
     override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean = oldItem.name.trim() == newItem.name.trim()
 
 }
 
-class MoviePagedListAdapter(private val onItemClickListener: OnItemClickListener, private val onEmptyListener: OnEmptyListener) : PagedListAdapter<Movie, MovieViewHolder>(diffItemCallback) {
+class MoviePagedListAdapter(private val onItemClickListener: OnItemClickListener, private val onEmptyListener: OnEmptyListener) : PagedListAdapter<Movie, MovieViewHolder>(diffMovieItemCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie_recyclerview, parent, false)

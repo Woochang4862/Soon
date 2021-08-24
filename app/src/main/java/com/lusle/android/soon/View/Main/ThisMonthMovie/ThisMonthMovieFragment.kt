@@ -83,11 +83,18 @@ class ThisMonthMovieFragment : Fragment(), ThisMonthMovieContract.View {
         })
         recyclerView.adapter = adapter
         listDisposable = builder.buildObservable()
-                .subscribe {
-                    adapter!!.submitList(it)
-                    shimmerFrameLayout.stopShimmer()
-                    shimmerFrameLayout.visibility = View.GONE
-                }
+                .subscribe(
+                        { result ->
+                            adapter?.let {
+                                it.submitList(result)
+                                shimmerFrameLayout.stopShimmer()
+                                shimmerFrameLayout.visibility = View.GONE
+                            }
+                        },
+                        { t: Throwable ->
+                            t.printStackTrace()
+                            adapter?.onEmpty()
+                        })
         layoutManager = GridLayoutManager(context, 2)
         recyclerView.layoutManager = layoutManager
         recyclerView.addItemDecoration(MovieItemDecoration(activity))
@@ -102,7 +109,7 @@ class ThisMonthMovieFragment : Fragment(), ThisMonthMovieContract.View {
 
     override fun onDestroy() {
         super.onDestroy()
-        if (listDisposable.isDisposed){
+        if (listDisposable.isDisposed) {
             listDisposable.dispose()
         }
         presenter.detachView()

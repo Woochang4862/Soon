@@ -59,7 +59,7 @@
                     tools:ignore="MissingPrefix" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/company_recyclerView"
+                    android:id="@+id/company_recyclerview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/company_title"
@@ -69,7 +69,7 @@
                     android:id="@+id/company_more"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_below="@+id/company_recyclerView"
+                    android:layout_below="@+id/company_recyclerview"
                     android:background="?attr/selectableItemBackground"
                     android:orientation="horizontal"
                     android:visibility="gone">

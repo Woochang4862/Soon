@@ -74,7 +74,7 @@ public class AlarmService extends Service {
 
     private Pair<Integer, Notification> startForegroundService() {
         Log.d("####", "startForegroundService: called");
-        Alarm data = (Alarm) intent.getBundleExtra("alarm_info").getSerializable("DATA");
+        Alarm data = (Alarm) intent.getSerializableExtra("alarm_info");
         if (data != null && data.isActive()) {
 
             Calendar releaseDate = Calendar.getInstance();

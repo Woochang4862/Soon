@@ -11,17 +11,19 @@
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
+        android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@mipmap/icon"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".View.Detail.InfoActivity"></activity>
+        <activity android:name=".View.Alarm.AlarmSettingActivity" />
+        <activity android:name=".View.MovieList.MovieListActivity" />
         <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
             android:theme="@style/AppTheme.License" />
-
         <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
             android:theme="@style/AppTheme.License" />
@@ -37,7 +39,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".View.Search.SearchActivity"
             android:launchMode="singleTop"
@@ -48,35 +49,53 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable_config" />
         </activity>
-
         <activity
             android:name=".View.Detail.DetailActivity"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".View.YoutubePlayer.YoutubePlayerActivity"
-            android:theme="@style/AppTheme.Transparent"
+            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
             android:screenOrientation="landscape"
-            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"/>
+            android:theme="@style/AppTheme.Transparent" />
 
         <receiver
             android:name=".View.Alarm.AlarmReceiver"
             android:enabled="true"
             android:exported="true">
-            <intent-filter>
-                <action android:name="com.lusle.android.soon.ALARM_START" />
+            <intent-filter android:priority="1">
+                <category android:name="android.intent.category.DEFAULT" />
+
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.intent.action.REBOOT" />
+                <action android:name="com.lusle.android.soon.ALARM_START" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".View.Alarm.AppRemovedReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_FULLY_REMOVED" />
+
+                <data android:scheme="package" />
             </intent-filter>
         </receiver>
 
         <service
+            android:name=".View.Alarm.AllCompanyAlarmRemoveService"
+            android:enabled="true"
+            android:exported="true" />
+        <service
             android:name=".View.Alarm.AlarmService"
             android:enabled="true"
             android:exported="false" />
-
         <service
             android:name=".View.Alarm.FirebaseInstanceIDService"
             android:exported="false">
@@ -94,7 +113,6 @@
         <meta-data
             android:name="android.app.default_searchable"
             android:value="com.apkgetter.SearchResultsActivity" />
-
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-2329923322434251~4419072683" />

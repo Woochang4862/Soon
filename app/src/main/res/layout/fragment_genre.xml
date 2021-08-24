@@ -22,18 +22,19 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@id/title">
 
             <com.facebook.shimmer.ShimmerFrameLayout
-                android:layout_width="match_parent"
                 android:id="@+id/shimmer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_content_list"
                 android:layout_marginEnd="@dimen/margin_content_list"
-                app:shimmer_auto_start="true"
-                android:layout_height="wrap_content">
+                android:visibility="gone"
+                app:shimmer_auto_start="true">
 
-                <include layout="@layout/layout_genre_shimmer"/>
+                <include layout="@layout/layout_genre_shimmer" />
 
             </com.facebook.shimmer.ShimmerFrameLayout>
 
@@ -44,29 +45,30 @@
                 android:layout_marginStart="@dimen/margin_content_list"
                 android:layout_marginEnd="@dimen/margin_content_list"
                 android:overScrollMode="never"
-                android:scrollbars="none" />
+                android:scrollbars="none"
+                android:visibility="gone" />
 
             <FrameLayout
                 android:id="@+id/list_empty_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone">
+                android:layout_height="100dp"
+                android:visibility="visible">
 
                 <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/list_empty_anim"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="80dp"
+                    android:layout_height="60dp"
                     android:layout_gravity="center"
-                    app:lottie_fileName="lottie/not_found.json"
+                    app:lottie_fileName="lottie/empty_movie.json"
                     app:lottie_loop="true"
-                    app:lottie_scale="0.2" />
+                    app:lottie_scale="1" />
 
                 <TextView
                     fontPath="@string/NanumBarunGothicBold_path"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="40dp"
                     android:text="@string/empty_text"
                     tools:ignore="MissingPrefix" />
             </FrameLayout>

@@ -65,12 +65,14 @@ class GenreFragment : Fragment(), GenreContractor.View {
         val disposable = MovieApi.create().getGenreList(Utils.getRegionCode(requireContext()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { result ->
+                .subscribe ({ result ->
+                    adapter.onNotEmpty()
                     adapter.setList(result.genres)
                     adapter.notifyAdapter()
-                    shimmerFrameLayout.stopShimmer()
-                    shimmerFrameLayout.visibility = View.GONE
-                }
+                }, { t:Throwable ->
+                    t.printStackTrace()
+                    adapter.onEmpty()
+                })
         return view
     }
 
@@ -98,6 +100,8 @@ class GenreFragment : Fragment(), GenreContractor.View {
             emptyAnim.visibility = View.GONE
             if (emptyAnim.isAnimating) emptyAnim.pauseAnimation()
         }
+        shimmerFrameLayout.stopShimmer()
+        shimmerFrameLayout.visibility = View.GONE
     }
 
     override fun onDestroy() {

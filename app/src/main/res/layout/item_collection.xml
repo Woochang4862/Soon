@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="120dp"
+    android:layout_height="170dp"
+    android:layout_marginStart="9dp"
+    android:layout_marginEnd="9dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/collection_poster"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@color/colorPrimary" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/error_image"
+            app:lottie_fileName="lottie/error_cloud.json"
+            app:lottie_loop="false"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/black"
+        android:alpha="0.5"
+        android:layout_height="match_parent"/>
+
+    <TextView
+        android:id="@+id/collection_name"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="3dp"
+        android:text="스타 워즈 시리즈"
+        android:autoSizeTextType="uniform"
+        android:layout_height="wrap_content"/>
+
+</FrameLayout>

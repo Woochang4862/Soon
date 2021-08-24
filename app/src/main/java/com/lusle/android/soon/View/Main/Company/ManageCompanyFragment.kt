@@ -34,12 +34,12 @@ import retrofit2.Response
 import java.util.*
 
 class ManageCompanyFragment : Fragment(), ManageCompanyListAdapter.OnItemManageListener {
+    private var undoSnackBar: Snackbar? = null
     private lateinit var waterfallToolbar: WaterfallToolbar
     private lateinit var companyList: RecyclerView
     private lateinit var saveBtn: TextView
     private var startList: ArrayList<Company>? = null
     private var mItemTouchHelper: ItemTouchHelper? = null
-    private var doubleBackToExitPressedOnce = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_manage_company, container, false)
@@ -61,6 +61,11 @@ class ManageCompanyFragment : Fragment(), ManageCompanyListAdapter.OnItemManageL
         saveBtn.setOnClickListener { _ : View? ->
             val dialog = MovieProgressDialog(requireContext())
             dialog.show()
+            undoSnackBar?.let {
+                if(it.isShown){
+                    it.dismiss()
+                }
+            }
             val type = object : TypeToken<ArrayList<Company?>?>() {}.type
             val list = Gson().toJson((companyList.adapter as ManageCompanyListAdapter?)?.list, type)
             val pref = requireActivity().getSharedPreferences("pref", MODE_PRIVATE)
@@ -71,6 +76,15 @@ class ManageCompanyFragment : Fragment(), ManageCompanyListAdapter.OnItemManageL
             saveBtn.visibility = View.GONE
             startList = (companyList.adapter as ManageCompanyListAdapter?)?.list
         }
+        if (!Utils.bindingData(requireContext(), companyList, "FavoriteMore")) {
+            DynamicToast.makeError(requireContext(), "즐겨찾기 정보를 불러 올 수 없습니다.").show()
+        }
+
+        startList = (companyList.adapter as ManageCompanyListAdapter?)?.list?.clone() as ArrayList<Company>
+    }
+
+    override fun onResume() {
+        super.onResume()
         if (!Utils.bindingData(requireContext(), companyList, "FavoriteMore")) {
             DynamicToast.makeError(requireContext(), "즐겨찾기 정보를 불러 올 수 없습니다.").show()
         }
@@ -93,17 +107,26 @@ class ManageCompanyFragment : Fragment(), ManageCompanyListAdapter.OnItemManageL
     }*/
 
     private fun showUndoSnackBar(deletedItem: Company, pos: Int) {
-        Snackbar.make(requireView(), deletedItem.name + "이(가) 삭제되었습니다.", Snackbar.LENGTH_INDEFINITE)
+        undoSnackBar = Snackbar.make(requireView(), deletedItem.name + "이(가) 삭제되었습니다.", Snackbar.LENGTH_INDEFINITE)
                 .setAction("UNDO") {
                     (companyList.adapter as ManageCompanyListAdapter?)?.insertItem(deletedItem, pos)
                 }
                 .setAnchorView(requireActivity().findViewById(R.id.floatingActionButton))
                 .setGestureInsetBottomIgnored(true)
-                .show()
+        undoSnackBar?.show()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        undoSnackBar?.let {
+            if(it.isShown){
+                it.dismiss()
+            }
+        }
     }
 
     private fun checkSaveBtn() {
-        saveBtn.visibility = if ((companyList.adapter as ManageCompanyListAdapter?)?.list == startList) View.GONE else View.VISIBLE
+        saveBtn.visibility = if ((companyList.adapter as ManageCompanyListAdapter).list == startList) View.GONE else View.VISIBLE
     }
 
     override fun onDragStarted(viewHolder: RecyclerView.ViewHolder?) {

@@ -99,4 +99,22 @@
         <item name="fontPath">@string/NanumBarunGothicBold_path</item>
     </style>
 
+    <style name="SoonAppContent">
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:lineSpacingExtra">2.7sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">16sp</item>
+        <item name="fontPath">@string/NanumBarunGothic_path</item>
+    </style>
+
+    <style name="SoonAppSubTitle">
+        <item name="android:layout_marginBottom">11dp</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:lineSpacingExtra">2.7sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">20sp</item>
+        <item name="fontPath">@string/NanumBarunGothicBold_path</item>
+    </style>
+
 </resources>

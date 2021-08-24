@@ -60,17 +60,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                app:lottie_fileName="lottie/not_found.json"
+                app:lottie_fileName="lottie/empty_notification.json"
                 app:lottie_loop="true"
-                app:lottie_scale="0.2" />
+                app:lottie_scale="1" />
 
             <TextView
                 fontPath="@string/NanumBarunGothicBold_path"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="30dp"
-                android:text="@string/empty_text"
+                android:layout_marginTop="50dp"
+                android:text="@string/empty_company_notification_text"
                 tools:ignore="MissingPrefix" />
         </FrameLayout>
 

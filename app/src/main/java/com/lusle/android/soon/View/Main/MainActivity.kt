@@ -18,7 +18,6 @@ import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
-import com.google.android.play.core.install.model.AppUpdateType.IMMEDIATE
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.FirebaseApp
@@ -75,6 +74,7 @@ class MainActivity : BaseActivity() {
 
         init()
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -149,7 +149,7 @@ class MainActivity : BaseActivity() {
 
         currentNavController = controller
 
-        bottomNavigationView.setOnNavigationItemReselectedListener {
+        bottomNavigationView.setOnItemReselectedListener {
             when(it.itemId){
                 R.id.home -> {
                     if (currentNavController != null && currentNavController!!.value != null) {

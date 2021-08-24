@@ -62,7 +62,7 @@
                     android:layout_marginBottom="12dp"
                     android:includeFontPadding="false"
                     android:text="보헤미안 렙소디"
-                    android:textSize="13dp"
+                    android:textSize="13sp"
                     android:transitionName="title"
                     tools:ignore="MissingPrefix" />
 
@@ -71,12 +71,12 @@
                     fontPath="@string/NanumBarunGothic_path"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toRightOf="@id/movie_list_recyclerView_title"
+                    android:layout_marginStart="5dp"
+                    android:layout_toEndOf="@id/movie_list_recyclerView_title"
                     android:includeFontPadding="false"
                     android:text="(청불)"
                     android:textColor="@android:color/holo_red_dark"
-                    android:textSize="13dp"
+                    android:textSize="13sp"
                     android:visibility="gone"
                     tools:ignore="MissingPrefix" />
             </RelativeLayout>
@@ -88,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:includeFontPadding="false"
                 android:text="액션, 애니메이션"
-                android:textSize="13dp"
+                android:textSize="13sp"
                 tools:ignore="MissingPrefix" />
 
             <TextView
@@ -99,6 +99,7 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="12dp"
                 android:includeFontPadding="false"
+                android:autoSizeTextType="uniform"
                 android:text="줄거리..."
                 android:textSize="13sp"
                 android:visibility="visible"
@@ -124,7 +125,7 @@
                 android:includeFontPadding="false"
                 android:text="Day-13"
                 android:textColor="@color/white"
-                android:textSize="13dp"
+                android:textSize="13sp"
                 tools:ignore="MissingPrefix" />
 
 

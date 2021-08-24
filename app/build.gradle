@@ -79,7 +79,6 @@ dependencies {
     //UI Dependencies Library
     implementation 'com.airbnb.android:lottie:3.6.0'
     implementation 'com.google.android.material:material:1.5.0-alpha02'
-    implementation 'com.jakewharton:butterknife:10.2.3'
     implementation 'com.pranavpandey.android:dynamic-toasts:2.2.0'
     implementation 'com.github.hugocastelani:waterfall-toolbar:0.5.0'
     implementation 'com.skyfishjy.ripplebackground:library:1.0.1'
@@ -107,7 +106,9 @@ dependencies {
     //License
     implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
 
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
+    // Datetime
+    implementation 'joda-time:joda-time:2.10.10'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

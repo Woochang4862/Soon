@@ -15,6 +15,8 @@
     <string name="view_pager_bottom_sheet_behavior">com.lusle.android.soon.ViewPagerBottomSheet.ViewPagerBottomSheetBehavior</string>
     <string name="activity_content_result_genre_label"><![CDATA[장르 >]]></string>
     <string name="empty_text">텅 비었습니다...</string>
+    <string name="empty_movie_notification_text">알림 받고 싶은 영화를 찾아 추가해주세요!</string>
+    <string name="empty_company_notification_text">알림 받고 싶은 제작사를 찾아 추가해주세요!</string>
     <string name="all">전체</string>
     <string name="company">제작사</string>
     <string name="movie">영화</string>
@@ -68,4 +70,7 @@
     <string name="text_company_alarm">제작사 알림</string>
     <string name="text_release_alarm">개봉 알림</string>
     <string name="key_license">key_license</string>
+    <string name="text_priority_description">우선 순위란?<br />하루 투표 수, 하루 조회수, 좋아요를 누른 사람 수, 재생목록에 담은 사람 수, 개봉일, 전체 투표 수, 어제 점수를 총 집계한 점수</string>
+    <string name="text_vote_count">%d 명의 평균 점수</string>
+    <string name="text_vote_average">%d/10</string>
 </resources>

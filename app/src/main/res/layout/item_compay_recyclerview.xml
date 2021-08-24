@@ -4,22 +4,36 @@
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:layout_marginTop="10dp"
-    android:layout_marginBottom="10dp">
+    android:layout_marginBottom="10dp"
+    android:foreground="?attr/selectableItemBackground">
 
-    <ImageView
-        android:id="@+id/logo"
+    <FrameLayout
         android:layout_width="50dp"
-        android:layout_height="match_parent"
-        android:background="@drawable/background_white_circle"
-        android:layout_marginLeft="15dp" />
+        android:id="@+id/logo_section"
+        android:layout_marginLeft="15dp"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/background_white_circle" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/error_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:lottie_fileName="lottie/error_cloud.json"
+            app:lottie_loop="false" />
+    </FrameLayout>
 
     <TextView
         android:id="@+id/company_recyclerView_textView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:gravity="center"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/logo"
+        android:layout_toRightOf="@+id/logo_section"
+        android:gravity="center"
         android:text="" />
 
 

@@ -103,8 +103,15 @@ class MovieListFragment : Fragment() {
         })
         recyclerView.adapter = adapter
         val disposable = builder.buildObservable()
-                .subscribe {
-                    adapter.submitList(it)
-                }
+                .subscribe(
+                        {
+                            adapter.onNotEmpty()
+                            adapter.submitList(it)
+                        },
+                        { t: Throwable ->
+                            t.printStackTrace()
+                            adapter.onEmpty()
+                        }
+                )
     }
 }

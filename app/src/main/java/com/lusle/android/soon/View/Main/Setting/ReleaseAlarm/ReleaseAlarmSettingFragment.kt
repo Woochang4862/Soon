@@ -58,17 +58,18 @@ class ReleaseAlarmSettingFragment : Fragment(), ReleaseAlarmSettingContractor.Vi
         adapter = ReleaseAlarmSettingsAdapter()
         presenter.setAdapterView(adapter)
         presenter.setAdapterModel(adapter)
-        presenter.setOnItemClickListener(OnItemClickListener { _: View?, pos: Int ->
+        presenter.setOnItemClickListener { _: View?, pos: Int ->
             val args = Bundle()
             args.putSerializable("alarm_info", adapter.getItem(pos))
             findNavController().navigate(R.id.action_releaseAlarmSettingFragment_to_alarmSettingFragment, args)
-        })
+        }
         presenter.setOnEmptyListener()
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
         setAlarmSwitch()
         aSwitch.setOnClickListener {
             val alarms = presenter.alarms
+            if (alarms.isEmpty()) return@setOnClickListener
             for (alarm in alarms) alarm.isActive = aSwitch.isChecked
             presenter.alarms = alarms
             Toast.makeText(context, "알림이 " + if (aSwitch.isChecked) "전부 켜졌습니다" else "전부 꺼졌습니다", Toast.LENGTH_SHORT).show()

@@ -1,0 +1,634 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/black"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="10dp">
+
+        <!--주요정보-->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:foreground="?attr/selectableItemBackground"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="7dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/light_black"
+                android:padding="11dp">
+
+                <TextView
+                    android:id="@+id/mainTitle"
+                    fontPath="@string/NanumBarunGothicBold_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="11dp"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="2.7sp"
+                    android:text="주요 정보"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    tools:ignore="MissingPrefix" />
+
+                <TextView
+                    android:id="@+id/vote_count"
+                    fontPath="@string/NanumBarunGothic_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/mainTitle"
+                    android:layout_marginBottom="5dp"
+                    android:includeFontPadding="false"
+                    android:text="100"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    tools:ignore="MissingPrefix" />
+
+                <TextView
+                    android:id="@+id/vote_label"
+                    fontPath="@string/NanumBarunGothic_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/mainTitle"
+                    android:layout_marginBottom="5dp"
+                    android:layout_toRightOf="@id/vote_count"
+                    android:includeFontPadding="false"
+                    android:text="명의 평균 점수"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    tools:ignore="MissingPrefix" />
+
+                <RatingBar
+                    android:id="@+id/vote_average"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/vote_label"
+                    android:layout_marginBottom="10dp"
+                    android:isIndicator="true"
+                    android:numStars="10" />
+
+                <TextView
+                    android:id="@+id/vote_average_text"
+                    fontPath="@string/NanumBarunGothic_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/vote_label"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_toEndOf="@id/vote_average"
+                    android:includeFontPadding="false"
+                    android:text="0/10"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    tools:ignore="MissingPrefix" />
+
+                <TextView
+                    android:id="@+id/release_date_label"
+                    fontPath="@string/NanumBarunGothic_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/vote_average"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:includeFontPadding="false"
+                    android:text="개봉일 : "
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    tools:ignore="MissingPrefix" />
+
+                <TextView
+                    android:id="@+id/release_date"
+                    fontPath="@string/NanumBarunGothic_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/vote_average"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_toRightOf="@id/release_date_label"
+                    android:includeFontPadding="false"
+                    android:text="2019-04-23"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    tools:ignore="MissingPrefix" />
+
+                <TextView
+                    android:id="@+id/runtime_label"
+                    fontPath="@string/NanumBarunGothic_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/release_date_label"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:includeFontPadding="false"
+                    android:text="상영시간 : "
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    tools:ignore="MissingPrefix" />
+
+                <TextView
+                    android:id="@+id/runtime"
+                    fontPath="@string/NanumBarunGothic_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/release_date_label"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_toRightOf="@id/runtime_label"
+                    android:includeFontPadding="false"
+                    android:text="150분"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    tools:ignore="MissingPrefix" />
+
+                <Button
+                    android:id="@+id/subscribe_release_alarm_button"
+                    fontPath="@string/NanumBarunGothic_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/runtime_label"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:includeFontPadding="false"
+                    android:text="Day-13"
+                    android:textColor="@color/white"
+                    android:textSize="13dp"
+                    tools:ignore="MissingPrefix" />
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!--장르-->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="7dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/light_black"
+                android:padding="11dp">
+
+                <TextView
+                    android:id="@+id/genre_title"
+                    fontPath="@string/NanumBarunGothicBold_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="11dp"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="2.7sp"
+                    android:text="장르"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    tools:ignore="MissingPrefix" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/genre_chip_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/genre_title">
+
+                    <com.google.android.material.chip.Chip
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="#액션" />
+
+                    <com.google.android.material.chip.Chip
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="#SF" />
+
+                    <com.google.android.material.chip.Chip
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="#드라마" />
+
+                </com.google.android.material.chip.ChipGroup>
+
+                <TextView
+                    android:id="@+id/genre_empty_view"
+                    fontPath="@string/NanumBarunGothic_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/genre_title"
+                    android:includeFontPadding="false"
+                    android:text="해당 정보 없음"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    tools:ignore="MissingPrefix" />
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!--제작사-->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="7dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/light_black"
+                android:padding="11dp">
+
+                <TextView
+                    android:id="@+id/company_title"
+                    fontPath="@string/NanumBarunGothicBold_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="11dp"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="2.7sp"
+                    android:text="제작사"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    tools:ignore="MissingPrefix" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/company_recyclerview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/company_title" />
+
+                <TextView
+                    android:id="@+id/company_empty_view"
+                    fontPath="@string/NanumBarunGothic_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/company_title"
+                    android:includeFontPadding="false"
+                    android:text="해당 정보 없음"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    tools:ignore="MissingPrefix" />
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!--공급사-->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="7dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/light_black"
+                android:padding="11dp">
+
+                <TextView
+                    android:id="@+id/watch_provider_title"
+                    fontPath="@string/NanumBarunGothicBold_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="11dp"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="2.7sp"
+                    android:text="공급사"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    tools:ignore="MissingPrefix" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/watch_provider_recyclerview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/watch_provider_title" />
+
+                <TextView
+                    android:id="@+id/watch_provider_empty_view"
+                    fontPath="@string/NanumBarunGothic_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/watch_provider_title"
+                    android:includeFontPadding="false"
+                    android:text="해당 정보 없음"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    tools:ignore="MissingPrefix" />
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!--예고편-->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="7dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/light_black"
+                android:padding="11dp">
+
+                <TextView
+                    android:id="@+id/videoTitle"
+                    fontPath="@string/NanumBarunGothicBold_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="11dp"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="2.7sp"
+                    android:text="예고편"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    tools:ignore="MissingPrefix" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/video_thumbnail_recyclerView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/videoTitle" />
+
+                <TextView
+                    android:id="@+id/video_empty_view"
+                    fontPath="@string/NanumBarunGothic_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/videoTitle"
+                    android:includeFontPadding="false"
+                    android:text="해당 정보 없음"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    tools:ignore="MissingPrefix" />
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!--이미지-->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="7dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/light_black"
+                android:padding="11dp">
+
+                <TextView
+                    android:id="@+id/preview_image_title"
+                    fontPath="@string/NanumBarunGothicBold_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="11dp"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="2.7sp"
+                    android:text="이미지"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    tools:ignore="MissingPrefix" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/preview_image_recyclerView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/preview_image_title" />
+
+                <TextView
+                    android:id="@+id/preview_image_empty_view"
+                    fontPath="@string/NanumBarunGothic_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/preview_image_title"
+                    android:includeFontPadding="false"
+                    android:text="해당 정보 없음"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    tools:ignore="MissingPrefix" />
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!--출연진-->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="7dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/light_black"
+                android:padding="11dp">
+
+                <TextView
+                    android:id="@+id/cast_title"
+                    fontPath="@string/NanumBarunGothicBold_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="11dp"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="2.7sp"
+                    android:text="출연진"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    tools:ignore="MissingPrefix" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/cast_recyclerView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/cast_title" />
+
+                <TextView
+                    android:id="@+id/cast_empty_view"
+                    fontPath="@string/NanumBarunGothic_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/cast_title"
+                    android:includeFontPadding="false"
+                    android:text="해당 정보 없음"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    tools:ignore="MissingPrefix" />
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!--제작진-->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="7dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/light_black"
+                android:padding="11dp">
+
+                <TextView
+                    android:id="@+id/crew_title"
+                    fontPath="@string/NanumBarunGothicBold_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="11dp"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="2.7sp"
+                    android:text="출연진"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    tools:ignore="MissingPrefix" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/crew_recyclerview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/crew_title" />
+
+                <TextView
+                    android:id="@+id/crew_empty_view"
+                    fontPath="@string/NanumBarunGothic_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/crew_title"
+                    android:includeFontPadding="false"
+                    android:text="해당 정보 없음"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    tools:ignore="MissingPrefix" />
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!--유사 영화-->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginBottom="20dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="7dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:id="@+id/similar_movie_list_section"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/light_black"
+                    android:padding="11dp">
+
+                    <TextView
+                        android:id="@+id/similar_movie_title"
+                        fontPath="@string/NanumBarunGothicBold_path"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="11dp"
+                        android:includeFontPadding="false"
+                        android:lineSpacingExtra="2.7sp"
+                        android:text="유사 영화"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        tools:ignore="MissingPrefix" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/similar_movie_recyclerview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/similar_movie_title" />
+
+                    <TextView
+                        android:id="@+id/similar_movie_empty_view"
+                        fontPath="@string/NanumBarunGothic_path"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/similar_movie_title"
+                        android:includeFontPadding="false"
+                        android:text="해당 정보 없음"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:visibility="gone"
+                        tools:ignore="MissingPrefix" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/movie_more"
+                    android:layout_width="match_parent"
+                    android:layout_below="@id/similar_movie_list_section"
+                    android:layout_height="50dp"
+                    android:background="@color/light_black"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/movie_more_image"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="29.7dp"
+                        android:src="@drawable/ic_expand_more" />
+
+                    <TextView
+                        android:id="@+id/movie_more_text"
+                        fontPath="@string/NanumBarunGothic_path"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:includeFontPadding="false"
+                        android:text="@string/more"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        tools:ignore="MissingPrefix" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>
