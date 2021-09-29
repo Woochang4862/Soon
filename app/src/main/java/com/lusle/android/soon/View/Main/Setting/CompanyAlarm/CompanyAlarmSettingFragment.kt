@@ -101,10 +101,11 @@ class CompanyAlarmSettingFragment : Fragment(), CompanyAlarmSettingContractor.Vi
             }
         })
         setAlarmSwitch()
-        aSwitch.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView: CompoundButton?, isChecked: Boolean ->
+        aSwitch.setOnCheckedChangeListener { _: CompoundButton?, _: Boolean ->
             if (clickedByUser) {
+                //TODO check all company alarm
             }
-        })
+        }
     }
 
     private fun setAlarmSwitch() {

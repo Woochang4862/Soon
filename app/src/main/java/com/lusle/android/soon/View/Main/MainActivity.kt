@@ -1,5 +1,8 @@
 package com.lusle.android.soon.View.Main
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -22,9 +25,15 @@ import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.FirebaseApp
 import com.google.firebase.messaging.FirebaseMessaging
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.lusle.android.soon.Model.Schema.Alarm
 import com.lusle.android.soon.R
+import com.lusle.android.soon.View.Alarm.AlarmReceiver
+import com.lusle.android.soon.View.Alarm.AlarmSettingFragment
 import com.lusle.android.soon.View.BaseActivity
 import com.lusle.android.soon.View.Search.SearchActivity
+import java.util.ArrayList
 
 
 class MainActivity : BaseActivity() {
@@ -58,6 +67,8 @@ class MainActivity : BaseActivity() {
                 }
             }
             it.appUpdateInfo.addOnSuccessListener { appUpdateInfo: AppUpdateInfo ->
+                Log.d(TAG, "onSuccess: updateAvailability() : ${appUpdateInfo.updateAvailability()}")
+                Log.d(TAG, "onSuccess: isUpdateTypeAllowed() : ${appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)}")
                 if(appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
                         && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE))
                 {
@@ -70,6 +81,32 @@ class MainActivity : BaseActivity() {
                     )
                 }
             }
+        }
+
+        val preferences = getSharedPreferences("alarmPref", Context.MODE_PRIVATE)
+        val type = object : TypeToken<ArrayList<Alarm>>() {}.type
+        val json = preferences.getString("alarms", "")
+        var alarms = Gson().fromJson<ArrayList<Alarm>>(json, type)
+        if (alarms == null) alarms = ArrayList()
+        for (a in alarms) {
+            /*boolean alarmUp = (PendingIntent.getBroadcast(context, a.getPendingIntentID(),
+                    new Intent(context, AlarmReceiver.class),
+                    PendingIntent.FLAG_NO_CREATE) != null);*/
+
+            val am = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            val i = Intent(this, AlarmReceiver::class.java)
+            i.putExtra(AlarmSettingFragment.KEY_ALARM_ID, a)
+            i.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
+
+            var pendingIntent = PendingIntent.getBroadcast(this, a.pendingIntentID, i, 0)
+
+            if (pendingIntent != null) {
+                am.cancel(pendingIntent)
+            }
+
+            pendingIntent = PendingIntent.getBroadcast(this, a.pendingIntentID, i, PendingIntent.FLAG_UPDATE_CURRENT)
+
+            am[AlarmManager.RTC_WAKEUP, a.milliseconds] = pendingIntent
         }
 
         init()

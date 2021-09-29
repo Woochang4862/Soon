@@ -1,62 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/light_black"
     android:orientation="vertical"
     tools:context=".View.Main.Company.ManageCompanyFragment">
 
-    <com.hugocastelani.waterfalltoolbar.WaterfallToolbar
-        android:id="@+id/waterfallToolbar"
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.Toolbar
-            android:layout_width="match_parent"
-            app:contentInsetStart="0dp"
-            android:background="@color/light_black"
-            android:layout_height="match_parent">
+        <TextView
+            fontPath="@string/NanumBarunGothicBold_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12.3dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:includeFontPadding="false"
+            android:text="@string/text_manage_my_company"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            tools:ignore="MissingPrefix" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/saveBtn"
+            fontPath="@string/NanumBarunGothicBold_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:paddingRight="15dp"
+            android:text="저장하기"
+            android:textColor="@color/colorPrimary"
+            android:visibility="gone"
+            tools:ignore="MissingPrefix" />
 
-                <TextView
-                    fontPath="@string/NanumBarunGothicBold_path"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12.3dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginTop="20dp"
-                    android:includeFontPadding="false"
-                    android:text="@string/text_manage_my_company"
-                    android:textColor="@color/white"
-                    android:textSize="30sp"
-                    tools:ignore="MissingPrefix" />
-
-                <TextView
-                    android:id="@+id/saveBtn"
-                    fontPath="@string/NanumBarunGothicBold_path"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:paddingRight="15dp"
-                    android:text="저장하기"
-                    android:visibility="gone"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:gravity="center"
-                    android:textColor="@color/colorPrimary"
-                    tools:ignore="MissingPrefix"
-                    android:includeFontPadding="false"/>
-
-            </RelativeLayout>
-
-        </androidx.appcompat.widget.Toolbar>
-
-    </com.hugocastelani.waterfalltoolbar.WaterfallToolbar>
+    </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/activity_favorite_company_recyclerView"

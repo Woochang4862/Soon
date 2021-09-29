@@ -88,38 +88,11 @@
             tools:ignore="MissingPrefix" />
 
         <TextView
-            android:id="@+id/genre_label"
-            fontPath="@string/NanumBarunGothic_path"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/vote_average"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="10dp"
-            android:includeFontPadding="false"
-            android:text="장르 : "
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            tools:ignore="MissingPrefix" />
-
-        <TextView
-            android:id="@+id/genre"
-            fontPath="@string/NanumBarunGothic_path"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/vote_average"
-            android:layout_toRightOf="@id/genre_label"
-            android:includeFontPadding="false"
-            android:text="액션"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            tools:ignore="MissingPrefix" />
-
-        <TextView
             android:id="@+id/release_date_label"
             fontPath="@string/NanumBarunGothic_path"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/genre_label"
+            android:layout_below="@id/vote_average"
             android:layout_marginRight="5dp"
             android:layout_marginBottom="10dp"
             android:includeFontPadding="false"
@@ -133,7 +106,7 @@
             fontPath="@string/NanumBarunGothic_path"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/genre_label"
+            android:layout_below="@id/vote_average"
             android:layout_marginRight="5dp"
             android:layout_marginBottom="10dp"
             android:layout_toRightOf="@id/release_date_label"
@@ -214,6 +187,20 @@
             android:layout_below="@id/collection_label" />
 
         <TextView
+            android:id="@+id/collection_empty_view"
+            fontPath="@string/NanumBarunGothic_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/collection_label"
+            android:layout_marginBottom="10dp"
+            android:visibility="gone"
+            android:includeFontPadding="false"
+            android:text="해당 정보 없음"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            tools:ignore="MissingPrefix" />
+
+        <TextView
             android:id="@+id/TMI"
             fontPath="@string/NanumBarunGothicBold_path"
             android:layout_width="wrap_content"
@@ -251,6 +238,8 @@
             android:layout_marginEnd="5dp"
             android:linksClickable="true"
             android:autoLink="web"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:layout_marginBottom="10dp"
             android:layout_toEndOf="@id/homepage_label"
             android:includeFontPadding="false"

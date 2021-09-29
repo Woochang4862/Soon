@@ -9,19 +9,18 @@ import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.lusle.android.soon.Adapter.SearchActivityPagerAdapter;
 import com.lusle.android.soon.MySuggestionProvider;
 import com.lusle.android.soon.R;
 import com.lusle.android.soon.View.BaseActivity;
-import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
 import java.util.ArrayList;
 
@@ -45,11 +44,15 @@ public class SearchActivity extends BaseActivity {
 
     private ArrayList<OnQueryReceivedListener> queryReceivedListeners = new ArrayList<>();
     private String currentQuery = "";
+    private Snackbar pleaseInputQuerySnackBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+        pleaseInputQuerySnackBar = Snackbar.make(findViewById(android.R.id.content), getString(R.string.please_input_query), Snackbar.LENGTH_SHORT)
+                .setGestureInsetBottomIgnored(true);
 
         Intent intent = getIntent();
 
@@ -127,7 +130,7 @@ public class SearchActivity extends BaseActivity {
             public boolean onQueryTextSubmit(String s) {
                 s = s.trim();
                 if (s.equals("")) {
-                    DynamicToast.makeWarning(SearchActivity.this, getString(R.string.please_input_query)).show();
+                    pleaseInputQuerySnackBar.show();
                 } else {
                     SearchRecentSuggestions suggestions = new SearchRecentSuggestions(SearchActivity.this,
                             MySuggestionProvider.AUTHORITY, MySuggestionProvider.MODE);

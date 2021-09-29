@@ -161,7 +161,7 @@ class AllSearchFragment : Fragment(), OnQueryReceivedListener {
         val type = object : TypeToken<ArrayList<Company?>?>() {}.type
         var favoriteCompanyList = Gson().fromJson<ArrayList<Company?>>(list, type)
         if (favoriteCompanyList == null) favoriteCompanyList = ArrayList()
-        companyAdapter = AllSearchActivityCompanyRecyclerViewAdapter(favoriteCompanyList, { view, position ->
+        companyAdapter = AllSearchActivityCompanyRecyclerViewAdapter(favoriteCompanyList, { _, position ->
             val intent = Intent(requireContext(), MovieListActivity::class.java)
             intent.putExtra("keyword", companyAdapter.getItem(position))
             startActivity(intent)
@@ -201,7 +201,7 @@ class AllSearchFragment : Fragment(), OnQueryReceivedListener {
                             companyAdapter.setList(result.results)
                         } else {
                             companyExpandArrayList = result.results
-                            companyCollapseArrayList = ArrayList(result.results.subList(0, 4))
+                            companyCollapseArrayList = ArrayList(result.results.subList(0, 3))
                             companyAdapter.setList(companyCollapseArrayList)
                             companyMoreBtn.visibility = View.VISIBLE
                         }
@@ -272,7 +272,7 @@ class AllSearchFragment : Fragment(), OnQueryReceivedListener {
                                         movieAdapter.setList(result.results)
                                     } else {
                                         movieExpandArrayList = result.results
-                                        movieCollapseArrayList = ArrayList(result.results.subList(0, 4))
+                                        movieCollapseArrayList = ArrayList(result.results.subList(0, 3))
                                         movieAdapter.setList(movieCollapseArrayList)
                                         movieMoreBtn.visibility = View.VISIBLE
                                     }

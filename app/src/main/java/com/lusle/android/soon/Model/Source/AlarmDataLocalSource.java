@@ -26,12 +26,9 @@ public class AlarmDataLocalSource {
     }
 
     public ArrayList<Alarm> getAlarm() {
-        Log.d("####", "AlarmDataLocalSource::getAlarm() called");
         try {
             return new AlarmTask().execute(context).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
         return null;

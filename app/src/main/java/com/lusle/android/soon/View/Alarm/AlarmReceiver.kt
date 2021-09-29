@@ -15,23 +15,37 @@ import java.util.*
 
 class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
-        intent?.let { intent ->
-            Log.d("####", "onReceive: ${intent.action}")
-            if (intent.action == null || intent.action.equals("com.lusle.android.soon.ALARM_START")) {
-                val data = intent.getSerializableExtra("alarm_info") as Alarm?
-                Log.d("####", "onReceive: $data")
-                data?.let {
-                    val serviceIntent = Intent(context, AlarmService::class.java)
-                    serviceIntent.putExtra("alarm_info", it)
-                    serviceIntent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        context?.startForegroundService(serviceIntent)
+        context?.let { context ->
+            intent?.let { _intent ->
+                Log.d("####", "onReceive: intent.action : ${_intent.action}")
+                if (_intent.action == null || _intent.action.equals("com.lusle.android.soon.ALARM_START")) {
+                    val alarmId = _intent.getIntExtra(AlarmSettingFragment.KEY_ALARM_ID, -1)
+                    Log.d("####", "onReceive: data : $alarmId")
+                    if (alarmId == -1) {
+
                     } else {
-                        context?.startService(serviceIntent)
+                        val preferences = context.getSharedPreferences("alarmPref", Context.MODE_PRIVATE)
+                        val type = object : TypeToken<ArrayList<Alarm>>() {}.type
+                        val json = preferences.getString("alarms", "")
+                        var alarms = Gson().fromJson<ArrayList<Alarm>>(json, type)
+                        if (alarms == null) alarms = ArrayList()
+                        var data: Alarm? = null
+                        for (alarm in alarms){
+                            if(alarm.pendingIntentID == alarmId)
+                                data = alarm
+                        }
+                        data?.let {
+                            val serviceIntent = Intent(context, AlarmService::class.java)
+                            serviceIntent.putExtra("alarm_info", it)
+                            serviceIntent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                context.startForegroundService(serviceIntent)
+                            } else {
+                                context.startService(serviceIntent)
+                            }
+                        }
                     }
-                }
-            } else {
-                context?.let { context ->
+                } else {
                     val preferences = context.getSharedPreferences("alarmPref", Context.MODE_PRIVATE)
                     val type = object : TypeToken<ArrayList<Alarm>>() {}.type
                     val json = preferences.getString("alarms", "")
@@ -44,7 +58,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
                         val am = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
                         val i = Intent(context, AlarmReceiver::class.java)
-                        i.putExtra("alarm_info", a)
+                        i.putExtra(AlarmSettingFragment.KEY_ALARM_ID, a)
                         i.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
 
                         var pendingIntent = PendingIntent.getBroadcast(context, a.pendingIntentID, i, 0)
@@ -57,6 +71,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
                         am[AlarmManager.RTC_WAKEUP, a.milliseconds] = pendingIntent
                     }
+
                 }
             }
         }

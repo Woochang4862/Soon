@@ -1,26 +1,14 @@
 <resources>
     <string name="app_name">Soon</string>
-    <string name="activity_main_recommand_string">이번 달에 \n개봉하는 \n영화</string>
-    <string name="activity_main_detail"><![CDATA[더 알아보기 >]]></string>
-    <string name="BMHANNAProOTF_path">fonts/BMHANNAProOTF.otf</string>
     <string name="NanumBarunGothic_path">fonts/NanumBarunGothic.otf</string>
     <string name="NanumBarunGothicBold_path">fonts/NanumBarunGothicBold.otf</string>
     <string name="NanumBarunGothicUltraLight_path">fonts/NanumBarunGothicUltraLight.otf</string>
-    <string name="BerlinSansFB_Reg_path">fonts/BerlinSansFB-Reg.ttf</string>
-    <string name="tab_name_1">제작사별</string>
-    <string name="tab_name_2">장르별</string>
-    <string name="tab_name_3">날짜순</string>
-    <string name="previout_btn_string"><![CDATA[<이전]]></string>
-    <string name="book_button_string">예매하기</string>
-    <string name="view_pager_bottom_sheet_behavior">com.lusle.android.soon.ViewPagerBottomSheet.ViewPagerBottomSheetBehavior</string>
-    <string name="activity_content_result_genre_label"><![CDATA[장르 >]]></string>
     <string name="empty_text">텅 비었습니다...</string>
     <string name="empty_movie_notification_text">알림 받고 싶은 영화를 찾아 추가해주세요!</string>
     <string name="empty_company_notification_text">알림 받고 싶은 제작사를 찾아 추가해주세요!</string>
     <string name="all">전체</string>
     <string name="company">제작사</string>
     <string name="movie">영화</string>
-    <string name="genre">장르</string>
     <string name="server_error_msg">서버에 문제가 생겨, 영화 정보를 불러올 수 없습니다.  불편을 끼치게 되어 죄송합니다.</string>
     <string name="please_input_query">검색어를 넣어 주세요</string>
     <string name="relative_company">관련 제작사</string>
@@ -31,32 +19,21 @@
     <string name="speak_voice">말하세요</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="key_monthly_alarm">key_monthly_alarm</string>
     <string name="key_region">key_region</string>
     <string name="key_clear_search_history">key_clear_search_history</string>
     <string name="text_this_month">이번 달</string>
     <string name="text_manage">관리하기</string>
     <string name="text_applied_company">등록 제작사</string>
-    <string name="text_coming_up">예정작</string>
     <string name="text_genre">장르</string>
     <string name="text_search">검색</string>
     <string name="text_manage_my_company">나의 제작사 관리</string>
     <string name="text_company_empty">검색 버튼을 눌러 제작사 등록</string>
     <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
 
     <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
 
     <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
 
     <!--CountryPicker-->
     <string name="search_hint">Search…</string>
@@ -70,7 +47,5 @@
     <string name="text_company_alarm">제작사 알림</string>
     <string name="text_release_alarm">개봉 알림</string>
     <string name="key_license">key_license</string>
-    <string name="text_priority_description">우선 순위란?<br />하루 투표 수, 하루 조회수, 좋아요를 누른 사람 수, 재생목록에 담은 사람 수, 개봉일, 전체 투표 수, 어제 점수를 총 집계한 점수</string>
-    <string name="text_vote_count">%d 명의 평균 점수</string>
-    <string name="text_vote_average">%d/10</string>
+    <string name="text_priority_description">우선 순위란?\n하루 투표 수, 하루 조회수, 좋아요를 누른 사람 수, 재생목록에 담은 사람 수, 개봉일, 전체 투표 수, 어제 점수를 총 집계한 점수</string>
 </resources>

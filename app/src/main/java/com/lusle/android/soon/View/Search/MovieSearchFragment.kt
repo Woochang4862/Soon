@@ -16,6 +16,7 @@ import androidx.paging.RxPagedListBuilder
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
+import com.google.android.material.snackbar.Snackbar
 import com.lusle.android.soon.Adapter.Listener.OnEmptyListener
 import com.lusle.android.soon.Adapter.SearchMoviePagedListAdapter
 import com.lusle.android.soon.Model.API.APIClient
@@ -24,15 +25,12 @@ import com.lusle.android.soon.Model.API.MovieApi
 import com.lusle.android.soon.Model.Schema.GenreResult
 import com.lusle.android.soon.Model.Schema.Movie
 import com.lusle.android.soon.Model.Source.SearchMoviePageKeyDataSource
-import com.lusle.android.soon.Model.Source.TMMPageKeyDataSource
 import com.lusle.android.soon.R
 import com.lusle.android.soon.Util.Utils
 import com.lusle.android.soon.View.Alarm.AlarmSettingActivity
-import com.lusle.android.soon.View.Alarm.AlarmSettingFragment
 import com.lusle.android.soon.View.Detail.DetailActivity
 import com.lusle.android.soon.View.Dialog.MovieProgressDialog
 import com.lusle.android.soon.View.Search.SearchActivity.OnQueryReceivedListener
-import com.pranavpandey.android.dynamic.toasts.DynamicToast
 import io.reactivex.disposables.Disposable
 import retrofit2.Call
 import retrofit2.Callback
@@ -47,6 +45,7 @@ class MovieSearchFragment : Fragment(), OnQueryReceivedListener {
     private lateinit var emptyAnim: LottieAnimationView
     private var adapter: SearchMoviePagedListAdapter? = null
     private lateinit var listDisposable: Disposable
+    private lateinit var errorSnackBar: Snackbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +54,7 @@ class MovieSearchFragment : Fragment(), OnQueryReceivedListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_search_movie, container, false)
+
         recyclerView = view.findViewById(R.id.movieRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(context)
 
@@ -62,6 +62,13 @@ class MovieSearchFragment : Fragment(), OnQueryReceivedListener {
         emptyAnim = view.findViewById(R.id.list_empty_anim)
 
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        errorSnackBar = Snackbar.make(requireView(), getString(R.string.server_error_msg), Snackbar.LENGTH_SHORT)
+                .setAnchorView(requireActivity().findViewById(R.id.floatingActionButton))
+                .setGestureInsetBottomIgnored(true)
     }
 
     override fun onQueryReceived(query: String) {
@@ -139,7 +146,7 @@ class MovieSearchFragment : Fragment(), OnQueryReceivedListener {
             override fun onFailure(call: Call<GenreResult>, t: Throwable) {
                 adapter!!.onEmpty()
                 dialog.dismiss()
-                DynamicToast.makeError(context!!, getString(R.string.server_error_msg)).show()
+                errorSnackBar.show()
             }
         })
     }

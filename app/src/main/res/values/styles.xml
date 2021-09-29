@@ -75,15 +75,7 @@
 
     <style name="TextAppearance.Design.SubtitleCollapsingToolbar.ExpandedTitle" parent="TextAppearance.Design.CollapsingToolbar.Expanded" />
 
-    <style name="TextAppearance.Design.SubtitleCollapsingToolbar.ExpandedTitle.Inverse" parent="TextAppearance.AppCompat.Display1">
-        <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
-    </style>
-
     <style name="TextAppearance.Design.SubtitleCollapsingToolbar.ExpandedSubtitle" parent="TextAppearance.AppCompat.Headline" />
-
-    <style name="TextAppearance.Design.SubtitleCollapsingToolbar.ExpandedSubtitle.Inverse" parent="TextAppearance.AppCompat.Headline">
-        <item name="android:textColor">?android:attr/textColorSecondaryInverse</item>
-    </style>
 
     <style name="WhiteRatingBar" parent="Theme.AppCompat">
         <item name="colorControlActivated">@color/white</item>
@@ -106,15 +98,6 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">16sp</item>
         <item name="fontPath">@string/NanumBarunGothic_path</item>
-    </style>
-
-    <style name="SoonAppSubTitle">
-        <item name="android:layout_marginBottom">11dp</item>
-        <item name="android:includeFontPadding">false</item>
-        <item name="android:lineSpacingExtra">2.7sp</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">20sp</item>
-        <item name="fontPath">@string/NanumBarunGothicBold_path</item>
     </style>
 
 </resources>

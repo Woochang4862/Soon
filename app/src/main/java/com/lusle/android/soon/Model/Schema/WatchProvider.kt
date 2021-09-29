@@ -1,0 +1,21 @@
+package com.lusle.android.soon.Model.Schema
+
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
+
+data class WatchProvider(
+        @SerializedName("display_priority")
+        @Expose
+        val displayPriority: Int,
+        @SerializedName("logo_path")
+        @Expose
+        val logoPath: String,
+        @SerializedName("provider_id")
+        @Expose
+        val providerId: Int,
+        @SerializedName("provider_name")
+        @Expose
+        val providerName: String
+) {
+
+}

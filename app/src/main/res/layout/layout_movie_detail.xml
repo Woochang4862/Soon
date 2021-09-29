@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/black"
+    android:background="@color/lighter_black"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <LinearLayout
@@ -15,6 +15,7 @@
 
         <!--주요정보-->
         <androidx.cardview.widget.CardView
+            android:id="@+id/info_section"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -466,7 +467,7 @@
 
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/cast_recyclerView"
+                    android:id="@+id/cast_recyclerview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/cast_title" />
@@ -510,7 +511,7 @@
                     android:layout_marginBottom="11dp"
                     android:includeFontPadding="false"
                     android:lineSpacingExtra="2.7sp"
-                    android:text="출연진"
+                    android:text="제작진"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     tools:ignore="MissingPrefix" />
@@ -543,7 +544,7 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="20dp"
             app:cardCornerRadius="10dp"
             app:cardElevation="7dp">
@@ -557,7 +558,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/light_black"
-                    android:padding="11dp">
+                    android:paddingTop="11dp">
 
                     <TextView
                         android:id="@+id/similar_movie_title"
@@ -566,8 +567,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="11dp"
                         android:includeFontPadding="false"
+                        android:layout_marginStart="11dp"
                         android:lineSpacingExtra="2.7sp"
-                        android:text="유사 영화"
+                        android:text="관련 영화"
                         android:textColor="@color/white"
                         android:textSize="16sp"
                         tools:ignore="MissingPrefix" />
@@ -594,7 +596,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/movie_more"
+                    android:id="@+id/similar_movie_more"
                     android:layout_width="match_parent"
                     android:layout_below="@id/similar_movie_list_section"
                     android:layout_height="50dp"
@@ -608,7 +610,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="29.7dp"
+                        android:layout_marginStart="29.7dp"
                         android:src="@drawable/ic_expand_more" />
 
                     <TextView

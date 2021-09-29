@@ -77,16 +77,6 @@
                 <action android:name="com.lusle.android.soon.ALARM_START" />
             </intent-filter>
         </receiver>
-        <receiver
-            android:name=".View.Alarm.AppRemovedReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_FULLY_REMOVED" />
-
-                <data android:scheme="package" />
-            </intent-filter>
-        </receiver>
 
         <service
             android:name=".View.Alarm.AllCompanyAlarmRemoveService"

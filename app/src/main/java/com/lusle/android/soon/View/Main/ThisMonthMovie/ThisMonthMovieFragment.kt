@@ -4,10 +4,11 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
+import android.widget.RelativeLayout
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import androidx.core.view.ViewCompat
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
 import com.facebook.shimmer.ShimmerFrameLayout
+import com.google.android.material.snackbar.Snackbar
 import com.lusle.android.soon.Adapter.Decoration.MovieItemDecoration
 import com.lusle.android.soon.Adapter.Listener.OnEmptyListener
 import com.lusle.android.soon.Adapter.MoviePagedListAdapter
@@ -30,13 +32,12 @@ import com.lusle.android.soon.Util.Utils
 import com.lusle.android.soon.View.Detail.DetailActivity
 import com.lusle.android.soon.View.Main.ThisMonthMovie.Presenter.ThisMonthMovieContract
 import com.lusle.android.soon.View.Main.ThisMonthMovie.Presenter.ThisMonthMoviePresenter
-import com.pranavpandey.android.dynamic.toasts.DynamicToast
 import io.reactivex.disposables.Disposable
 
 class ThisMonthMovieFragment : Fragment(), ThisMonthMovieContract.View {
     private val movieApi = MovieApi.create()
     private val PAGE_SIZE: Int = 20
-    private lateinit var emptyView: FrameLayout
+    private lateinit var emptyView: RelativeLayout
     private lateinit var emptyAnim: LottieAnimationView
     private lateinit var recyclerView: RecyclerView
     private var adapter: MoviePagedListAdapter? = null
@@ -44,6 +45,7 @@ class ThisMonthMovieFragment : Fragment(), ThisMonthMovieContract.View {
     private lateinit var shimmerFrameLayout: ShimmerFrameLayout
     private lateinit var presenter: ThisMonthMoviePresenter
     private lateinit var listDisposable: Disposable
+    private lateinit var errorSnackBar: Snackbar
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_this_month_movie, container, false)
@@ -85,16 +87,22 @@ class ThisMonthMovieFragment : Fragment(), ThisMonthMovieContract.View {
         listDisposable = builder.buildObservable()
                 .subscribe(
                         { result ->
+                            shimmerFrameLayout.stopShimmer()
+                            shimmerFrameLayout.visibility = View.GONE
                             adapter?.let {
-                                it.submitList(result)
-                                shimmerFrameLayout.stopShimmer()
-                                shimmerFrameLayout.visibility = View.GONE
+                                if (result.isEmpty()){
+                                    it.onEmpty()
+                                }else {
+                                    it.onNotEmpty()
+                                    it.submitList(result)
+                                }
                             }
                         },
                         { t: Throwable ->
                             t.printStackTrace()
                             adapter?.onEmpty()
-                        })
+                        }
+                )
         layoutManager = GridLayoutManager(context, 2)
         recyclerView.layoutManager = layoutManager
         recyclerView.addItemDecoration(MovieItemDecoration(activity))
@@ -103,8 +111,16 @@ class ThisMonthMovieFragment : Fragment(), ThisMonthMovieContract.View {
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        errorSnackBar = Snackbar.make(requireView(), getString(R.string.server_error_msg), Snackbar.LENGTH_SHORT)
+                .setAnchorView(requireActivity().findViewById(R.id.floatingActionButton))
+                .setGestureInsetBottomIgnored(true)
+    }
+
     override fun showErrorToast() {
-        DynamicToast.makeError(requireContext(), getString(R.string.server_error_msg)).show()
+        errorSnackBar.show()
     }
 
     override fun onDestroy() {
@@ -139,13 +155,4 @@ class ThisMonthMovieFragment : Fragment(), ThisMonthMovieContract.View {
         }
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(): ThisMonthMovieFragment {
-            val args = Bundle()
-            val fragment = ThisMonthMovieFragment()
-            fragment.arguments = args
-            return fragment
-        }
-    }
 }

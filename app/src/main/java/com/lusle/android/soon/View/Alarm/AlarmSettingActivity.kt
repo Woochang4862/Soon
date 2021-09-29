@@ -16,9 +16,13 @@ class AlarmSettingActivity : BaseActivity() {
         frame.id = CONTENT_VIEW_ID
         setContentView(frame, FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
-        val obj: Any? = intent.getSerializableExtra("movie_info")
-        if (obj is Movie) {
-            movie = obj
+        when (val obj: Any? = intent.getSerializableExtra("movie_info")) {
+            is Movie -> {
+                movie = obj
+            }
+            else -> {
+                finish()
+            }
         }
         if (savedInstanceState == null) {
             val alarmSettingFragment: Fragment = AlarmSettingFragment()

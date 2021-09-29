@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:scrollbars="none"
     android:overScrollMode="never"
-    android:fillViewport="false"
+    android:fillViewport="true"
     tools:context=".View.Main.Company.CompanyFragment">
 
     <LinearLayout

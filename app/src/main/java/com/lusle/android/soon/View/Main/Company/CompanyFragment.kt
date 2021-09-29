@@ -10,16 +10,18 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.lusle.android.soon.Adapter.CompanyListAdapter
 import com.lusle.android.soon.Adapter.Listener.OnEmptyListener
+import com.lusle.android.soon.Adapter.ManageCompanyListAdapter
 import com.lusle.android.soon.Model.API.MovieApi
 import com.lusle.android.soon.Model.Source.FavoriteCompanyDataLocalSource
 import com.lusle.android.soon.R
 import com.lusle.android.soon.View.Main.Company.Presenter.CompanyContract
 import com.lusle.android.soon.View.Main.Company.Presenter.CompanyPresenter
-import com.pranavpandey.android.dynamic.toasts.DynamicToast
 
 class CompanyFragment : Fragment(), CompanyContract.View {
+    private lateinit var errorSnackBar: Snackbar
     private val spanCount: Int = 2
     private var isLoading: Boolean = false
     private var isLastPage: Boolean = false
@@ -39,14 +41,6 @@ class CompanyFragment : Fragment(), CompanyContract.View {
 
     companion object {
         val PAGE_SIZE: Int = 20
-
-        @JvmStatic
-        fun newInstance(): CompanyFragment {
-            val args = Bundle()
-            val fragment = CompanyFragment()
-            fragment.arguments = args
-            return fragment
-        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -59,6 +53,9 @@ class CompanyFragment : Fragment(), CompanyContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        errorSnackBar = Snackbar.make(requireView(), "에러가 발생했습니다.", Snackbar.LENGTH_SHORT)
+                .setAnchorView(requireActivity().findViewById(R.id.floatingActionButton))
+                .setGestureInsetBottomIgnored(true)
         //shimmerFrameLayout = view.findViewById(R.id.shimmer)
 
         // 등록 제작사 설정
@@ -248,11 +245,7 @@ class CompanyFragment : Fragment(), CompanyContract.View {
     }
 
     override fun showErrorToast() {
-        try {
-            DynamicToast.makeError(requireContext(), "에러가 발생했습니다.").show()
-        }catch (e:IllegalStateException){
-            e.printStackTrace()
-        }
+        errorSnackBar.show()
     }
 
     /*override fun playShimmer(show: Boolean) {

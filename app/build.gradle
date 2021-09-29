@@ -10,8 +10,8 @@ android {
         applicationId "com.lusle.android.soon"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 36
-        versionName "3.0"
+        versionCode 39
+        versionName "3.3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -79,13 +79,13 @@ dependencies {
     //UI Dependencies Library
     implementation 'com.airbnb.android:lottie:3.6.0'
     implementation 'com.google.android.material:material:1.5.0-alpha02'
-    implementation 'com.pranavpandey.android:dynamic-toasts:2.2.0'
-    implementation 'com.github.hugocastelani:waterfall-toolbar:0.5.0'
-    implementation 'com.skyfishjy.ripplebackground:library:1.0.1'
+    //implementation 'com.pranavpandey.android:dynamic-toasts:2.2.0'
+    //implementation 'com.github.hugocastelani:waterfall-toolbar:0.5.0'
+    //implementation 'com.skyfishjy.ripplebackground:library:1.0.1'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'io.github.inflationx:calligraphy3:3.1.1'
     implementation 'io.github.inflationx:viewpump:2.0.3'
-    implementation 'com.github.sundeepk:compact-calendar-view:3.0.0'
+    //implementation 'com.github.sundeepk:compact-calendar-view:3.0.0'
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
     implementation 'androidx.preference:preference-ktx:1.1.1'
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
@@ -107,7 +107,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
 
     // Datetime
-    implementation 'joda-time:joda-time:2.10.10'
+    implementation 'net.danlew:android.joda:2.9.9.3'
 
 }
 

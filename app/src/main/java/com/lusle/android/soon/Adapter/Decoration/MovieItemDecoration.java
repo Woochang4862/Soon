@@ -19,11 +19,15 @@ public class MovieItemDecoration extends RecyclerView.ItemDecoration {
     }
 
     public MovieItemDecoration(Activity mActivity, int spanCount) {
-        this.spanCount = spanCount;
-        spacing = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                12, mActivity.getResources().getDisplayMetrics());
-        outerMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                25, mActivity.getResources().getDisplayMetrics());
+        this(mActivity, spanCount, 12, 25);
+    }
+
+    public MovieItemDecoration(Activity mActivity, int spanCount, float spacing, float outerMargin) {
+        this.spanCount = 2;
+        this.spacing = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                spacing, mActivity.getResources().getDisplayMetrics());
+        this.outerMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                outerMargin, mActivity.getResources().getDisplayMetrics());
     }
 
     @Override

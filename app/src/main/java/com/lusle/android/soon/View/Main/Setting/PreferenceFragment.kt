@@ -90,17 +90,17 @@ public class PreferenceFragment : PreferenceFragmentCompat() {
     private fun setRegionPreference() {
         findPreference<Preference>(getString(R.string.key_region))!!.onPreferenceClickListener = Preference.OnPreferenceClickListener { preference ->
             val countryCodePicker = CountryCodePicker(context)
-            val country = Gson().fromJson(
+            val ccpCountry = Gson().fromJson(
                     pref.getString(getString(R.string.key_region), null),
                     CCPCountry::class.java
             )
             countryCodePicker.setDialogKeyboardAutoPopup(false)
-            countryCodePicker.selectedCountry = country
+            countryCodePicker.selectedCountry = ccpCountry
             countryCodePicker.changeDefaultLanguage(CountryCodePicker.Language.KOREAN)
             countryCodePicker.setOnCountryChangeListener {
-                val country = countryCodePicker.selectedCountry
-                preference.summary = country.name
-                pref.edit().putString(getString(R.string.key_region), Gson().toJson(country)).apply()
+                val selectedCountry = countryCodePicker.selectedCountry
+                preference.summary = selectedCountry.name
+                pref.edit().putString(getString(R.string.key_region), Gson().toJson(selectedCountry)).apply()
             }
             CountryCodeDialog.openCountryCodeDialog(countryCodePicker, pref.getString(getString(R.string.key_region), null))
             false

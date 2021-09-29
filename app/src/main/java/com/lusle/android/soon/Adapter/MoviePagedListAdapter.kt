@@ -13,7 +13,7 @@ import com.lusle.android.soon.R
 val diffMovieItemCallback = object : DiffUtil.ItemCallback<Movie>() {
     override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean = oldItem.id == newItem.id
 
-    override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean = oldItem.name.trim() == newItem.name.trim()
+    override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean = oldItem.title.trim() == newItem.title.trim()
 
 }
 

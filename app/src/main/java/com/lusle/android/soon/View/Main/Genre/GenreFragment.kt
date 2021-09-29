@@ -4,13 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
+import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
 import com.facebook.shimmer.ShimmerFrameLayout
+import com.google.android.material.snackbar.Snackbar
 import com.lusle.android.soon.Adapter.Decoration.GenreItemDecoration
 import com.lusle.android.soon.Adapter.GenreListAdapter
 import com.lusle.android.soon.Adapter.Listener.OnEmptyListener
@@ -20,20 +21,24 @@ import com.lusle.android.soon.R
 import com.lusle.android.soon.Util.Utils
 import com.lusle.android.soon.View.Main.Genre.Presenter.GenreContractor
 import com.lusle.android.soon.View.Main.Genre.Presenter.GenrePresenter
-import com.pranavpandey.android.dynamic.toasts.DynamicToast
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
 class GenreFragment : Fragment(), GenreContractor.View {
+    private lateinit var errorSnackBar: Snackbar
     private lateinit var recyclerView: RecyclerView
-    private lateinit var emptyView: FrameLayout
+    private lateinit var emptyView: RelativeLayout
     private lateinit var emptyAnim: LottieAnimationView
     private lateinit var shimmerFrameLayout: ShimmerFrameLayout
     private lateinit var presenter: GenrePresenter
     private lateinit var gridLayoutManager: GridLayoutManager
     private lateinit var adapter: GenreListAdapter
+    private var genreListDisposable:Disposable? = null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_genre, container, false)
+
         presenter = GenrePresenter()
         presenter.attachView(this)
         presenter.setModel(GenreDataRemoteSource.getInstance())
@@ -47,7 +52,7 @@ class GenreFragment : Fragment(), GenreContractor.View {
         adapter = GenreListAdapter({ _, position ->
             val args = Bundle()
             args.putSerializable("keyword", adapter.getItem(position))
-           findNavController().navigate(R.id.action_genreFragment_to_movieListFragment, args)
+            findNavController().navigate(R.id.action_genreFragment_to_movieListFragment, args)
         }, object : OnEmptyListener {
             override fun onEmpty() {
                 setRecyclerEmpty(true)
@@ -62,7 +67,7 @@ class GenreFragment : Fragment(), GenreContractor.View {
         presenter.setAdapterModel(adapter)
         recyclerView.adapter = adapter
 
-        val disposable = MovieApi.create().getGenreList(Utils.getRegionCode(requireContext()))
+        genreListDisposable = MovieApi.create().getGenreList(Utils.getRegionCode(requireContext()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe ({ result ->
@@ -76,6 +81,13 @@ class GenreFragment : Fragment(), GenreContractor.View {
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        errorSnackBar = Snackbar.make(requireView(), getString(R.string.server_error_msg), Snackbar.LENGTH_SHORT)
+                .setAnchorView(requireActivity().findViewById(R.id.floatingActionButton))
+                .setGestureInsetBottomIgnored(true)
+    }
+
     override fun runRecyclerViewAnimation() {
         Utils.runLayoutAnimation(recyclerView)
     }
@@ -85,7 +97,7 @@ class GenreFragment : Fragment(), GenreContractor.View {
     }
 
     override fun showErrorToast() {
-        DynamicToast.makeError(requireContext(), getString(R.string.server_error_msg)).show()
+        errorSnackBar.show()
     }
 
     fun setRecyclerEmpty(empty: Boolean) {
@@ -106,16 +118,7 @@ class GenreFragment : Fragment(), GenreContractor.View {
 
     override fun onDestroy() {
         presenter.detachView()
+        genreListDisposable?.dispose()
         super.onDestroy()
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance(): GenreFragment {
-            val args = Bundle()
-            val fragment = GenreFragment()
-            fragment.arguments = args
-            return fragment
-        }
     }
 }

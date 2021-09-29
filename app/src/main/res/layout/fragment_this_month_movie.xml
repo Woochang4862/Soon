@@ -37,7 +37,7 @@
             android:layout_marginStart="@dimen/margin_content_list"
             android:layout_marginEnd="@dimen/margin_content_list" />
 
-        <FrameLayout
+        <RelativeLayout
             android:id="@+id/list_empty_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -45,22 +45,24 @@
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/list_empty_anim"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                app:lottie_fileName="lottie/not_found.json"
+                android:layout_width="80dp"
+                android:layout_height="60dp"
+                android:layout_above="@id/empty_text_view"
+                app:lottie_fileName="lottie/empty_movie.json"
+                android:layout_centerHorizontal="true"
                 app:lottie_loop="true"
-                app:lottie_scale="0.2" />
+                app:lottie_scale="1" />
 
             <TextView
+                android:id="@+id/empty_text_view"
                 fontPath="@string/NanumBarunGothicBold_path"
                 android:layout_width="wrap_content"
+                android:layout_marginTop="10dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="30dp"
+                android:layout_centerInParent="true"
                 android:text="@string/empty_text"
                 tools:ignore="MissingPrefix" />
-        </FrameLayout>
+        </RelativeLayout>
 
     </FrameLayout>
 

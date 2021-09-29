@@ -1,9 +1,7 @@
 package com.lusle.android.soon.Model.API
 
 import com.facebook.stetho.okhttp3.StethoInterceptor
-import com.lusle.android.soon.Model.Schema.GenreResult
-import com.lusle.android.soon.Model.Schema.MovieDetail
-import com.lusle.android.soon.Model.Schema.MovieResult
+import com.lusle.android.soon.Model.Schema.*
 import io.reactivex.Single
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -30,7 +28,7 @@ interface MovieApi {
     }
 
     @GET("/api/genre/all")
-    fun getGenreList(@Query("region") region : String): Single<GenreResult>
+    fun getGenreList(@Query("region") region: String): Single<GenreResult>
 
     @GET("/api/movie/company")
     fun discoverMovieWithCompany(@Query("id") id: Int, @Query("region") region: String, @Query("page") page: Int): Single<MovieResult>
@@ -49,5 +47,14 @@ interface MovieApi {
 
     @GET("/api/movie/TMM")
     fun getThisMonthMovie(@Query("region") region: String, @Query("page") page: Int): Single<MovieResult>
+
+    @GET("/api/movie/watch/providers")
+    fun getWatchProvider(@Query("region") region: String, @Query("id") id: Int): Single<WatchProviderResult>
+
+    @GET("/api/movie/credits")
+    fun getCredits(@Query("id") id: Int): Single<CreditsResult>
+
+    @GET("/api/movie/similar")
+    fun getSimilarMovie(@Query("id") id: Int,@Query("page") page: Int): Single<MovieResult>
 
 }

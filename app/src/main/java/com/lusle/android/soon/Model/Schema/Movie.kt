@@ -31,7 +31,7 @@ data class Movie(
 
         @SerializedName("poster_path")
         @Expose
-        val posterPath: String,
+        val posterPath: String?,
 
         @SerializedName("original_language")
         @Expose
@@ -47,7 +47,7 @@ data class Movie(
 
         @SerializedName("backdrop_path")
         @Expose
-        val backdropPath: String,
+        val backdropPath: String?,
 
         @SerializedName("adult")
         @Expose
@@ -55,27 +55,11 @@ data class Movie(
 
         @SerializedName("overview")
         @Expose
-        val overview: String,
+        val overview: String?,
 
         @SerializedName("release_date")
         @Expose
         val releaseDate: String,
-
-        @SerializedName("logo_path")
-        @Expose
-        val logoPath: String,
-
-        @SerializedName("name")
-        @Expose
-        val name: String,
-
-        @SerializedName("status_code")
-        @Expose
-        val status_code : Int,
-
-        @SerializedName("status_message")
-        @Expose
-        val status_message: String
 
 ) : Serializable {
         override fun equals(other: Any?): Boolean = (other is Movie) && id == other.id
@@ -100,10 +84,6 @@ data class Movie(
                         ", adult=" + adult +
                         ", overview='" + overview + '\'' +
                         ", releaseDate='" + releaseDate + '\'' +
-                        ", logoPath=" + logoPath +
-                        ", name='" + name + '\'' +
-                        ", status_code=" + status_code +
-                        ", status_message='" + status_message + '\'' +
                         '}'
         }
 }

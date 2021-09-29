@@ -7,7 +7,6 @@ import com.lusle.android.soon.View.BaseActivity;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
-import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
 import androidx.annotation.NonNull;
 

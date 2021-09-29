@@ -80,7 +80,7 @@ public class AlarmService extends Service {
             Calendar releaseDate = Calendar.getInstance();
 
             try {
-                @SuppressLint("SimpleDateFormat") Date date = new SimpleDateFormat("yyyy-MM-dd").parse(data.getMovie().getReleaseDate());
+                Date date = new SimpleDateFormat("yyyy-MM-dd").parse(data.getMovie().getReleaseDate());
                 releaseDate.setTime(date);
             } catch (ParseException e) {
                 e.printStackTrace();

@@ -17,7 +17,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.hugocastelani.waterfalltoolbar.WaterfallToolbar
 import com.lusle.android.soon.Adapter.ManageCompanyListAdapter
 import com.lusle.android.soon.Model.API.APIClient
 import com.lusle.android.soon.Model.API.APIInterface
@@ -26,7 +25,6 @@ import com.lusle.android.soon.R
 import com.lusle.android.soon.Util.ItemTouchHelper.SimpleItemTouchHelperCallback
 import com.lusle.android.soon.Util.Utils
 import com.lusle.android.soon.View.Dialog.MovieProgressDialog
-import com.pranavpandey.android.dynamic.toasts.DynamicToast
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -34,11 +32,11 @@ import retrofit2.Response
 import java.util.*
 
 class ManageCompanyFragment : Fragment(), ManageCompanyListAdapter.OnItemManageListener {
+    private lateinit var errorSnackBar: Snackbar
     private var undoSnackBar: Snackbar? = null
-    private lateinit var waterfallToolbar: WaterfallToolbar
     private lateinit var companyList: RecyclerView
     private lateinit var saveBtn: TextView
-    private var startList: ArrayList<Company>? = null
+    private var startList: ArrayList<*>? = null
     private var mItemTouchHelper: ItemTouchHelper? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -47,6 +45,11 @@ class ManageCompanyFragment : Fragment(), ManageCompanyListAdapter.OnItemManageL
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        errorSnackBar = Snackbar.make(requireView(), "즐겨찾기 정보를 불러 올 수 없습니다.", Snackbar.LENGTH_SHORT)
+                .setAnchorView(requireActivity().findViewById(R.id.floatingActionButton))
+                .setGestureInsetBottomIgnored(true)
+
         companyList = view.findViewById(R.id.activity_favorite_company_recyclerView)
         companyList.layoutManager = LinearLayoutManager(requireContext())
         val favoriteListActivityRecyclerAdapter = ManageCompanyListAdapter(this)
@@ -55,8 +58,6 @@ class ManageCompanyFragment : Fragment(), ManageCompanyListAdapter.OnItemManageL
         val callback: ItemTouchHelper.Callback = SimpleItemTouchHelperCallback(favoriteListActivityRecyclerAdapter)
         mItemTouchHelper = ItemTouchHelper(callback)
         mItemTouchHelper?.attachToRecyclerView(companyList)
-        waterfallToolbar = view.findViewById(R.id.waterfallToolbar)
-        waterfallToolbar.recyclerView = companyList
         saveBtn = view.findViewById(R.id.saveBtn)
         saveBtn.setOnClickListener { _ : View? ->
             val dialog = MovieProgressDialog(requireContext())
@@ -77,19 +78,19 @@ class ManageCompanyFragment : Fragment(), ManageCompanyListAdapter.OnItemManageL
             startList = (companyList.adapter as ManageCompanyListAdapter?)?.list
         }
         if (!Utils.bindingData(requireContext(), companyList, "FavoriteMore")) {
-            DynamicToast.makeError(requireContext(), "즐겨찾기 정보를 불러 올 수 없습니다.").show()
+            errorSnackBar.show()
         }
 
-        startList = (companyList.adapter as ManageCompanyListAdapter?)?.list?.clone() as ArrayList<Company>
+        startList = (companyList.adapter as ManageCompanyListAdapter?)?.list?.clone() as ArrayList<*>
     }
 
     override fun onResume() {
         super.onResume()
         if (!Utils.bindingData(requireContext(), companyList, "FavoriteMore")) {
-            DynamicToast.makeError(requireContext(), "즐겨찾기 정보를 불러 올 수 없습니다.").show()
+            errorSnackBar.show()
         }
 
-        startList = (companyList.adapter as ManageCompanyListAdapter?)?.list?.clone() as ArrayList<Company>
+        startList = (companyList.adapter as ManageCompanyListAdapter?)?.list?.clone() as ArrayList<*>
     }
 
     /*override fun onBackPressed() {

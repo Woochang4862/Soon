@@ -63,7 +63,14 @@ class SearchMovieViewHolder(itemView: View, private val onItemClickListener: OnI
             }
             genre.text = TextUtils.join(",", genreList)
 
-            if (it.overview.equals("", ignoreCase = true)) overview.visibility = View.GONE else if (it.overview.length <= 60) overview.text = it.overview else overview.text = it.overview.substring(0, 61)
+            it.overview?.let{ _overview ->
+                if (_overview.length <= 60)
+                    overview.text = _overview
+                else
+                    overview.text = _overview.substring(0, 61)
+            } ?: {
+                overview.visibility = View.GONE
+            } ()
             release.text = "개봉일 : " + it.releaseDate
 
             val sdf = SimpleDateFormat("yyyy-MM-dd")
@@ -77,7 +84,7 @@ class SearchMovieViewHolder(itemView: View, private val onItemClickListener: OnI
                     bookBtn.text = "개봉함"
                 } else {
                     bookBtn.isEnabled = true
-                    bookBtn.text = "DAY - $day"
+                    bookBtn.text = "DAY-$day"
                     bookBtn.setOnClickListener { _: View? -> onBookButtonClickListener?.onBookButtonClicked(it) }
                 }
             } ?: {
