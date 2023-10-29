@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.skydoves.transformationlayout.TransformationLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:id="@+id/transformation_layout"
     android:layout_height="270dp"
     android:foreground="?attr/selectableItemBackground">
+
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -16,14 +17,18 @@
             android:id="@+id/movie_list_recyclerview_poster"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:transitionName="poster" />
+            android:transitionName="poster"
+            android:contentDescription="Poster" />
 
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/error_image"
+        <TextView
+            android:id="@+id/alt_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:lottie_fileName="lottie/error_cloud.json"
-            app:lottie_loop="false" />
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:visibility="gone"
+            android:textSize="@dimen/alt_text_size"
+            android:text="@string/alt_text"/>
     </FrameLayout>
 
-</LinearLayout>
+</com.skydoves.transformationlayout.TransformationLayout>

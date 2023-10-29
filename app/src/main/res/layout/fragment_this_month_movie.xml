@@ -7,35 +7,36 @@
     android:orientation="vertical"
     tools:context=".View.Main.ThisMonthMovie.ThisMonthMovieFragment">
 
-    <TextView
-        style="@style/SoonAppTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/text_this_month" />
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <com.facebook.shimmer.ShimmerFrameLayout
-            android:layout_width="match_parent"
             android:id="@+id/shimmer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_content_list"
             android:layout_marginEnd="@dimen/margin_content_list"
-            app:shimmer_auto_start="true"
-            android:layout_height="wrap_content">
+            app:shimmer_auto_start="true">
 
-            <include layout="@layout/layout_movie_shimmer"/>
+            <include layout="@layout/layout_movie_shimmer" />
 
         </com.facebook.shimmer.ShimmerFrameLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/movie_list_recyclerView"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/movie_list_swipe_refresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="none"
             android:layout_marginStart="@dimen/margin_content_list"
-            android:layout_marginEnd="@dimen/margin_content_list" />
+            android:layout_marginEnd="@dimen/margin_content_list">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/movie_list_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <RelativeLayout
             android:id="@+id/list_empty_view"
@@ -48,8 +49,8 @@
                 android:layout_width="80dp"
                 android:layout_height="60dp"
                 android:layout_above="@id/empty_text_view"
-                app:lottie_fileName="lottie/empty_movie.json"
                 android:layout_centerHorizontal="true"
+                app:lottie_fileName="lottie/empty_movie.json"
                 app:lottie_loop="true"
                 app:lottie_scale="1" />
 
@@ -57,9 +58,9 @@
                 android:id="@+id/empty_text_view"
                 fontPath="@string/NanumBarunGothicBold_path"
                 android:layout_width="wrap_content"
-                android:layout_marginTop="10dp"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
+                android:layout_marginTop="10dp"
                 android:text="@string/empty_text"
                 tools:ignore="MissingPrefix" />
         </RelativeLayout>

@@ -445,7 +445,6 @@
             tools:ignore="MissingPrefix" />
 
         <TextView
-            android:id="@+id/priority_description"
             fontPath="@string/NanumBarunGothic_path"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

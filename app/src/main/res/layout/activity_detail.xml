@@ -7,7 +7,6 @@
     tools:context=".View.Detail.DetailActivity">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/collapsing_toolbar_appbarlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

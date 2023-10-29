@@ -18,7 +18,7 @@
         android:roundIcon="@mipmap/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".View.Detail.InfoActivity"></activity>
+        <activity android:name=".View.Detail.InfoActivity" />
         <activity android:name=".View.Alarm.AlarmSettingActivity" />
         <activity android:name=".View.MovieList.MovieListActivity" />
         <activity
@@ -32,7 +32,9 @@
             android:name="android.app.default_searchable"
             android:value="com.apkgetter.SearchResultsActivity" />
 
-        <activity android:name=".View.Main.MainActivity">
+        <activity
+            android:name=".View.Main.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -41,6 +43,7 @@
         </activity>
         <activity
             android:name=".View.Search.SearchActivity"
+            android:exported="false"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize|adjustPan">

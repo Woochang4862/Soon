@@ -6,19 +6,19 @@
     <string name="empty_text">텅 비었습니다...</string>
     <string name="empty_movie_notification_text">알림 받고 싶은 영화를 찾아 추가해주세요!</string>
     <string name="empty_company_notification_text">알림 받고 싶은 제작사를 찾아 추가해주세요!</string>
-    <string name="all">전체</string>
-    <string name="company">제작사</string>
-    <string name="movie">영화</string>
-    <string name="server_error_msg">서버에 문제가 생겨, 영화 정보를 불러올 수 없습니다.  불편을 끼치게 되어 죄송합니다.</string>
+    <string name="invalid_token_error_msg">토큰을 불러올 수 없습니다</string>
+    <string name="invalid_topics_error_msg">구독한 제작사 목록을 불러올 수 없습니다</string>
+    <string name="invalid_company_error_msg">즐겨찾기한 제작사 목록을 불러올 수 없습니다</string>
+    <string name="failed_load_movie_msg">영화를 불러오는 중 문제가 생겼습니다</string>
+    <string name="failed_load_genre_msg">장르를 불러오는 중 문제가 생겼습니다</string>
+    <string name="failed_to_subscribe_company_msg">제작사 암람을 등록하는 중 문제가 생겼습니다</string>
+    <string name="failed_to_unsubscribe_company_msg">제작사 암람을 해제하는 중 문제가 생겼습니다</string>
     <string name="please_input_query">검색어를 넣어 주세요</string>
-    <string name="relative_company">관련 제작사</string>
     <string name="more">더 알아보기</string>
-    <string name="relative_movie">관련 영화</string>
     <string name="save">저장</string>
     <string name="search">검색어</string>
     <string name="speak_voice">말하세요</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="key_monthly_alarm">key_monthly_alarm</string>
     <string name="key_region">key_region</string>
     <string name="key_clear_search_history">key_clear_search_history</string>
@@ -48,4 +48,5 @@
     <string name="text_release_alarm">개봉 알림</string>
     <string name="key_license">key_license</string>
     <string name="text_priority_description">우선 순위란?\n하루 투표 수, 하루 조회수, 좋아요를 누른 사람 수, 재생목록에 담은 사람 수, 개봉일, 전체 투표 수, 어제 점수를 총 집계한 점수</string>
+    <string name="alt_text">ALT</string>
 </resources>

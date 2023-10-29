@@ -15,7 +15,16 @@ data class WatchProvider(
         val providerId: Int,
         @SerializedName("provider_name")
         @Expose
-        val providerName: String
+        val providerName: String,
+        @SerializedName("link")
+        @Expose
+        val link:String,
+        @SerializedName("price")
+        @Expose
+        val price:String?,
+        @SerializedName("presentation_type")
+        @Expose
+        val presentationType: String?
 ) {
 
 }

@@ -3,12 +3,9 @@ package com.lusle.android.soon.View.MovieList
 import android.os.Bundle
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
-import androidx.paging.DataSource
 import com.lusle.android.soon.Model.Schema.Company
 import com.lusle.android.soon.Model.Schema.Genre
-import com.lusle.android.soon.Model.Schema.Movie
 import com.lusle.android.soon.Model.Schema.MovieDetail
-import com.lusle.android.soon.Model.Source.SimilarMoviePageKeyDataSource
 import com.lusle.android.soon.View.BaseActivity
 
 class MovieListActivity : BaseActivity() {
@@ -24,14 +21,22 @@ class MovieListActivity : BaseActivity() {
         setContentView(frame, FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
         val obj: Any? = intent.getSerializableExtra("keyword")
-        if (obj is Genre) {
-            genre = obj
-        } else if (obj is Company) {
-            company = obj
-        } else if (obj is MovieDetail){
-            movieDetail = obj
-        } else {
-            finish();
+        when (obj) {
+            is Genre -> {
+                genre = obj
+            }
+
+            is Company -> {
+                company = obj
+            }
+
+            is MovieDetail -> {
+                movieDetail = obj
+            }
+
+            else -> {
+                finish()
+            }
         }
         if (savedInstanceState == null) {
             val movieListFragment: Fragment = MovieListFragment()

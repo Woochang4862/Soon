@@ -23,12 +23,15 @@
             android:layout_height="match_parent"
             android:src="@color/defaultTextColor" />
 
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/error_image"
+        <TextView
+            android:id="@+id/alt_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:lottie_fileName="lottie/error_cloud.json"
-            app:lottie_loop="false" />
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:visibility="gone"
+            android:textSize="@dimen/alt_text_size"
+            android:text="@string/alt_text"/>
     </FrameLayout>
 
 
@@ -40,8 +43,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
+        android:maxWidth="@dimen/favorite_company_item_width"
         android:layout_marginTop="8dp"
         android:text="마블"
+        android:ellipsize="end"
         android:textColor="@color/white"
         android:textSize="14dp"
         tools:ignore="MissingPrefix" />

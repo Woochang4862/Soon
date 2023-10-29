@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,13 +18,13 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.lusle.android.soon.Adapter.ManageCompanyListAdapter
-import com.lusle.android.soon.Model.API.APIClient
-import com.lusle.android.soon.Model.API.APIInterface
+import com.lusle.android.soon.adapter.ManageCompanyListAdapter
+import com.lusle.android.soon.Model.Api.APIInterface
+import com.lusle.android.soon.Model.Api.ApiClient
 import com.lusle.android.soon.Model.Schema.Company
+import com.lusle.android.soon.Model.Source.FavoriteCompanyRepository
 import com.lusle.android.soon.R
 import com.lusle.android.soon.Util.ItemTouchHelper.SimpleItemTouchHelperCallback
-import com.lusle.android.soon.Util.Utils
 import com.lusle.android.soon.View.Dialog.MovieProgressDialog
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -32,12 +33,19 @@ import retrofit2.Response
 import java.util.*
 
 class ManageCompanyFragment : Fragment(), ManageCompanyListAdapter.OnItemManageListener {
+    private var companyAdapter: ManageCompanyListAdapter? = null
     private lateinit var errorSnackBar: Snackbar
     private var undoSnackBar: Snackbar? = null
     private lateinit var companyList: RecyclerView
     private lateinit var saveBtn: TextView
     private var startList: ArrayList<*>? = null
     private var mItemTouchHelper: ItemTouchHelper? = null
+
+    private val viewModel by viewModels<CompanyViewModel> {
+        CompanyViewModelFactory(
+            FavoriteCompanyRepository(requireContext())
+        )
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_manage_company, container, false)
@@ -52,10 +60,10 @@ class ManageCompanyFragment : Fragment(), ManageCompanyListAdapter.OnItemManageL
 
         companyList = view.findViewById(R.id.activity_favorite_company_recyclerView)
         companyList.layoutManager = LinearLayoutManager(requireContext())
-        val favoriteListActivityRecyclerAdapter = ManageCompanyListAdapter(this)
-        companyList.adapter = favoriteListActivityRecyclerAdapter
+        companyAdapter = ManageCompanyListAdapter(this)
+        companyList.adapter = companyAdapter
         companyList.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
-        val callback: ItemTouchHelper.Callback = SimpleItemTouchHelperCallback(favoriteListActivityRecyclerAdapter)
+        val callback: ItemTouchHelper.Callback = SimpleItemTouchHelperCallback(companyAdapter)
         mItemTouchHelper = ItemTouchHelper(callback)
         mItemTouchHelper?.attachToRecyclerView(companyList)
         saveBtn = view.findViewById(R.id.saveBtn)
@@ -77,20 +85,32 @@ class ManageCompanyFragment : Fragment(), ManageCompanyListAdapter.OnItemManageL
             saveBtn.visibility = View.GONE
             startList = (companyList.adapter as ManageCompanyListAdapter?)?.list
         }
-        if (!Utils.bindingData(requireContext(), companyList, "FavoriteMore")) {
-            errorSnackBar.show()
+        companyAdapter?.list?.clear()
+        viewModel.favoriteCompanyLiveData.observe(
+            viewLifecycleOwner
+        ) { favoriteCompany ->
+            Log.d("ManageCompanyFragment", "onViewCreated: $favoriteCompany")
+            favoriteCompany?.let {
+                if (favoriteCompany.isEmpty()) {
+                    companyAdapter?.onEmpty()
+                } else {
+                    companyAdapter?.onNotEmpty()
+                    companyAdapter?.list = favoriteCompany
+                    startList = favoriteCompany
+                    companyAdapter?.notifyDataSetChanged()
+                }
+            } ?: run {
+                companyAdapter?.onEmpty()
+            }
         }
 
-        startList = (companyList.adapter as ManageCompanyListAdapter?)?.list?.clone() as ArrayList<*>
+        viewModel.loadFavoriteCompany()
     }
 
     override fun onResume() {
         super.onResume()
-        if (!Utils.bindingData(requireContext(), companyList, "FavoriteMore")) {
-            errorSnackBar.show()
-        }
 
-        startList = (companyList.adapter as ManageCompanyListAdapter?)?.list?.clone() as ArrayList<*>
+        viewModel.loadFavoriteCompany()
     }
 
     /*override fun onBackPressed() {
@@ -154,7 +174,7 @@ class ManageCompanyFragment : Fragment(), ManageCompanyListAdapter.OnItemManageL
             val body = HashMap<String, String>()
             body["company_id"] = deletedItem.id.toString()
             body["token"] = token
-            APIClient.getClient().create(APIInterface::class.java).removeCompanyAlarm(body).enqueue(object : Callback<ResponseBody?> {
+            ApiClient.retrofit.create(APIInterface::class.java).removeCompanyAlarm(body).enqueue(object : Callback<ResponseBody?> {
                 override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {}
                 override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
                     t.printStackTrace()

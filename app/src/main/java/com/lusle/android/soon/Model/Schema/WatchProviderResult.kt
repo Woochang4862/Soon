@@ -7,9 +7,6 @@ data class WatchProviderResult (
         @SerializedName("id")
         @Expose
         val id: Int,
-        @SerializedName("link")
-        @Expose
-        val link: String,
         @SerializedName("buy")
         @Expose
         val buy: ArrayList<WatchProvider>?,

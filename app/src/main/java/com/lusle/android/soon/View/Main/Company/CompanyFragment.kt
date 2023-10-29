@@ -7,55 +7,62 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import com.lusle.android.soon.Adapter.CompanyListAdapter
-import com.lusle.android.soon.Adapter.Listener.OnEmptyListener
-import com.lusle.android.soon.Adapter.ManageCompanyListAdapter
-import com.lusle.android.soon.Model.API.MovieApi
-import com.lusle.android.soon.Model.Source.FavoriteCompanyDataLocalSource
+import com.lusle.android.soon.Model.Api.MovieApi
+import com.lusle.android.soon.Model.Source.FavoriteCompanyRepository
 import com.lusle.android.soon.R
-import com.lusle.android.soon.View.Main.Company.Presenter.CompanyContract
-import com.lusle.android.soon.View.Main.Company.Presenter.CompanyPresenter
+import com.lusle.android.soon.adapter.CompanyListAdapter
+import com.lusle.android.soon.adapter.Listener.OnEmptyListener
 
-class CompanyFragment : Fragment(), CompanyContract.View {
+class CompanyFragment : Fragment() {
     private lateinit var errorSnackBar: Snackbar
     private val spanCount: Int = 2
     private var isLoading: Boolean = false
     private var isLastPage: Boolean = false
     private var page: Int = 1
     private val movieApi: MovieApi = MovieApi.create()
-    private lateinit var presenter: CompanyPresenter
     private lateinit var companyAdapter: CompanyListAdapter
+
     //private lateinit var movieAdapter: MovieListAdapter
     //private lateinit var shimmerFrameLayout: ShimmerFrameLayout
     private lateinit var companyList: RecyclerView
+
     //private lateinit var movieList: RecyclerView
     private lateinit var manageButton: TextView
+
     //private lateinit var scrollView: NestedScrollView
     private lateinit var companyEmptyView: FrameLayout
     //private lateinit var movieEmptyView: FrameLayout
     //private lateinit var movieEmptyAnim: LottieAnimationView
 
+    private val viewModel by viewModels<CompanyViewModel> {
+        CompanyViewModelFactory(
+            FavoriteCompanyRepository(requireContext())
+        )
+    }
+
     companion object {
         val PAGE_SIZE: Int = 20
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_company, container, false)
-        presenter = CompanyPresenter()
-        presenter.attachView(this)
-        return view
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_company, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         errorSnackBar = Snackbar.make(requireView(), "에러가 발생했습니다.", Snackbar.LENGTH_SHORT)
-                .setAnchorView(requireActivity().findViewById(R.id.floatingActionButton))
-                .setGestureInsetBottomIgnored(true)
+            .setAnchorView(requireActivity().findViewById(R.id.floatingActionButton))
+            .setGestureInsetBottomIgnored(true)
         //shimmerFrameLayout = view.findViewById(R.id.shimmer)
 
         // 등록 제작사 설정
@@ -154,7 +161,26 @@ class CompanyFragment : Fragment(), CompanyContract.View {
         // PaginationEnd
 
         // BindStart
-        FavoriteCompanyDataLocalSource.getInstance().getFavoriteCompany(context).apply {
+        companyAdapter.list.clear()
+        viewModel.favoriteCompanyLiveData.observe(
+            viewLifecycleOwner
+        ) { favoriteCompany ->
+            favoriteCompany?.let {
+                if (favoriteCompany.isEmpty()) {
+                    companyAdapter.onEmpty()
+                    //movieAdapter.onEmpty()
+                } else {
+                    companyAdapter.onNotEmpty()
+                    companyAdapter.list.addAll(favoriteCompany)
+                    companyAdapter.notifyDataSetChanged()
+                }
+            } ?: run {
+                companyAdapter.onEmpty()
+            }
+        }
+
+        viewModel.loadFavoriteCompany()
+        /*FavoriteCompanyDataLocalSource.getInstance().getFavoriteCompany(context).apply {
             if (isEmpty()) {
                 companyAdapter.onEmpty()
                 //movieAdapter.onEmpty()
@@ -163,7 +189,7 @@ class CompanyFragment : Fragment(), CompanyContract.View {
                 companyAdapter.list.addAll(this)
                 companyAdapter.notifyDataSetChanged()
 
-                /*try {
+                *//*try {
                     playShimmer(true)
                     val disposable = movieApi.discoverMovieWithCompany(this[0].id, Util.getRegionCode(requireContext()), 1).subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
@@ -188,9 +214,9 @@ class CompanyFragment : Fragment(), CompanyContract.View {
                             )
                 } catch (e: IllegalStateException) {
                     e.printStackTrace()
-                }*/
+                }*//*
             }
-        }
+        }*/
         // BindEnd
     }
 
@@ -199,7 +225,8 @@ class CompanyFragment : Fragment(), CompanyContract.View {
 
         // 제작사 불러오기
         companyAdapter.list.clear()
-        FavoriteCompanyDataLocalSource.getInstance().getFavoriteCompany(context).apply {
+        viewModel.loadFavoriteCompany()
+        /*FavoriteCompanyDataLocalSource.getInstance().getFavoriteCompany(context).apply {
             if (isEmpty()) {
                 companyAdapter.onEmpty()
                 //movieAdapter.onEmpty()
@@ -208,7 +235,7 @@ class CompanyFragment : Fragment(), CompanyContract.View {
                 companyAdapter.list.addAll(this)
                 companyAdapter.notifyDataSetChanged()
 
-                /*try {
+                *//*try {
                     playShimmer(true)
                     val disposable = movieApi.discoverMovieWithCompany(this[0].id, Util.getRegionCode(requireContext()), 1).subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
@@ -234,17 +261,12 @@ class CompanyFragment : Fragment(), CompanyContract.View {
                             )
                 } catch (e:IllegalStateException){
                     e.printStackTrace()
-                }*/
+                }*//*
             }
-        }
+        }*/
     }
 
-    override fun onDestroy() {
-        presenter.detachView()
-        super.onDestroy()
-    }
-
-    override fun showErrorToast() {
+    fun showErrorToast() {
         errorSnackBar.show()
     }
 

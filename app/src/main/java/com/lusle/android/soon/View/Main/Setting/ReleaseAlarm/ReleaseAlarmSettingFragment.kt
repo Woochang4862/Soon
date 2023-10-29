@@ -1,6 +1,5 @@
 package com.lusle.android.soon.View.Main.Setting.ReleaseAlarm
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,47 +7,42 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
 import com.google.android.material.switchmaterial.SwitchMaterial
-import com.lusle.android.soon.Adapter.Listener.OnItemClickListener
-import com.lusle.android.soon.Adapter.ReleaseAlarmSettingsAdapter
-import com.lusle.android.soon.Model.Source.AlarmDataLocalSource
+import com.lusle.android.soon.Model.Source.ReleaseAlarmDataSource
 import com.lusle.android.soon.R
-import com.lusle.android.soon.Util.Utils
-import com.lusle.android.soon.View.Main.Setting.ReleaseAlarm.Presenter.ReleaseAlarmSettingContractor
-import com.lusle.android.soon.View.Main.Setting.ReleaseAlarm.Presenter.ReleaseAlarmSettingPresenter
+import com.lusle.android.soon.adapter.ReleaseAlarmSettingsAdapter
+import kotlinx.coroutines.launch
 
-class ReleaseAlarmSettingFragment : Fragment(), ReleaseAlarmSettingContractor.View {
-    private var isPaused: Boolean = false
-    private val TAG: String = this::class.java.simpleName
+class ReleaseAlarmSettingFragment : Fragment(){
+
     private lateinit var aSwitch: SwitchMaterial
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ReleaseAlarmSettingsAdapter
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var emptyViewGroup: FrameLayout
     private lateinit var emptyAnim: LottieAnimationView
-    private lateinit var presenter: ReleaseAlarmSettingPresenter
-    private lateinit var context: Context
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        this.context = context
+    private val viewModel by viewModels<ReleaseAlarmSettingViewModel> {
+        ReleaseAlarmSettingViewModelFactory(ReleaseAlarmDataSource(requireContext()))
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_release_alarm_setting, container, false)
-        presenter = ReleaseAlarmSettingPresenter()
-        presenter.attachView(this)
-        return view
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_release_alarm_setting, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presenter.setModel(AlarmDataLocalSource.getInstance(context))
         aSwitch = view.findViewById(R.id.alarm_switch)
         emptyViewGroup = view.findViewById(R.id.list_empty_view)
         emptyAnim = view.findViewById(R.id.list_empty_anim)
@@ -56,32 +50,39 @@ class ReleaseAlarmSettingFragment : Fragment(), ReleaseAlarmSettingContractor.Vi
         layoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = layoutManager
         adapter = ReleaseAlarmSettingsAdapter()
-        presenter.setAdapterView(adapter)
-        presenter.setAdapterModel(adapter)
-        presenter.setOnItemClickListener { _: View?, pos: Int ->
+        adapter.setOnItemClickListener { _: View?, pos: Int ->
             val args = Bundle()
             args.putSerializable("alarm_info", adapter.getItem(pos))
             findNavController().navigate(R.id.action_releaseAlarmSettingFragment_to_alarmSettingFragment, args)
         }
-        presenter.setOnEmptyListener()
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
-        setAlarmSwitch()
         aSwitch.setOnClickListener {
-            val alarms = presenter.alarms
+            val alarms = adapter.list
             if (alarms.isEmpty()) return@setOnClickListener
             for (alarm in alarms) alarm.isActive = aSwitch.isChecked
-            presenter.alarms = alarms
+            viewModel.update(alarms)
             Toast.makeText(context, "알림이 " + if (aSwitch.isChecked) "전부 켜졌습니다" else "전부 꺼졌습니다", Toast.LENGTH_SHORT).show()
             reload()
         }
-        presenter.loadItems()
-        Utils.runLayoutAnimation(recyclerView)
+        lifecycleScope.launch {
+            viewModel.releaseAlarmLiveData.observe(viewLifecycleOwner
+            ) {
+                if (it.isEmpty()){
+                    setRecyclerEmpty(true)
+                } else {
+                    setRecyclerEmpty(false)
+                    adapter.list = it
+                    setAlarmSwitch()
+                }
+            }
+            viewModel.fetch()
+        }
     }
 
     private fun setAlarmSwitch() {
         var checked = false
-        for (alarm in presenter.alarms) {
+        for (alarm in adapter.list) {
             if (alarm.isActive) {
                 checked = true
                 break
@@ -91,20 +92,19 @@ class ReleaseAlarmSettingFragment : Fragment(), ReleaseAlarmSettingContractor.Vi
     }
 
     private fun reload() {
-        setAlarmSwitch()
-        presenter.loadItems()
-        Utils.runLayoutAnimation(recyclerView)
+        lifecycleScope.launch {
+            viewModel.fetch()
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        if(isPaused) {
-            reload()
-            isPaused = false
+        lifecycleScope.launch {
+            viewModel.fetch()
         }
     }
 
-    override fun setRecyclerEmpty(isEmpty: Boolean) {
+    private fun setRecyclerEmpty(isEmpty: Boolean) {
         if (isEmpty) {
             recyclerView.visibility = View.GONE
             emptyViewGroup.visibility = View.VISIBLE
@@ -116,17 +116,7 @@ class ReleaseAlarmSettingFragment : Fragment(), ReleaseAlarmSettingContractor.Vi
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        isPaused = true
-    }
-
-    override fun onDestroy() {
-        presenter.detachView()
-        super.onDestroy()
-    }
-
-    override fun getContext(): Context {
-        return context
+    companion object {
+        val TAG: String = ReleaseAlarmSettingFragment::class.java.simpleName
     }
 }

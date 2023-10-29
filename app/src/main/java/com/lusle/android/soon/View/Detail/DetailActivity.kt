@@ -1,45 +1,64 @@
 package com.lusle.android.soon.View.Detail
 
+//TODO:예외처리,일림설정,리펙토링
+
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
-import android.widget.*
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.RatingBar
+import android.widget.RelativeLayout
+import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.cardview.widget.CardView
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import androidx.core.view.ViewCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
-import com.lusle.android.soon.Adapter.*
-import com.lusle.android.soon.Adapter.Decoration.MovieItemDecoration
-import com.lusle.android.soon.Adapter.Listener.OnEmptyListener
-import com.lusle.android.soon.Adapter.Listener.OnItemClickListener
-import com.lusle.android.soon.Model.API.MovieApi
 import com.lusle.android.soon.Model.Schema.Company
+import com.lusle.android.soon.Model.Schema.CreditsResult
 import com.lusle.android.soon.Model.Schema.MovieDetail
+import com.lusle.android.soon.Model.Schema.MovieResult
+import com.lusle.android.soon.Model.Schema.WatchProviderResult
+import com.lusle.android.soon.Model.Source.RegionCodeRepository
 import com.lusle.android.soon.R
 import com.lusle.android.soon.Util.SubtitleCollapsingToolbarLayout.SubtitleCollapsingToolbarLayout
 import com.lusle.android.soon.Util.Utils
 import com.lusle.android.soon.View.Alarm.AlarmSettingActivity
-import com.lusle.android.soon.View.BaseActivity
 import com.lusle.android.soon.View.MovieList.MovieListActivity
+import com.lusle.android.soon.View.TransformationBaseActivity
 import com.lusle.android.soon.View.YoutubePlayer.YoutubePlayerActivity
+import com.lusle.android.soon.adapter.CastListAdapter
+import com.lusle.android.soon.adapter.CompanyListAdapter
+import com.lusle.android.soon.adapter.CrewListAdapter
+import com.lusle.android.soon.adapter.Decoration.MovieItemDecoration
+import com.lusle.android.soon.adapter.Listener.OnEmptyListener
+import com.lusle.android.soon.adapter.MovieListAdapter
+import com.lusle.android.soon.adapter.PreviewImageAdapter
+import com.lusle.android.soon.adapter.VideoThumbnailAdapter
+import com.lusle.android.soon.adapter.WatchProviderSectionListAdapter
+import com.skydoves.transformationlayout.TransformationCompat
+import com.skydoves.transformationlayout.TransformationLayout
 import com.squareup.picasso.Picasso
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.GregorianCalendar
+import java.util.Locale
 
-class DetailActivity : BaseActivity() {
+class DetailActivity : TransformationBaseActivity() {
+
+    private var movieId: Int = -1
 
     private lateinit var poster: ImageView
     private lateinit var toolbar: SubtitleCollapsingToolbarLayout
@@ -63,51 +82,49 @@ class DetailActivity : BaseActivity() {
     //제작사
     private lateinit var companyRecyclerView: RecyclerView
     private lateinit var companyEmptyView: TextView
-    private var companyListAdapter: CompanyListAdapter? = null
-    private var companyLayoutManager: LinearLayoutManager? = null
+    private lateinit var companyListAdapter: CompanyListAdapter
+    private lateinit var companyLayoutManager: LinearLayoutManager
 
     //공급사
     private lateinit var watchProviderRecyclerView: RecyclerView
     private lateinit var watchProviderEmptyView: TextView
-    private var watchProviderListAdapter: WatchProviderListAdapter? = null
-    private var watchProviderLayoutManager: LinearLayoutManager? = null
+    private lateinit var watchProviderSectionListAdapter: WatchProviderSectionListAdapter
+    private lateinit var watchProviderLayoutManager: LinearLayoutManager
 
     //예고편
     private lateinit var videoRecyclerView: RecyclerView
     private lateinit var videoEmptyView: TextView
-    private var videoThumbnailAdapter: VideoThumbnailAdapter? = null
-    private var videoLayoutManager: LinearLayoutManager? = null
+    private lateinit var videoThumbnailAdapter: VideoThumbnailAdapter
+    private lateinit var videoLayoutManager: LinearLayoutManager
 
     //이미지
     private lateinit var previewImageRecyclerView: RecyclerView
     private lateinit var previewEmptyView: TextView
-    private var previewImageAdapter: PreviewImageAdapter? = null
-    private var previewImageLayoutManager: LinearLayoutManager? = null
+    private lateinit var previewImageAdapter: PreviewImageAdapter
+    private lateinit var previewImageLayoutManager: LinearLayoutManager
 
     //출연진
     private lateinit var castRecyclerView: RecyclerView
     private lateinit var castEmptyView: TextView
-    private var castListAdapter: CastListAdapter? = null
-    private var castLayoutManager: LinearLayoutManager? = null
+    private lateinit var castListAdapter: CastListAdapter
+    private lateinit var castLayoutManager: LinearLayoutManager
 
     //제작진
     private lateinit var crewRecyclerView: RecyclerView
     private lateinit var crewEmptyView: TextView
-    private var crewListAdapter: CrewListAdapter? = null
-    private var crewLayoutManager: LinearLayoutManager? = null
+    private lateinit var crewListAdapter: CrewListAdapter
+    private lateinit var crewLayoutManager: LinearLayoutManager
 
     //유사영화
     private lateinit var similarMovieRecyclerView: RecyclerView
     private lateinit var similarMovieEmptyView: TextView
     private lateinit var similarMovieLoadMoreButton: RelativeLayout
-    private var similarMovieListAdapter: MovieListAdapter? = null
-    private var similarMovieLayoutManager: LinearLayoutManager? = null
+    private lateinit var similarMovieListAdapter: MovieListAdapter
+    private lateinit var similarMovieLayoutManager: LinearLayoutManager
 
-    private val movieApi = MovieApi.create()
-    private var movieDetailDisposable: Disposable? = null
-    private var watchProviderDisposable: Disposable? = null
-    private var creditDisposable: Disposable? = null
-    private var similarMovieDisposable: Disposable? = null
+    private val viewModel by viewModels<DetailViewModel> {
+        DetailViewModelProvider(RegionCodeRepository(this))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -138,21 +155,20 @@ class DetailActivity : BaseActivity() {
 
 
         //공급사
-        watchProviderRecyclerView = findViewById(R.id.watch_provider_recyclerview)
+        watchProviderRecyclerView = findViewById(R.id.watch_provider_section_recyclerview)
         watchProviderEmptyView = findViewById(R.id.watch_provider_empty_view)
 
         //에고편
         videoRecyclerView = findViewById(R.id.video_thumbnail_recyclerView)
         videoLayoutManager = LinearLayoutManager(this)
-        videoLayoutManager!!.orientation = RecyclerView.HORIZONTAL
+        videoLayoutManager.orientation = RecyclerView.HORIZONTAL
         videoRecyclerView.layoutManager = videoLayoutManager
-        videoThumbnailAdapter = VideoThumbnailAdapter()
-        videoThumbnailAdapter!!.setOnClickListener { view: View?, position: Int ->
+        videoThumbnailAdapter = VideoThumbnailAdapter { view: View?, position: Int ->
             val intent = Intent(this, YoutubePlayerActivity::class.java)
-            intent.putExtra("VIDEO_ID", videoThumbnailAdapter!!.getItem(position).key)
+            intent.putExtra("VIDEO_ID", videoThumbnailAdapter.getItem(position).key)
             startActivity(intent)
         }
-        videoThumbnailAdapter!!.setOnEmptyListener(object : OnEmptyListener {
+        videoThumbnailAdapter.setOnEmptyListener(object : OnEmptyListener {
             override fun onEmpty() {
                 videoEmptyView.visibility = View.VISIBLE
                 videoRecyclerView.visibility = View.GONE
@@ -169,11 +185,11 @@ class DetailActivity : BaseActivity() {
         //이미지
         previewImageRecyclerView = findViewById(R.id.preview_image_recyclerView)
         previewImageLayoutManager = LinearLayoutManager(this)
-        previewImageLayoutManager!!.orientation = RecyclerView.HORIZONTAL
+        previewImageLayoutManager.orientation = RecyclerView.HORIZONTAL
         previewImageRecyclerView.layoutManager = previewImageLayoutManager
         previewImageAdapter = PreviewImageAdapter()
-        previewImageAdapter!!.setOnItemClickListener { _: View?, _: Int -> }
-        previewImageAdapter!!.setOnEmptyListener(object : OnEmptyListener {
+        previewImageAdapter.setOnItemClickListener { _: View?, _: Int -> }
+        previewImageAdapter.setOnEmptyListener(object : OnEmptyListener {
             override fun onEmpty() {
                 previewEmptyView.visibility = View.VISIBLE
                 previewImageRecyclerView.visibility = View.GONE
@@ -191,7 +207,7 @@ class DetailActivity : BaseActivity() {
         castRecyclerView = findViewById(R.id.cast_recyclerview)
         castEmptyView = findViewById(R.id.cast_empty_view)
         castLayoutManager = LinearLayoutManager(this)
-        castLayoutManager!!.orientation = RecyclerView.HORIZONTAL
+        castLayoutManager.orientation = RecyclerView.HORIZONTAL
         castRecyclerView.layoutManager = castLayoutManager
         castListAdapter = CastListAdapter()
         castRecyclerView.adapter = castListAdapter
@@ -200,7 +216,7 @@ class DetailActivity : BaseActivity() {
         crewRecyclerView = findViewById(R.id.crew_recyclerview)
         crewEmptyView = findViewById(R.id.crew_empty_view)
         crewLayoutManager = LinearLayoutManager(this)
-        crewLayoutManager!!.orientation = RecyclerView.HORIZONTAL
+        crewLayoutManager.orientation = RecyclerView.HORIZONTAL
         crewRecyclerView.layoutManager = crewLayoutManager
         crewListAdapter = CrewListAdapter()
         crewRecyclerView.adapter = crewListAdapter
@@ -209,53 +225,139 @@ class DetailActivity : BaseActivity() {
         similarMovieEmptyView = findViewById(R.id.similar_movie_empty_view)
         similarMovieLoadMoreButton = findViewById(R.id.similar_movie_more)
         similarMovieRecyclerView = findViewById(R.id.similar_movie_recyclerview)
-        similarMovieListAdapter = MovieListAdapter(
-                { view, position ->
-                    val intent = Intent(this, DetailActivity::class.java)
-                    intent.putExtra("movie_id", similarMovieListAdapter?.getItem(position)?.id)
-                    val poster = Pair.create(view.findViewById<View>(R.id.movie_list_recyclerview_poster), ViewCompat.getTransitionName(view.findViewById(R.id.movie_list_recyclerview_poster)))
-                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation((view.context as Activity), poster)
-                    startActivity(intent, options.toBundle())
-                },
-                object : OnEmptyListener {
-                    override fun onEmpty() {
-                        similarMovieEmptyView.visibility = View.VISIBLE
-                        similarMovieRecyclerView.visibility = View.GONE
-                        similarMovieLoadMoreButton.visibility = View.GONE
-                    }
-
-                    override fun onNotEmpty() {
-                        similarMovieEmptyView.visibility = View.GONE
-                        similarMovieRecyclerView.visibility = View.VISIBLE
-                        similarMovieLoadMoreButton.visibility = View.VISIBLE
-                    }
-                }
-        )
-        similarMovieRecyclerView.adapter = similarMovieListAdapter
-        similarMovieLayoutManager = GridLayoutManager(this, 2)
-        similarMovieRecyclerView.layoutManager = similarMovieLayoutManager
-        similarMovieRecyclerView.addItemDecoration(MovieItemDecoration(this,2 , 1.1f, 10f))
 
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            postponeEnterTransition()
-        }
-        val movieId = intent.getIntExtra("movie_id", -1)
+        postponeEnterTransition()
+        movieId = intent.getIntExtra("movie_id", -1)
         if (movieId == -1) {
             onException()
         } else {
-            movieDetailDisposable = movieApi.getMovieDetails(Utils.getRegionCode(this), movieId)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                            {
-                                bind(it)
-                            },
-                            {
-                                it.printStackTrace()
-                                onException()
-                            }
-                    )
+            viewModel.movieDetail.observe(this) {
+                bind(it)
+            }
+            viewModel.similarMovieResult.observe(this) {
+                bind(it)
+            }
+            viewModel.watchProviderResult.observe(this) {
+                bind(it)
+            }
+            viewModel.creditsResult.observe(this) {
+                bind(it)
+            }
+            viewModel.movieId.observe(this) {
+                lifecycleScope.launch {
+                    viewModel.fetch()
+                }
+            }
+            viewModel.movieId.value = movieId
+        }
+    }
+
+    private fun bind(similarMovieResult: MovieResult){
+        //유사영화
+        similarMovieListAdapter = MovieListAdapter(
+            { view, position ->
+                val intent = Intent(this, DetailActivity::class.java)
+                intent.putExtra("movie_id", similarMovieListAdapter.getItem(position)?.id)
+                val poster = Pair.create(view.findViewById<View>(R.id.movie_list_recyclerview_poster), ViewCompat.getTransitionName(view.findViewById(R.id.movie_list_recyclerview_poster)))
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation((view.context as Activity), poster)
+                startActivity(intent, options.toBundle())
+            },
+            object : OnEmptyListener {
+                override fun onEmpty() {
+                    similarMovieEmptyView.visibility = View.VISIBLE
+                    similarMovieRecyclerView.visibility = View.GONE
+                    similarMovieLoadMoreButton.visibility = View.GONE
+                }
+
+                override fun onNotEmpty() {
+                    similarMovieEmptyView.visibility = View.GONE
+                    similarMovieRecyclerView.visibility = View.VISIBLE
+                    similarMovieLoadMoreButton.visibility = View.VISIBLE
+                }
+            }
+        )
+
+        similarMovieLayoutManager = GridLayoutManager(this, 2)
+        similarMovieRecyclerView.layoutManager = similarMovieLayoutManager
+        similarMovieRecyclerView.addItemDecoration(MovieItemDecoration(this,2))
+
+        if (similarMovieResult.totalResults == 0) {
+            similarMovieListAdapter.onEmpty()
+        } else {
+            similarMovieListAdapter.onNotEmpty()
+            if (similarMovieResult.totalResults <= 4) {
+                similarMovieListAdapter.list.addAll(similarMovieResult.results)
+                similarMovieLoadMoreButton.visibility = View.GONE
+            } else {
+                val movieCollapseArrayList = ArrayList(similarMovieResult.results.subList(0, 4))
+                similarMovieListAdapter.list.addAll(movieCollapseArrayList)
+
+                similarMovieLoadMoreButton.visibility = View.VISIBLE
+                similarMovieLoadMoreButton.setOnClickListener {
+                    val intent = Intent(this, MovieListActivity::class.java)
+                    intent.putExtra("keyword", viewModel.movieDetail.value)
+                    startActivity(intent)
+                }
+            }
+            similarMovieRecyclerView.adapter = similarMovieListAdapter
+        }
+        /*
+        onError
+            it.printStackTrace()
+            similarMovieListAdapter.onEmpty()
+         */
+    }
+
+    private fun bind(creditsResult: CreditsResult) {
+        //출연진&제작진
+        if (creditsResult.cast.isEmpty()){
+            castEmptyView.visibility = View.VISIBLE
+            castRecyclerView.visibility = View.GONE
+        } else {
+            castEmptyView.visibility = View.GONE
+            castRecyclerView.visibility = View.VISIBLE
+            castListAdapter.list.addAll(creditsResult.cast)
+            castListAdapter.notifyDataSetChanged()
+        }
+
+        if (creditsResult.crew.isEmpty()){
+            crewEmptyView.visibility = View.VISIBLE
+            crewRecyclerView.visibility = View.GONE
+        } else {
+            crewEmptyView.visibility = View.GONE
+            crewRecyclerView.visibility = View.VISIBLE
+            crewListAdapter.list.addAll(creditsResult.crew)
+            crewListAdapter.notifyDataSetChanged()
+        }
+
+        /*
+        onError
+            it.printStackTrace()
+            crewEmptyView.visibility = View.VISIBLE
+            crewRecyclerView.visibility = View.GONE
+            castEmptyView.visibility = View.VISIBLE
+            castRecyclerView.visibility = View.GONE
+         */
+    }
+
+    private fun bind(watchProviderResult: WatchProviderResult) {
+        //공급사
+        watchProviderResult.apply {
+            if(rent == null &&  flatrate == null && buy == null){
+                watchProviderRecyclerView.visibility = View.GONE
+                watchProviderEmptyView.visibility = View.VISIBLE
+            } else {
+                watchProviderRecyclerView.visibility = View.VISIBLE
+                watchProviderEmptyView.visibility = View.GONE
+                watchProviderLayoutManager = LinearLayoutManager(this@DetailActivity)
+                watchProviderRecyclerView.layoutManager = watchProviderLayoutManager
+                watchProviderSectionListAdapter =
+                    WatchProviderSectionListAdapter(this) { _, position ->
+                        watchProviderSectionListAdapter.getWatchProviderItem(position)
+                    }
+                watchProviderRecyclerView.adapter = watchProviderSectionListAdapter
+            }
         }
     }
 
@@ -295,9 +397,9 @@ class DetailActivity : BaseActivity() {
         releaseDate.text = movieDetail.releaseDate
         movieDetail.runtime?.let {
             runtime.text = movieDetail.runtime.toString() + "분"
-        } ?: {
+        } ?: run {
             runtime.text = "해당 정보 없음"
-        }()
+        }
 
         //장르
         genreChipGroup.removeAllViews()
@@ -322,11 +424,11 @@ class DetailActivity : BaseActivity() {
 
         //제작사
         companyLayoutManager = LinearLayoutManager(this)
-        companyLayoutManager!!.orientation = RecyclerView.HORIZONTAL
+        companyLayoutManager.orientation = RecyclerView.HORIZONTAL
         companyRecyclerView.layoutManager = companyLayoutManager
         companyListAdapter = CompanyListAdapter({ _, position ->
             val intent = Intent(this, MovieListActivity::class.java)
-            intent.putExtra("keyword", companyListAdapter?.getItem(position))
+            intent.putExtra("keyword", companyListAdapter.getItem(position))
             startActivity(intent)
 
         }, object : OnEmptyListener {
@@ -340,7 +442,7 @@ class DetailActivity : BaseActivity() {
                 companyEmptyView.visibility = View.GONE
             }
         })
-        companyListAdapter?.list?.addAll(movieDetail.productionCompanies.map {
+        companyListAdapter.list.addAll(movieDetail.productionCompanies.map {
             Company(
                     id = it.id,
                     name = it.name,
@@ -349,46 +451,18 @@ class DetailActivity : BaseActivity() {
         })
         companyRecyclerView.adapter = companyListAdapter
 
-        //공급사
-        watchProviderLayoutManager = LinearLayoutManager(this)
-        watchProviderRecyclerView.layoutManager = watchProviderLayoutManager
-        watchProviderListAdapter = WatchProviderListAdapter()
-        watchProviderRecyclerView.adapter = watchProviderListAdapter
-        watchProviderDisposable = movieApi.getWatchProvider(Utils.getRegionCode(this), movieDetail.id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { result ->
-                            result.rent?.let {
-                                watchProviderEmptyView.visibility = View.GONE
-                                watchProviderRecyclerView.visibility = View.VISIBLE
-                                watchProviderListAdapter?.list?.addAll(it)
-                                watchProviderListAdapter?.notifyDataSetChanged()
-
-                            } ?: {
-                                watchProviderEmptyView.visibility = View.VISIBLE
-                                watchProviderRecyclerView.visibility = View.GONE
-                            }()
-                        },
-                        {
-                            it.printStackTrace()
-                            watchProviderEmptyView.visibility = View.VISIBLE
-                            watchProviderRecyclerView.visibility = View.GONE
-                        }
-                )
-
         //예고편
         if (movieDetail.videos.results.isEmpty()) {
-            videoThumbnailAdapter!!.onEmpty()
+            videoThumbnailAdapter.onEmpty()
         } else {
-            videoThumbnailAdapter!!.setList(movieDetail.videos.results)
-            videoThumbnailAdapter!!.notifyDataSetChanged()
+            videoThumbnailAdapter.list = movieDetail.videos.results
+            videoThumbnailAdapter.notifyDataSetChanged()
         }
-        val sdf = SimpleDateFormat("yyyy-MM-dd")
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale("KR"))
         val date = sdf.parse(movieDetail.releaseDate)
-        date?.let { _date ->
+        date?.let {
             val releaseDate: Calendar = GregorianCalendar()
-            releaseDate.time = _date
+            releaseDate.time = it
             val day = Utils.calDDay(releaseDate)
             if (day <= 0) {
                 subscribeReleaseAlarmButton.visibility = View.GONE
@@ -400,89 +474,18 @@ class DetailActivity : BaseActivity() {
                     startActivity(intent)
                 }
             }
-        } ?: {
-            subscribeReleaseAlarmButton.visibility = View.GONE
-        }()
+        } ?: run { subscribeReleaseAlarmButton.visibility = View.GONE }
 
         //이미지
         if (movieDetail.images.posters.isEmpty() && movieDetail.images.backdrops.isEmpty()) {
-            previewImageAdapter!!.onEmpty()
+            previewImageAdapter.onEmpty()
         } else {
             val previewImages = ArrayList<String>()
             for (backdrop in movieDetail.images.backdrops) previewImages.add(backdrop.filePath)
             for (poster in movieDetail.images.posters) previewImages.add(poster.filePath)
-            previewImageAdapter!!.setList(previewImages)
-            previewImageAdapter!!.notifyDataSetChanged()
+            previewImageAdapter.setList(previewImages)
+            previewImageAdapter.notifyDataSetChanged()
         }
-
-        //출연진&제작진
-        creditDisposable = movieApi.getCredits(movieDetail.id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { result ->
-                            if (result.cast.isEmpty()){
-                                castEmptyView.visibility = View.VISIBLE
-                                castRecyclerView.visibility = View.GONE
-                            } else {
-                                castEmptyView.visibility = View.GONE
-                                castRecyclerView.visibility = View.VISIBLE
-                                castListAdapter?.list?.addAll(result.cast)
-                                castListAdapter?.notifyDataSetChanged()
-                            }
-
-                            if (result.crew.isEmpty()){
-                                crewEmptyView.visibility = View.VISIBLE
-                                crewRecyclerView.visibility = View.GONE
-                            } else {
-                                crewEmptyView.visibility = View.GONE
-                                crewRecyclerView.visibility = View.VISIBLE
-                                crewListAdapter?.list?.addAll(result.crew)
-                                crewListAdapter?.notifyDataSetChanged()
-                            }
-
-                        },
-                        {
-                            it.printStackTrace()
-                            crewEmptyView.visibility = View.VISIBLE
-                            crewRecyclerView.visibility = View.GONE
-                            castEmptyView.visibility = View.VISIBLE
-                            castRecyclerView.visibility = View.GONE
-                        })
-
-        //유사영화
-        similarMovieDisposable = movieApi.getSimilarMovie(movieDetail.id, 1)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { result->
-                            if (result.totalResults == 0) {
-                                similarMovieListAdapter?.onEmpty()
-                            } else {
-                                Log.d("TAG", "무비 온 낫 엠티")
-                                similarMovieListAdapter?.onNotEmpty()
-                                if (result.totalResults <= 4) {
-                                    similarMovieListAdapter?.list?.addAll(result.results)
-                                } else {
-                                    val movieCollapseArrayList = ArrayList(result.results.subList(0, 4))
-                                    similarMovieListAdapter?.list?.addAll(movieCollapseArrayList)
-                                    similarMovieLoadMoreButton.visibility = View.VISIBLE
-                                    similarMovieLoadMoreButton.setOnClickListener {
-                                        val intent = Intent(this, MovieListActivity::class.java)
-                                        intent.putExtra("keyword", movieDetail)
-                                        startActivity(intent)
-                                    }
-                                }
-                                similarMovieListAdapter?.notifyDataSetChanged()
-                            }
-
-                        },
-                        {
-                            it.printStackTrace()
-                            similarMovieListAdapter?.onEmpty()
-                        }
-                )
-
     }
 
     private fun onException() {
@@ -498,11 +501,22 @@ class DetailActivity : BaseActivity() {
         imageView!!.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
             override fun onPreDraw(): Boolean {
                 imageView.viewTreeObserver.removeOnPreDrawListener(this)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    startPostponedEnterTransition()
-                }
+                startPostponedEnterTransition()
                 return true
             }
         })
+    }
+
+    companion object {
+        const val KEY_MOVIE_ID = "movie_id"
+        fun startActivity(
+            context: Context,
+            transformationLayout: TransformationLayout,
+            movieId: Int?
+        ) {
+            val intent = Intent(context, DetailActivity::class.java)
+            intent.putExtra(KEY_MOVIE_ID, movieId)
+            TransformationCompat.startActivity(transformationLayout, intent)
+        }
     }
 }

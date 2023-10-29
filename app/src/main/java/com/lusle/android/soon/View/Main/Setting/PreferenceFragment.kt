@@ -21,7 +21,7 @@ import com.lusle.android.soon.Util.CountryPickerDialog.CountryCodePicker
 /**
  * A simple [Fragment] subclass.
  */
-public class PreferenceFragment : PreferenceFragmentCompat() {
+class PreferenceFragment : PreferenceFragmentCompat() {
     private lateinit var pref: SharedPreferences
 
     private val DEFAULT_NAME_CODE = "kr"
@@ -37,10 +37,10 @@ public class PreferenceFragment : PreferenceFragmentCompat() {
         setRegionPreference()
         setClearHistoryPreference()
         setUpAppInfoPreference()
-        setLincensePreference()
+        setLicensePreference()
     }
 
-    private fun setLincensePreference() {
+    private fun setLicensePreference() {
         findPreference<Preference>(getString(R.string.key_license))!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             startActivity(Intent(requireContext(), OssLicensesMenuActivity::class.java))
             false

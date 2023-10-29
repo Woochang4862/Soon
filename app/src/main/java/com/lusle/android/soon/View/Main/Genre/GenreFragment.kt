@@ -6,48 +6,63 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.snackbar.Snackbar
-import com.lusle.android.soon.Adapter.Decoration.GenreItemDecoration
-import com.lusle.android.soon.Adapter.GenreListAdapter
-import com.lusle.android.soon.Adapter.Listener.OnEmptyListener
-import com.lusle.android.soon.Model.API.MovieApi
-import com.lusle.android.soon.Model.Source.GenreDataRemoteSource
+import com.lusle.android.soon.Model.Source.RegionCodeRepository
 import com.lusle.android.soon.R
-import com.lusle.android.soon.Util.Utils
-import com.lusle.android.soon.View.Main.Genre.Presenter.GenreContractor
-import com.lusle.android.soon.View.Main.Genre.Presenter.GenrePresenter
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
+import com.lusle.android.soon.adapter.Decoration.GenreItemDecoration
+import com.lusle.android.soon.adapter.GenreListAdapter
+import com.lusle.android.soon.adapter.Listener.OnEmptyListener
+import kotlinx.coroutines.launch
 
-class GenreFragment : Fragment(), GenreContractor.View {
+class GenreFragment : Fragment() {
     private lateinit var errorSnackBar: Snackbar
     private lateinit var recyclerView: RecyclerView
     private lateinit var emptyView: RelativeLayout
     private lateinit var emptyAnim: LottieAnimationView
     private lateinit var shimmerFrameLayout: ShimmerFrameLayout
-    private lateinit var presenter: GenrePresenter
     private lateinit var gridLayoutManager: GridLayoutManager
     private lateinit var adapter: GenreListAdapter
-    private var genreListDisposable:Disposable? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_genre, container, false)
+    private val viewModel by viewModels<GenreViewModel> {
+        GenreViewModelFactory(
+            RegionCodeRepository(requireContext())
+        )
+    }
 
-        presenter = GenrePresenter()
-        presenter.attachView(this)
-        presenter.setModel(GenreDataRemoteSource.getInstance())
-        shimmerFrameLayout = view.findViewById(R.id.shimmer)
-        recyclerView = view.findViewById(R.id.fragment_genre_genre_list)
-        emptyView = view.findViewById(R.id.list_empty_view)
-        emptyAnim = view.findViewById(R.id.list_empty_anim)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_genre, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        errorSnackBar = Snackbar.make(
+            requireView(),
+            getString(R.string.failed_load_genre_msg),
+            Snackbar.LENGTH_SHORT
+        )
+            .setAnchorView(requireActivity().findViewById(R.id.floatingActionButton))
+            .setGestureInsetBottomIgnored(true)
+        view.apply {
+            shimmerFrameLayout = findViewById(R.id.shimmer)
+            recyclerView = findViewById(R.id.fragment_genre_genre_list)
+            emptyView = findViewById(R.id.list_empty_view)
+            emptyAnim = findViewById(R.id.list_empty_anim)
+        }
+
         gridLayoutManager = GridLayoutManager(context, 2)
-        recyclerView.addItemDecoration(GenreItemDecoration(activity))
+        if (recyclerView.itemDecorationCount == 0)
+            recyclerView.addItemDecoration(GenreItemDecoration(activity))
         recyclerView.layoutManager = gridLayoutManager
         adapter = GenreListAdapter({ _, position ->
             val args = Bundle()
@@ -63,40 +78,41 @@ class GenreFragment : Fragment(), GenreContractor.View {
             }
 
         })
-        presenter.setAdapterView(adapter)
-        presenter.setAdapterModel(adapter)
         recyclerView.adapter = adapter
 
-        genreListDisposable = MovieApi.create().getGenreList(Utils.getRegionCode(requireContext()))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe ({ result ->
-                    adapter.onNotEmpty()
-                    adapter.setList(result.genres)
-                    adapter.notifyAdapter()
-                }, { t:Throwable ->
-                    t.printStackTrace()
+        viewModel.genreLiveData.observe(
+            viewLifecycleOwner
+        ) { genres ->
+            genres?.let {
+                if (genres.isEmpty()) {
                     adapter.onEmpty()
-                })
-        return view
+                } else {
+                    adapter.onNotEmpty()
+                    adapter.setList(genres)
+                }
+            } ?: run {
+                adapter.onEmpty()
+                showErrorSnackBar()
+            }
+        }
+
+        lifecycleScope.launch {
+            try {
+                viewModel.fetchGenre()
+            } catch (e: GenreNotFoundException) {
+                e.printStackTrace()
+                showErrorSnackBar()
+            }
+        }
+
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        errorSnackBar = Snackbar.make(requireView(), getString(R.string.server_error_msg), Snackbar.LENGTH_SHORT)
-                .setAnchorView(requireActivity().findViewById(R.id.floatingActionButton))
-                .setGestureInsetBottomIgnored(true)
+    override fun onDetach() {
+        errorSnackBar.dismiss()
+        super.onDetach()
     }
 
-    override fun runRecyclerViewAnimation() {
-        Utils.runLayoutAnimation(recyclerView)
-    }
-
-    override fun showDialog(show: Boolean) {
-        // delete loadItems(), onFinished(), onFailure()
-    }
-
-    override fun showErrorToast() {
+    private fun showErrorSnackBar() {
         errorSnackBar.show()
     }
 
@@ -114,11 +130,5 @@ class GenreFragment : Fragment(), GenreContractor.View {
         }
         shimmerFrameLayout.stopShimmer()
         shimmerFrameLayout.visibility = View.GONE
-    }
-
-    override fun onDestroy() {
-        presenter.detachView()
-        genreListDisposable?.dispose()
-        super.onDestroy()
     }
 }

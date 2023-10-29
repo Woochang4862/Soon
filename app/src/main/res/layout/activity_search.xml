@@ -12,7 +12,7 @@
         android:id="@+id/activity_search_header"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
-        android:layout_marginBottom="1dp"
+        android:layout_marginBottom="10dp"
         android:background="@color/light_black">
 
         <ImageView
@@ -54,42 +54,15 @@
 
     </RelativeLayout>
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/activity_search_tabLayout"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_below="@id/activity_search_header"
-        app:tabIndicatorColor="@color/colorAccent"
-        app:tabIndicatorFullWidth="false"
-        app:tabTextColor="@color/white"
-        android:visibility="visible"
-        android:background="@color/light_black">
-
-        <com.google.android.material.tabs.TabItem
-            fontPath="@string/NanumBarunGothic_path"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/all" />
-
-        <com.google.android.material.tabs.TabItem
-            fontPath="@string/NanumBarunGothic_path"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/company" />
-
-        <com.google.android.material.tabs.TabItem
-            fontPath="@string/NanumBarunGothic_path"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/movie" />
-
-    </com.google.android.material.tabs.TabLayout>
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/activity_search_viewPager"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/search_result_recyclerview"
         android:layout_width="match_parent"
         android:background="@color/light_black"
-        android:layout_height="match_parent"
-        android:layout_below="@id/activity_search_tabLayout">
-    </androidx.viewpager.widget.ViewPager>
+        android:paddingStart="@dimen/margin_content_list"
+        android:paddingEnd="@dimen/margin_content_list"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_below="@id/activity_search_header"
+        android:layout_height="match_parent"/>
+
 </RelativeLayout>

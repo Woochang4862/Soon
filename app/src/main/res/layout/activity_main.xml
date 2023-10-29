@@ -45,10 +45,10 @@
         android:layout_alignParentBottom="true"
         app:backgroundTint="@color/light_black"
         app:elevation="8dp"
-        app:itemRippleColor="@color/colorPrimary"
         app:itemIconTint="@color/nav_item_state_list"
+        app:itemRippleColor="@color/colorPrimary"
         app:itemTextColor="@color/nav_item_state_list"
-        app:labelVisibilityMode="labeled"
+        app:labelVisibilityMode="unlabeled"
         app:menu="@menu/menu_navigation" />
 
 </RelativeLayout>

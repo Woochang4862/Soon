@@ -2,10 +2,6 @@ package com.lusle.android.soon;
 
 import android.content.Context;
 
-import com.lusle.android.soon.Adapter.Contract.CompanyAlarmSettingAdapterContract;
-import com.lusle.android.soon.Model.Source.CompanyAlarmManagerRemoteSource;
-import com.lusle.android.soon.Model.Source.FavoriteCompanyDataLocalSource;
-import com.lusle.android.soon.Model.Source.SubscribeCheckDataRemoteSource;
 import com.lusle.android.soon.View.Main.Setting.CompanyAlarm.Presenter.CompanyAlarmSettingContractor;
 import com.lusle.android.soon.View.Main.Setting.CompanyAlarm.Presenter.CompanyAlarmSettingPresenter;
 

@@ -1,79 +1,73 @@
 package com.lusle.android.soon.View.Main.ThisMonthMovie
 
-import android.app.Activity
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
-import androidx.core.app.ActivityOptionsCompat
-import androidx.core.util.Pair
-import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
-import androidx.paging.DataSource
-import androidx.paging.PagedList
-import androidx.paging.RxPagedListBuilder
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.airbnb.lottie.LottieAnimationView
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.snackbar.Snackbar
-import com.lusle.android.soon.Adapter.Decoration.MovieItemDecoration
-import com.lusle.android.soon.Adapter.Listener.OnEmptyListener
-import com.lusle.android.soon.Adapter.MoviePagedListAdapter
-import com.lusle.android.soon.Model.API.MovieApi
-import com.lusle.android.soon.Model.Schema.Movie
-import com.lusle.android.soon.Model.Source.TMMPageKeyDataSource
+import com.lusle.android.soon.Model.Source.RegionCodeRepository
 import com.lusle.android.soon.R
-import com.lusle.android.soon.Util.Utils
-import com.lusle.android.soon.View.Detail.DetailActivity
-import com.lusle.android.soon.View.Main.ThisMonthMovie.Presenter.ThisMonthMovieContract
-import com.lusle.android.soon.View.Main.ThisMonthMovie.Presenter.ThisMonthMoviePresenter
-import io.reactivex.disposables.Disposable
+import com.lusle.android.soon.adapter.Decoration.MovieItemDecoration
+import com.lusle.android.soon.adapter.Listener.OnEmptyListener
+import com.lusle.android.soon.adapter.MoviePagedListAdapter
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
-class ThisMonthMovieFragment : Fragment(), ThisMonthMovieContract.View {
-    private val movieApi = MovieApi.create()
-    private val PAGE_SIZE: Int = 20
+class ThisMonthMovieFragment : Fragment() {
+
     private lateinit var emptyView: RelativeLayout
     private lateinit var emptyAnim: LottieAnimationView
     private lateinit var recyclerView: RecyclerView
-    private var adapter: MoviePagedListAdapter? = null
-    private var layoutManager: GridLayoutManager? = null
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    private lateinit var adapter: MoviePagedListAdapter
+    private lateinit var layoutManager: GridLayoutManager
     private lateinit var shimmerFrameLayout: ShimmerFrameLayout
-    private lateinit var presenter: ThisMonthMoviePresenter
-    private lateinit var listDisposable: Disposable
     private lateinit var errorSnackBar: Snackbar
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_this_month_movie, container, false)
-        presenter = ThisMonthMoviePresenter()
-        //presenter.attachView(this)
-        //presenter.setMovieModel(MovieDataRemoteSource.getInstance())
+    private val viewModel by viewModels<ThisMonthMovieViewModel> {
+        ThisMonthMovieViewModelFactory(
+            RegionCodeRepository(requireContext())
+        )
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_this_month_movie, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        errorSnackBar = Snackbar.make(
+            requireView(),
+            getString(R.string.failed_load_movie_msg),
+            Snackbar.LENGTH_SHORT
+        )
+            .setAnchorView(requireActivity().findViewById(R.id.floatingActionButton))
+            .setGestureInsetBottomIgnored(true)
+
         shimmerFrameLayout = view.findViewById(R.id.shimmer)
         emptyView = view.findViewById(R.id.list_empty_view)
         emptyAnim = view.findViewById(R.id.list_empty_anim)
         recyclerView = view.findViewById(R.id.movie_list_recyclerView)
+        swipeRefreshLayout = view.findViewById(R.id.movie_list_swipe_refresh)
 
-        val config = PagedList.Config.Builder()
-                .setInitialLoadSizeHint(PAGE_SIZE)
-                .setPageSize(PAGE_SIZE)
-                .build()
+        adapter = MoviePagedListAdapter({ _, _ ->
 
-        val factory = object : DataSource.Factory<Int, Movie>() {
-            override fun create(): DataSource<Int, Movie> = TMMPageKeyDataSource(movieApi = movieApi, region = Utils.getRegionCode(requireContext()))
-        }
-
-        val builder = RxPagedListBuilder(factory, config)
-
-        adapter = MoviePagedListAdapter({ _, position ->
-            val intent = Intent(context, DetailActivity::class.java)
-            intent.putExtra("movie_id", adapter?.getItem(position)?.id)
-            val poster = Pair.create(view.findViewById<View>(R.id.movie_list_recyclerview_poster), ViewCompat.getTransitionName(view.findViewById(R.id.movie_list_recyclerview_poster)))
-            val options = ActivityOptionsCompat.makeSceneTransitionAnimation((view.context as Activity), poster)
-            startActivity(intent, options.toBundle())
         }, object : OnEmptyListener {
             override fun onEmpty() {
                 setRecyclerEmpty(true)
@@ -83,65 +77,59 @@ class ThisMonthMovieFragment : Fragment(), ThisMonthMovieContract.View {
                 setRecyclerEmpty(false)
             }
         })
+        adapter.addLoadStateListener { loadState ->
+            adapter.apply {
+                onNotEmpty()
+                Log.d(TAG, "onLoadStateListener: $loadState")
+                if (loadState.source.refresh is LoadState.NotLoading && loadState.append.endOfPaginationReached && itemCount < 1) {
+                    Log.d(TAG, "비어있음")
+                    onEmpty()
+                }
+            }
+        }
         recyclerView.adapter = adapter
-        listDisposable = builder.buildObservable()
-                .subscribe(
-                        { result ->
-                            shimmerFrameLayout.stopShimmer()
-                            shimmerFrameLayout.visibility = View.GONE
-                            adapter?.let {
-                                if (result.isEmpty()){
-                                    it.onEmpty()
-                                }else {
-                                    it.onNotEmpty()
-                                    it.submitList(result)
-                                }
-                            }
-                        },
-                        { t: Throwable ->
-                            t.printStackTrace()
-                            adapter?.onEmpty()
-                        }
-                )
+
         layoutManager = GridLayoutManager(context, 2)
+        layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                if (position == 0) return 2
+                return 1
+            }
+        }
         recyclerView.layoutManager = layoutManager
-        recyclerView.addItemDecoration(MovieItemDecoration(activity))
-        //presenter.setOnEmptyListener()
-        //presenter.setOnLoadMoreListener()
-        return view
+        activity?.let { MovieItemDecoration(it) }?.let {
+            if (recyclerView.itemDecorationCount == 0)
+                recyclerView.addItemDecoration(it)
+        }
+
+        swipeRefreshLayout.setOnRefreshListener {
+            load()
+        }
+
+        load()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        errorSnackBar = Snackbar.make(requireView(), getString(R.string.server_error_msg), Snackbar.LENGTH_SHORT)
-                .setAnchorView(requireActivity().findViewById(R.id.floatingActionButton))
-                .setGestureInsetBottomIgnored(true)
+    private fun load() {
+        lifecycleScope.launch {
+            loading(true)
+            try {
+                viewModel.flow.collectLatest { pagingData ->
+                    loading(false)
+                    adapter.submitData(pagingData)
+                }
+            } catch (e:Exception){
+                e.printStackTrace()
+                adapter.onEmpty()
+                showErrorSnackBar()
+            }
+        }
     }
 
-    override fun showErrorToast() {
+    private fun showErrorSnackBar(){
         errorSnackBar.show()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        if (listDisposable.isDisposed) {
-            listDisposable.dispose()
-        }
-        presenter.detachView()
-    }
-
-    override fun showDialog(show: Boolean) = Unit
-
-    override fun runRecyclerViewAnimation() {
-        Utils.runLayoutAnimation(recyclerView)
-    }
-
-    override fun getContext(): Context? {
-        return super.getContext()
-    }
-
-    override fun setRecyclerEmpty(empty: Boolean) {
+    fun setRecyclerEmpty(empty: Boolean) {
         if (empty) {
             recyclerView.visibility = View.GONE
             emptyView.visibility = View.VISIBLE
@@ -153,6 +141,28 @@ class ThisMonthMovieFragment : Fragment(), ThisMonthMovieContract.View {
             emptyAnim.visibility = View.GONE
             if (emptyAnim.isAnimating) emptyAnim.pauseAnimation()
         }
+    }
+
+    override fun onDetach() {
+        errorSnackBar.dismiss()
+        super.onDetach()
+    }
+
+    private fun loading(isLoading: Boolean) {
+        if (isLoading) {
+            shimmerFrameLayout.startShimmer()
+            shimmerFrameLayout.visibility = View.VISIBLE
+            recyclerView.visibility = View.GONE
+        } else {
+            shimmerFrameLayout.stopShimmer()
+            shimmerFrameLayout.visibility = View.GONE
+            recyclerView.visibility = View.VISIBLE
+            swipeRefreshLayout.isRefreshing = false
+        }
+    }
+
+    companion object {
+        val TAG: String = ThisMonthMovieFragment::class.java.simpleName
     }
 
 }

@@ -1,54 +1,46 @@
 package com.lusle.android.soon.View.MovieList
 
-import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
-import android.widget.TextView
-import androidx.core.app.ActivityOptionsCompat
-import androidx.core.util.Pair
-import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
-import androidx.paging.DataSource
-import androidx.paging.PagedList
-import androidx.paging.RxPagedListBuilder
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
 import com.facebook.shimmer.ShimmerFrameLayout
-import com.lusle.android.soon.Adapter.Decoration.MovieItemDecoration
-import com.lusle.android.soon.Adapter.Listener.OnEmptyListener
-import com.lusle.android.soon.Adapter.MoviePagedListAdapter
-import com.lusle.android.soon.Model.API.MovieApi
-import com.lusle.android.soon.Model.Schema.Company
-import com.lusle.android.soon.Model.Schema.Genre
-import com.lusle.android.soon.Model.Schema.Movie
-import com.lusle.android.soon.Model.Schema.MovieDetail
-import com.lusle.android.soon.Model.Source.CompanyPageKeyDataSource
-import com.lusle.android.soon.Model.Source.GenrePageKeyDataSource
-import com.lusle.android.soon.Model.Source.SimilarMoviePageKeyDataSource
+import com.google.android.material.snackbar.Snackbar
+import com.lusle.android.soon.Model.Source.FavoriteCompanyRepository
+import com.lusle.android.soon.Model.Source.RegionCodeRepository
 import com.lusle.android.soon.R
-import com.lusle.android.soon.Util.Utils
-import com.lusle.android.soon.View.Detail.DetailActivity
-import com.lusle.android.soon.View.Main.Company.CompanyFragment.Companion.PAGE_SIZE
+import com.lusle.android.soon.View.Dialog.MovieProgressDialog
+import com.lusle.android.soon.adapter.Decoration.MovieItemDecoration
+import com.lusle.android.soon.adapter.Listener.OnCompanyBookMarkButtonClickListener
+import com.lusle.android.soon.adapter.Listener.OnEmptyListener
+import com.lusle.android.soon.adapter.MoviePagedListAdapter
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class MovieListFragment : Fragment() {
-    private lateinit var config: PagedList.Config
-    private lateinit var factory: DataSource.Factory<Int, Movie>
-    private val movieApi: MovieApi = MovieApi.create()
-    private var genre: Genre? = null
-    private var company: Company? = null
-    private var movieDetail: MovieDetail? = null
 
-    private lateinit var keyword: TextView
+    private lateinit var errorSnackBar: Snackbar
     private lateinit var recyclerView: RecyclerView
     private lateinit var emptyViewGroup: RelativeLayout
     private lateinit var emptyAnim: LottieAnimationView
     private lateinit var shimmerFrameLayout: ShimmerFrameLayout
+    private lateinit var movieProgressDialog: MovieProgressDialog
 
+    private lateinit var layoutManager: GridLayoutManager
     private lateinit var adapter: MoviePagedListAdapter
+
+    private val viewModel by viewModels<MovieListViewModel> { MovieListViewModelFactory(
+        RegionCodeRepository(requireContext()), FavoriteCompanyRepository(requireContext())
+    ) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_movie_list, container, false)
@@ -57,85 +49,136 @@ class MovieListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.apply {
+            errorSnackBar = Snackbar.make(requireView(), getString(R.string.failed_load_movie_msg), Snackbar.LENGTH_SHORT)
+                .setAnchorView(requireActivity().findViewById(R.id.floatingActionButton))
+                .setGestureInsetBottomIgnored(true)
+                .setAction("재시도"){
+                    load()
+                }
             shimmerFrameLayout = findViewById(R.id.shimmer)
-            keyword = findViewById(R.id.keyword)
             recyclerView = findViewById(R.id.movie_list_recyclerView)
             emptyViewGroup = findViewById(R.id.list_empty_view)
             emptyAnim = findViewById(R.id.list_empty_anim)
         }
 
-        when (val obj: Any? = requireArguments().getSerializable("keyword")) {
-            is Genre -> {
-                genre = obj
-                keyword.text = genre!!.name
+        movieProgressDialog = MovieProgressDialog(requireContext())
 
-                factory = object : DataSource.Factory<Int, Movie>() {
-                    override fun create(): DataSource<Int, Movie> = GenrePageKeyDataSource(movieApi = movieApi, region = Utils.getRegionCode(requireContext()), genre!!.id)
-                }
-            }
-            is Company -> {
-                company = obj
-                keyword.text = company!!.name
+        val obj: Any? = requireArguments().getSerializable("keyword")
+        viewModel.init(obj)
 
-                factory = object : DataSource.Factory<Int, Movie>() {
-                    override fun create(): DataSource<Int, Movie> = CompanyPageKeyDataSource(movieApi = movieApi, region = Utils.getRegionCode(requireContext()), company!!.id)
-                }
-            }
-            is MovieDetail -> {
-                movieDetail = obj
-                keyword.text = movieDetail!!.title
+        viewModel.movieLoadState.observe(viewLifecycleOwner) {
+            movieLoading(it)
+        }
 
-                factory = object : DataSource.Factory<Int, Movie>() {
-                    override fun create(): DataSource<Int, Movie> = SimilarMoviePageKeyDataSource(movieApi = movieApi, id = movieDetail!!.id)
-                }
+        viewModel.subscribeLoadState.observe(viewLifecycleOwner) {
+            saveCompanyLoading(it)
+        }
+
+        layoutManager = GridLayoutManager(context, 2)
+        layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                if (position == 0) return 2
+                return 1
             }
         }
-        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
-        recyclerView.addItemDecoration(MovieItemDecoration(requireActivity()))
+        recyclerView.layoutManager = layoutManager
+        if (recyclerView.itemDecorationCount == 0)
+            recyclerView.addItemDecoration(MovieItemDecoration(requireActivity()))
 
-        config = PagedList.Config.Builder()
-                .setInitialLoadSizeHint(PAGE_SIZE)
-                .setPageSize(PAGE_SIZE)
-                .build()
-        val builder = RxPagedListBuilder(factory, config)
-        adapter = MoviePagedListAdapter({ _, position ->
-            val intent = Intent(requireContext(), DetailActivity::class.java)
-            intent.putExtra("movie_id", adapter.getItem(position)!!.id)
-            val poster: Pair<View, String> = Pair.create(view.findViewById(R.id.movie_list_recyclerview_poster), ViewCompat.getTransitionName(view.findViewById(R.id.movie_list_recyclerview_poster)))
-            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity(), poster)
-            startActivity(intent, options.toBundle())
-        }, object : OnEmptyListener {
+        adapter = MoviePagedListAdapter({ _, _ -> }, object : OnEmptyListener {
             override fun onEmpty() {
-                recyclerView.visibility = View.GONE
-                emptyViewGroup.visibility = View.VISIBLE
-                if (!emptyAnim.isAnimating) emptyAnim.playAnimation()
+                setRecyclerEmpty(true)
             }
 
             override fun onNotEmpty() {
-                recyclerView.visibility = View.VISIBLE
-                emptyViewGroup.visibility = View.GONE
-                if (emptyAnim.isAnimating) emptyAnim.pauseAnimation()
+                setRecyclerEmpty(false)
             }
+        },object : OnCompanyBookMarkButtonClickListener {
+            override fun onCompanyBookMarkButtonClicked(view: View, isChecked: Boolean) {
+                lifecycleScope.launch {
+                    if (isChecked) {
+                        viewModel.addCompany()
+                    } else {
+                        viewModel.removeCompany()
+                    }
+                }
+            }
+
         })
+        adapter.addLoadStateListener { loadState ->
+            adapter.onNotEmpty()
+            adapter.let {
+                Log.d(TAG, "onLoadStateListener: $loadState")
+                if (loadState.source.refresh is LoadState.NotLoading && loadState.append.endOfPaginationReached && it.itemCount < 1) {
+                    Log.d(TAG, "비어있음")
+                    it.onEmpty()
+                }
+            }
+        }
         recyclerView.adapter = adapter
-        val disposable = builder.buildObservable()
-                .subscribe(
-                        { result ->
-                            shimmerFrameLayout.stopShimmer()
-                            shimmerFrameLayout.visibility = View.GONE
-                            adapter.let {
-                                if (result.isEmpty()){
-                                    it.onEmpty()
-                                }else {
-                                    it.onNotEmpty()
-                                    it.submitList(result)
-                                }
-                            }
-                        },
-                        { t: Throwable ->
-                            t.printStackTrace()
-                            adapter.onEmpty()
-                        }
-                )
+
+        load()
+    }
+
+    private fun load() {
+        lifecycleScope.launch {
+            viewModel.movieLoadState.value = true
+            try {
+                viewModel.flow!!.collectLatest { pagingData ->
+                    viewModel.movieLoadState.value = false
+                    shimmerFrameLayout.visibility = View.GONE
+                    adapter.submitData(pagingData)
+                }
+            } catch (e:Exception){
+                e.printStackTrace()
+                adapter.onEmpty()
+                showErrorSnackBar()
+            }
+        }
+    }
+
+    override fun onDetach() {
+        errorSnackBar.dismiss()
+        super.onDetach()
+    }
+
+    private fun showErrorSnackBar() {
+        errorSnackBar.show()
+    }
+
+    private fun movieLoading(isLoading:Boolean){
+        if(isLoading){
+            shimmerFrameLayout.startShimmer()
+            shimmerFrameLayout.visibility = View.VISIBLE
+            recyclerView.visibility = View.GONE
+        } else {
+            shimmerFrameLayout.stopShimmer()
+            shimmerFrameLayout.visibility = View.GONE
+            recyclerView.visibility = View.VISIBLE
+        }
+    }
+
+    private fun saveCompanyLoading(isLoading:Boolean){
+        if(isLoading){
+            movieProgressDialog.show()
+        } else {
+            movieProgressDialog.hide()
+        }
+    }
+
+    fun setRecyclerEmpty(empty: Boolean) {
+        if (empty) {
+            recyclerView.visibility = View.GONE
+            emptyViewGroup.visibility = View.VISIBLE
+            if (!emptyAnim.isAnimating) emptyAnim.playAnimation()
+        } else {
+            recyclerView.visibility = View.VISIBLE
+            emptyViewGroup.visibility = View.GONE
+            if (emptyAnim.isAnimating) emptyAnim.pauseAnimation()
+        }
+    }
+
+    companion object {
+        private const val TAG = "MovieListFragment"
     }
 }

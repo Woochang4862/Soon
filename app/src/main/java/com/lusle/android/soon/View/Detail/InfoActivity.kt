@@ -7,9 +7,10 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.lusle.android.soon.Adapter.CollectionListAdapter
-import com.lusle.android.soon.Model.API.MovieApi
+import com.lusle.android.soon.adapter.CollectionListAdapter
+import com.lusle.android.soon.Model.Api.MovieApi
 import com.lusle.android.soon.Model.Schema.MovieDetail
+import com.lusle.android.soon.Model.Source.RegionCodeRepository
 import com.lusle.android.soon.R
 import com.lusle.android.soon.Util.Utils
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -72,7 +73,7 @@ class InfoActivity : AppCompatActivity() {
             spokenLanguagesTextView = findViewById(R.id.spoken_languages)
             popularityTextView = findViewById(R.id.popularity)
 
-            movieDetailDisposable = movieApi.getMovieDetails(Utils.getRegionCode(this), movieId)
+            movieDetailDisposable = movieApi.getMovieDetails(RegionCodeRepository(this).regionCode, movieId)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(

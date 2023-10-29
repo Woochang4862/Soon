@@ -1,47 +1,45 @@
 package com.lusle.android.soon.Model.Source
 
+import android.annotation.SuppressLint
 import android.util.Log
-import androidx.paging.PageKeyedDataSource
-import com.lusle.android.soon.Model.API.MovieApi
+import androidx.paging.PagingSource
+import androidx.paging.PagingState
+import com.lusle.android.soon.Model.Api.MovieApi
 import com.lusle.android.soon.Model.Schema.Movie
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 
-class SimilarMoviePageKeyDataSource(private val movieApi: MovieApi, private val id: Int) : PageKeyedDataSource<Int, Movie>() {
-    override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, Movie>) {
-        Log.d("TAG", "loadInitial: ${params.requestedLoadSize}")
-        movieApi.getSimilarMovie(id, 1)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        {
-                            callback.onResult(it.results, 0, it.totalResults, null, 2)
-                        },
-                        {
-                            it.printStackTrace()
-                        }
-                )
+class SimilarMoviePageKeyDataSource(private val movieApi: MovieApi, private val id: Int) : PagingSource<Int, Movie>() {
+
+    override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
+        return state.anchorPosition?.let { anchorPosition ->
+            val anchorPage = state.closestPageToPosition(anchorPosition)
+            anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
+        }
     }
 
-    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Movie>) {
-        Log.d("TAG", "loadAfter: ${params.key}")
-        movieApi.getSimilarMovie(id, params.key)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        {
-                            callback.onResult(it.results, params.key + 1)
-                        },
-                        {
-                            //error control
-                        }
-                )
+    @SuppressLint("LongLogTag")
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
+        Log.d(TAG, "load: loadSize: ${params.loadSize}")
+        try {
+            // Start refresh at page 1 if undefined.
+            val nextPageNumber = params.key ?: 1
+            val response = movieApi.getSimilarMovie(id, nextPageNumber).subscribeOn(Schedulers.io()).blockingGet()
+
+            Log.d(TAG, "load: result size: ${response.results.size}")
+            return LoadResult.Page(
+                data = response.results,
+                prevKey = null, // Only paging forward.
+                nextKey = nextPageNumber + 1
+            )
+        } catch (e: Exception) {
+            // Handle errors in this block and return LoadResult.Error if it is an
+            // expected error (such as a network failure).
+            e.printStackTrace()
+            return LoadResult.Error(e)
+        }
     }
 
-    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Movie>) {
-        Log.d("TAG", "loadBefore")
+    companion object {
+        private const val TAG = "SimilarMoviePageKeyDataSource"
     }
-
-
 }

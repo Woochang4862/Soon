@@ -315,8 +315,8 @@
                     tools:ignore="MissingPrefix" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/watch_provider_recyclerview"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/watch_provider_section_recyclerview"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/watch_provider_title" />
 
@@ -576,8 +576,10 @@
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/similar_movie_recyclerview"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_content_list"
+                        android:layout_marginEnd="@dimen/margin_content_list"
                         android:layout_below="@id/similar_movie_title" />
 
                     <TextView
@@ -606,7 +608,6 @@
                     android:visibility="visible">
 
                     <ImageView
-                        android:id="@+id/movie_more_image"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_centerVertical="true"
@@ -614,7 +615,6 @@
                         android:src="@drawable/ic_expand_more" />
 
                     <TextView
-                        android:id="@+id/movie_more_text"
                         fontPath="@string/NanumBarunGothic_path"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

@@ -8,12 +8,12 @@
     android:background="@color/light_black"
     tools:context=".View.MovieList.MovieListFragment">
 
-    <TextView
+    <!--<TextView
         android:id="@+id/keyword"
         style="@style/SoonAppTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/text_this_month" />
+        android:text="@string/text_this_month" />-->
 
     <FrameLayout
         android:layout_width="match_parent"

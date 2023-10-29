@@ -33,9 +33,10 @@ import com.lusle.android.soon.View.Alarm.AlarmReceiver
 import com.lusle.android.soon.View.Alarm.AlarmSettingFragment
 import com.lusle.android.soon.View.BaseActivity
 import com.lusle.android.soon.View.Search.SearchActivity
+import com.skydoves.transformationlayout.onTransformationStartContainer
 import java.util.ArrayList
 
-
+//TODO:리펙토링
 class MainActivity : BaseActivity() {
     private val REQUEST_CODE_UPDATE: Int = 200
     private lateinit var bottomNavigationView: BottomNavigationView
@@ -43,9 +44,13 @@ class MainActivity : BaseActivity() {
     private var currentNavController: LiveData<NavController>? = null
     private var appUpdateManager: AppUpdateManager? = null
     private var snackbarForProgressBar : Snackbar? = null
-    private val TAG = MainActivity::class.java.simpleName
+
+    companion object {
+        val TAG = MainActivity::class.java.simpleName
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        onTransformationStartContainer()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         if(savedInstanceState == null){
@@ -98,7 +103,8 @@ class MainActivity : BaseActivity() {
             i.putExtra(AlarmSettingFragment.KEY_ALARM_ID, a)
             i.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
 
-            var pendingIntent = PendingIntent.getBroadcast(this, a.pendingIntentID, i, 0)
+            var pendingIntent = PendingIntent.getBroadcast(this, a.pendingIntentID, i,
+                PendingIntent.FLAG_MUTABLE)
 
             if (pendingIntent != null) {
                 am.cancel(pendingIntent)

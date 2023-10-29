@@ -9,8 +9,8 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.lusle.android.soon.Model.API.APIClient
-import com.lusle.android.soon.Model.API.APIInterface
+import com.lusle.android.soon.Model.Api.APIInterface
+import com.lusle.android.soon.Model.Api.ApiClient
 import com.lusle.android.soon.Model.Schema.Company
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -40,7 +40,7 @@ class AllCompanyAlarmRemoveService : Service() {
                 val body = HashMap<String, String>()
                 body["company_id"] = company.id.toString()
                 body["token"] = token
-                APIClient.getClient().create(APIInterface::class.java).removeCompanyAlarm(body).enqueue(object : Callback<ResponseBody?> {
+                ApiClient.retrofit.create(APIInterface::class.java).removeCompanyAlarm(body).enqueue(object : Callback<ResponseBody?> {
                     override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {}
                     override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
                         t.printStackTrace()
