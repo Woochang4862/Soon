@@ -3,8 +3,8 @@ package com.lusle.android.soon.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.lusle.android.soon.adapter.Holder.CrewViewHolder
-import com.lusle.android.soon.Model.Schema.Crew
+import com.lusle.android.soon.adapter.holder.CrewViewHolder
+import com.lusle.android.soon.model.schema.Crew
 import com.lusle.android.soon.R
 
 class CrewListAdapter : RecyclerView.Adapter<CrewViewHolder>() {

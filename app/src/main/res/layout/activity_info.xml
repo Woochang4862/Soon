@@ -6,7 +6,7 @@
     android:paddingStart="12.3dp"
     android:paddingEnd="12.3dp"
     android:scrollbars="none"
-    tools:context=".View.Detail.InfoActivity">
+    tools:context=".view.detail.InfoActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"

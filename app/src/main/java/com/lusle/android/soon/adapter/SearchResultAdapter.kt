@@ -5,14 +5,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.lusle.android.soon.Model.Schema.Company
-import com.lusle.android.soon.Model.Schema.UiModel
+import com.lusle.android.soon.model.schema.Company
+import com.lusle.android.soon.model.schema.UiModel
 import com.lusle.android.soon.R
-import com.lusle.android.soon.adapter.Holder.CompanyResultViewHolder
-import com.lusle.android.soon.adapter.Holder.MovieViewHolder
-import com.lusle.android.soon.adapter.Holder.SectionHeaderViewHolder
-import com.lusle.android.soon.adapter.Listener.OnEmptyListener
-import com.lusle.android.soon.adapter.Listener.OnItemClickListener
+import com.lusle.android.soon.adapter.holder.CompanyResultViewHolder
+import com.lusle.android.soon.adapter.holder.MovieViewHolder
+import com.lusle.android.soon.adapter.holder.SectionHeaderViewHolder
+import com.lusle.android.soon.adapter.listener.OnEmptyListener
+import com.lusle.android.soon.adapter.listener.OnItemClickListener
 
 //TODO:예외처리
 class SearchResultAdapter(private val onMovieItemClickListener: OnItemClickListener, private val onSeeAllButtonClickListener: View.OnClickListener, private val onCompanyItemClickListener: OnItemClickListener, private val onEmptyListener: OnEmptyListener) : PagingDataAdapter<UiModel, RecyclerView.ViewHolder>(diffMovieItemCallback) {
@@ -40,14 +40,15 @@ class SearchResultAdapter(private val onMovieItemClickListener: OnItemClickListe
             R.layout.section_company_result -> {
                 val view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.section_company_result, parent, false)
-                companyResultViewHolder = CompanyResultViewHolder(view, onSeeAllButtonClickListener, onCompanyItemClickListener)
+                companyResultViewHolder = CompanyResultViewHolder(view, onCompanyItemClickListener)
                 return companyResultViewHolder!!
             }
 
             R.layout.header_section -> {
                 SectionHeaderViewHolder(
                     LayoutInflater.from(parent.context)
-                        .inflate(R.layout.header_section, parent, false)
+                        .inflate(R.layout.header_section, parent, false),
+                    onSeeAllButtonClickListener
                 )
             }
 

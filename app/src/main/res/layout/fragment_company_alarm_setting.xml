@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
-    tools:context=".View.Main.Setting.CompanyAlarm.CompanyAlarmSettingFragment">
+    tools:context=".view.main.setting.company_alarm.CompanyAlarmSettingFragment">
 
     <RelativeLayout
         android:layout_width="wrap_content"

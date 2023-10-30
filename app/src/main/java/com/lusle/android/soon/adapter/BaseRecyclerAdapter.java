@@ -2,8 +2,8 @@ package com.lusle.android.soon.adapter;
 
 import android.util.Log;
 
-import com.lusle.android.soon.adapter.Listener.OnEmptyListener;
-import com.lusle.android.soon.adapter.Listener.OnLoadMoreListener;
+import com.lusle.android.soon.adapter.listener.OnEmptyListener;
+import com.lusle.android.soon.adapter.listener.OnLoadMoreListener;
 
 import androidx.annotation.NonNull;
 import androidx.core.widget.NestedScrollView;

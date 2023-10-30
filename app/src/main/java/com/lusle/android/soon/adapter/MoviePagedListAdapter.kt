@@ -5,15 +5,14 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.lusle.android.soon.adapter.Holder.HeaderViewHolder
-import com.lusle.android.soon.adapter.Holder.MovieViewHolder
-import com.lusle.android.soon.adapter.Listener.OnEmptyListener
-import com.lusle.android.soon.adapter.Listener.OnItemClickListener
-import com.lusle.android.soon.Model.Schema.Movie
-import com.lusle.android.soon.Model.Schema.UiModel
+import com.lusle.android.soon.adapter.holder.HeaderViewHolder
+import com.lusle.android.soon.adapter.holder.MovieViewHolder
+import com.lusle.android.soon.adapter.listener.OnEmptyListener
+import com.lusle.android.soon.adapter.listener.OnItemClickListener
+import com.lusle.android.soon.model.schema.UiModel
 import com.lusle.android.soon.R
-import com.lusle.android.soon.adapter.Holder.CompanyHeaderViewHolder
-import com.lusle.android.soon.adapter.Listener.OnCompanyBookMarkButtonClickListener
+import com.lusle.android.soon.adapter.holder.CompanyHeaderViewHolder
+import com.lusle.android.soon.adapter.listener.OnCompanyBookMarkButtonClickListener
 
 val diffMovieItemCallback = object : DiffUtil.ItemCallback<UiModel>() {
     override fun areItemsTheSame(oldItem: UiModel, newItem: UiModel): Boolean {
@@ -75,11 +74,6 @@ class MoviePagedListAdapter(private val onItemClickListener: OnItemClickListener
                 else -> {}
             }
         }
-    }
-
-    fun getMovieItem(position: Int): Movie? {
-        if (position == 0) return null
-        return (getItem(position) as UiModel.MovieModel).movie
     }
 
     fun onEmpty() {

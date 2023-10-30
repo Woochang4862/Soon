@@ -3,8 +3,8 @@ package com.lusle.android.soon;
 import android.content.Context;
 import android.util.Log;
 
-import com.lusle.android.soon.Util.CountryPickerDialog.CCPCountry;
-import com.lusle.android.soon.Util.CountryPickerDialog.CountryCodePicker;
+import com.lusle.android.soon.util.CountryPickerDialog.CCPCountry;
+import com.lusle.android.soon.util.CountryPickerDialog.CountryCodePicker;
 
 import org.junit.Test;
 import org.xmlpull.v1.XmlPullParser;
@@ -14,9 +14,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 import androidx.test.InstrumentationRegistry;
 

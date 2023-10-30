@@ -2,10 +2,10 @@ package com.lusle.android.soon.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.lusle.android.soon.adapter.Holder.GenreViewHolder
-import com.lusle.android.soon.adapter.Listener.OnEmptyListener
-import com.lusle.android.soon.adapter.Listener.OnItemClickListener
-import com.lusle.android.soon.Model.Schema.Genre
+import com.lusle.android.soon.adapter.holder.GenreViewHolder
+import com.lusle.android.soon.adapter.listener.OnEmptyListener
+import com.lusle.android.soon.adapter.listener.OnItemClickListener
+import com.lusle.android.soon.model.schema.Genre
 import com.lusle.android.soon.R
 import java.util.*
 

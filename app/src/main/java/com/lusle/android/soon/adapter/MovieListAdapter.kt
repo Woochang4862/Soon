@@ -3,10 +3,10 @@ package com.lusle.android.soon.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.lusle.android.soon.adapter.Holder.MovieViewHolder
-import com.lusle.android.soon.adapter.Listener.OnEmptyListener
-import com.lusle.android.soon.adapter.Listener.OnItemClickListener
-import com.lusle.android.soon.Model.Schema.Movie
+import com.lusle.android.soon.adapter.holder.MovieViewHolder
+import com.lusle.android.soon.adapter.listener.OnEmptyListener
+import com.lusle.android.soon.adapter.listener.OnItemClickListener
+import com.lusle.android.soon.model.schema.Movie
 import com.lusle.android.soon.R
 
 class MovieListAdapter(private val onItemClickListener: OnItemClickListener, private val onEmptyListener: OnEmptyListener) : RecyclerView.Adapter<MovieViewHolder>() {

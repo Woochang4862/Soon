@@ -6,10 +6,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.lusle.android.soon.adapter.ManageCompanyListAdapter.ManageCompanyHolder
-import com.lusle.android.soon.Model.Schema.Company
+import com.lusle.android.soon.model.schema.Company
 import com.lusle.android.soon.R
-import com.lusle.android.soon.Util.ItemTouchHelper.ItemTouchHelperAdapter
-import com.lusle.android.soon.Util.ItemTouchHelper.ItemTouchHelperViewHolder
+import com.lusle.android.soon.util.ItemTouchHelper.ItemTouchHelperAdapter
+import com.lusle.android.soon.util.ItemTouchHelper.ItemTouchHelperViewHolder
 import java.util.*
 
 class ManageCompanyListAdapter(private val mItemManageListener: OnItemManageListener) : BaseRecyclerAdapter<ManageCompanyHolder?>(), ItemTouchHelperAdapter {

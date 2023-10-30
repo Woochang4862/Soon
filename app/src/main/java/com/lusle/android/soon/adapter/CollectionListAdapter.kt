@@ -3,8 +3,8 @@ package com.lusle.android.soon.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.lusle.android.soon.adapter.Holder.CollectionViewHolder
-import com.lusle.android.soon.Model.Schema.BelongsToCollection
+import com.lusle.android.soon.adapter.holder.CollectionViewHolder
+import com.lusle.android.soon.model.schema.BelongsToCollection
 import com.lusle.android.soon.R
 import java.util.*
 

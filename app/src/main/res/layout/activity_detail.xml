@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.Detail.DetailActivity">
+    tools:context=".view.detail.DetailActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -12,7 +12,7 @@
 
         <!--  app:contentScrim : The Toolbar color when the
               collapsing toolbar is collapsed. -->
-        <com.lusle.android.soon.Util.SubtitleCollapsingToolbarLayout.SubtitleCollapsingToolbarLayout
+        <com.lusle.android.soon.util.SubtitleCollapsingToolbarLayout.SubtitleCollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar_layout"
             fontPath="@string/NanumBarunGothic_path"
             android:layout_width="match_parent"
@@ -79,7 +79,7 @@
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-        </com.lusle.android.soon.Util.SubtitleCollapsingToolbarLayout.SubtitleCollapsingToolbarLayout>
+        </com.lusle.android.soon.util.SubtitleCollapsingToolbarLayout.SubtitleCollapsingToolbarLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/light_black"
     android:orientation="vertical"
-    tools:context=".View.Main.Company.ManageCompanyFragment">
+    tools:context=".view.main.company.ManageCompanyFragment">
 
 
     <RelativeLayout

@@ -6,9 +6,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/light_black"
-    tools:context=".View.MovieList.MovieListFragment">
+    tools:context=".view.movie_list.MovieListFragment">
 
-    <!--<TextView
+  <!--  <TextView
         android:id="@+id/keyword"
         style="@style/SoonAppTitle"
         android:layout_width="wrap_content"

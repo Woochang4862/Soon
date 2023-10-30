@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/preferenceFragment"
-        android:name="com.lusle.android.soon.View.Main.Setting.PreferenceFragment"
+        android:name="com.lusle.android.soon.view.main.setting.PreferenceFragment"
         android:label="PreferenceFragment" >
         <action
             android:id="@+id/action_preferenceFragment_to_appInfoFragment"
@@ -40,22 +40,22 @@
     </fragment>
     <fragment
         android:id="@+id/appInfoFragment"
-        android:name="com.lusle.android.soon.View.Main.Setting.AppInfo.AppInfoFragment"
+        android:name="com.lusle.android.soon.view.main.setting.info.AppInfoFragment"
         android:label="fragment_app_info"
         tools:layout="@layout/fragment_app_info" />
     <fragment
         android:id="@+id/alarmSettingFragment"
-        android:name="com.lusle.android.soon.View.Alarm.AlarmSettingFragment"
+        android:name="com.lusle.android.soon.view.alarm.AlarmSettingFragment"
         android:label="fragment_alarm_setting"
         tools:layout="@layout/fragment_alarm_setting" />
     <fragment
         android:id="@+id/companyAlarmSettingFragment"
-        android:name="com.lusle.android.soon.View.Main.Setting.CompanyAlarm.CompanyAlarmSettingFragment"
+        android:name="com.lusle.android.soon.view.main.setting.company_alarm.CompanyAlarmSettingFragment"
         android:label="fragment_company_alarm_setting"
         tools:layout="@layout/fragment_company_alarm_setting" />
     <fragment
         android:id="@+id/releaseAlarmSettingFragment"
-        android:name="com.lusle.android.soon.View.Main.Setting.ReleaseAlarm.ReleaseAlarmSettingFragment"
+        android:name="com.lusle.android.soon.view.main.setting.release_alarm.ReleaseAlarmSettingFragment"
         android:label="fragment_release_alarm_setting"
         tools:layout="@layout/fragment_release_alarm_setting" >
         <action

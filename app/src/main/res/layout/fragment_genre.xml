@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:scrollbars="none"
     android:fillViewport="true"
-    tools:context=".View.Main.Genre.GenreFragment">
+    tools:context=".view.main.genre.GenreFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"

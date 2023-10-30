@@ -85,7 +85,7 @@
             android:scrollbars="none"
             android:dividerHeight="2dp" />
 
-        <com.lusle.android.soon.Util.CountryPickerDialog.futuremind.recyclerviewfastscroll.FastScroller
+        <com.lusle.android.soon.util.CountryPickerDialog.futuremind.recyclerviewfastscroll.FastScroller
             android:id="@+id/fastscroll"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

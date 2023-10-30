@@ -4,6 +4,6 @@
     android:hint="@string/search"
     android:voiceSearchMode="showVoiceSearchButton|launchRecognizer"
     android:voicePromptText="@string/speak_voice"
-    android:searchSuggestAuthority="com.lusle.android.soon.MySuggestionProvider"
+    android:searchSuggestAuthority="com.lusle.android.soon.SuggestionProvider"
     android:searchSuggestSelection=" ?" >
 </searchable>

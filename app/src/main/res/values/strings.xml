@@ -9,6 +9,7 @@
     <string name="invalid_token_error_msg">토큰을 불러올 수 없습니다</string>
     <string name="invalid_topics_error_msg">구독한 제작사 목록을 불러올 수 없습니다</string>
     <string name="invalid_company_error_msg">즐겨찾기한 제작사 목록을 불러올 수 없습니다</string>
+    <string name="failed_load_movie_detail_msg">영화 상세정보를 불러오는 중 문제가 생겼습니다</string>
     <string name="failed_load_movie_msg">영화를 불러오는 중 문제가 생겼습니다</string>
     <string name="failed_load_genre_msg">장르를 불러오는 중 문제가 생겼습니다</string>
     <string name="failed_to_subscribe_company_msg">제작사 암람을 등록하는 중 문제가 생겼습니다</string>

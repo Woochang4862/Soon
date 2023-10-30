@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/thisMonthMovieFragment"
-        android:name="com.lusle.android.soon.View.Main.ThisMonthMovie.ThisMonthMovieFragment"
+        android:name="com.lusle.android.soon.view.main.this_month_movie.ThisMonthMovieFragment"
         android:label="fragment_this_month_movie"
         tools:layout="@layout/fragment_this_month_movie" />
     <action android:id="@+id/action_global_thisMonthMovieFragment" app:destination="@id/thisMonthMovieFragment"

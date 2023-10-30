@@ -2,8 +2,8 @@ package com.lusle.android.soon;
 
 import android.content.Context;
 
-import com.lusle.android.soon.View.Main.Setting.CompanyAlarm.Presenter.CompanyAlarmSettingContractor;
-import com.lusle.android.soon.View.Main.Setting.CompanyAlarm.Presenter.CompanyAlarmSettingPresenter;
+import com.lusle.android.soon.view.main.setting.company_alarm.Presenter.CompanyAlarmSettingContractor;
+import com.lusle.android.soon.view.main.setting.company_alarm.Presenter.CompanyAlarmSettingPresenter;
 
 import org.junit.Before;
 import org.junit.Test;

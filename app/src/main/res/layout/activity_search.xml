@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/lighter_black"
-    tools:context=".View.Search.SearchActivity">
+    tools:context=".view.search.SearchActivity">
 
     <RelativeLayout
         android:id="@+id/activity_search_header"

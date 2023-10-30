@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
-        android:name=".MyApplication"
+        android:name=".App"
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@mipmap/icon"
@@ -18,9 +18,12 @@
         android:roundIcon="@mipmap/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".View.Detail.InfoActivity" />
-        <activity android:name=".View.Alarm.AlarmSettingActivity" />
-        <activity android:name=".View.MovieList.MovieListActivity" />
+        <activity
+            android:name=".view.company_list.CompanyListActivity"
+            android:exported="false" />
+        <activity android:name=".view.detail.InfoActivity" />
+        <activity android:name=".view.alarm.AlarmSettingActivity" />
+        <activity android:name=".view.movie_list.MovieListActivity" />
         <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
             android:theme="@style/AppTheme.License" />
@@ -33,7 +36,7 @@
             android:value="com.apkgetter.SearchResultsActivity" />
 
         <activity
-            android:name=".View.Main.MainActivity"
+            android:name=".view.main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,7 +45,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".View.Search.SearchActivity"
+            android:name=".view.search.SearchActivity"
             android:exported="false"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme"
@@ -58,16 +61,16 @@
                 android:resource="@xml/searchable_config" />
         </activity>
         <activity
-            android:name=".View.Detail.DetailActivity"
+            android:name=".view.detail.DetailActivity"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".View.YoutubePlayer.YoutubePlayerActivity"
+            android:name=".view.youtube_player.YoutubePlayerActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.Transparent" />
 
         <receiver
-            android:name=".View.Alarm.AlarmReceiver"
+            android:name=".view.alarm.AlarmReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter android:priority="1">
@@ -82,15 +85,15 @@
         </receiver>
 
         <service
-            android:name=".View.Alarm.AllCompanyAlarmRemoveService"
+            android:name=".view.alarm.AllCompanyAlarmRemoveService"
             android:enabled="true"
             android:exported="true" />
         <service
-            android:name=".View.Alarm.AlarmService"
+            android:name=".view.alarm.AlarmService"
             android:enabled="true"
             android:exported="false" />
         <service
-            android:name=".View.Alarm.FirebaseInstanceIDService"
+            android:name=".view.alarm.FirebaseInstanceIDService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -99,8 +102,8 @@
         </service>
 
         <provider
-            android:name=".MySuggestionProvider"
-            android:authorities="com.lusle.android.soon.MySuggestionProvider"
+            android:name=".SuggestionProvider"
+            android:authorities="com.lusle.android.soon.SuggestionProvider"
             android:exported="false" />
 
         <meta-data

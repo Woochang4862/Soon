@@ -1,14 +1,13 @@
 package com.lusle.android.soon.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.lusle.android.soon.Model.Schema.WatchProvider
-import com.lusle.android.soon.Model.Schema.WatchProviderResult
+import com.lusle.android.soon.model.schema.WatchProvider
+import com.lusle.android.soon.model.schema.WatchProviderResult
 import com.lusle.android.soon.R
-import com.lusle.android.soon.adapter.Holder.WatchProviderSectionViewHolder
-import com.lusle.android.soon.adapter.Listener.OnItemClickListener
+import com.lusle.android.soon.adapter.holder.WatchProviderSectionViewHolder
+import com.lusle.android.soon.adapter.listener.OnItemClickListener
 
 class WatchProviderSectionListAdapter(watchProviderResult: WatchProviderResult, private val onWatchProviderClickListener:OnItemClickListener) : RecyclerView.Adapter<WatchProviderSectionViewHolder>() {
 

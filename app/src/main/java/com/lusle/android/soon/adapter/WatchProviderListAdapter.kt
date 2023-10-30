@@ -3,12 +3,12 @@ package com.lusle.android.soon.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.lusle.android.soon.adapter.Holder.WatchProviderViewHolder
-import com.lusle.android.soon.Model.Schema.WatchProvider
+import com.lusle.android.soon.adapter.holder.WatchProviderViewHolder
+import com.lusle.android.soon.model.schema.WatchProvider
 import com.lusle.android.soon.R
-import com.lusle.android.soon.adapter.VideoThumbnailAdapter.OnClickListener
+import com.lusle.android.soon.adapter.listener.OnItemClickListener
 
-class WatchProviderListAdapter(private val onClickListener: OnClickListener) : RecyclerView.Adapter<WatchProviderViewHolder>() {
+class WatchProviderListAdapter(private val onClickListener: OnItemClickListener) : RecyclerView.Adapter<WatchProviderViewHolder>() {
 
     val list:ArrayList<WatchProvider> = ArrayList()
 

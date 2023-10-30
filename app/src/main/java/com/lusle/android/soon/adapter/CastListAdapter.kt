@@ -3,8 +3,8 @@ package com.lusle.android.soon.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.lusle.android.soon.adapter.Holder.CastViewHolder
-import com.lusle.android.soon.Model.Schema.Cast
+import com.lusle.android.soon.adapter.holder.CastViewHolder
+import com.lusle.android.soon.model.schema.Cast
 import com.lusle.android.soon.R
 
 class CastListAdapter : RecyclerView.Adapter<CastViewHolder>() {

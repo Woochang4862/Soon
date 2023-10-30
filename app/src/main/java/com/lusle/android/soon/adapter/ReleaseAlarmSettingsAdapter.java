@@ -4,12 +4,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.lusle.android.soon.Model.Schema.Alarm;
+import com.lusle.android.soon.model.schema.Alarm;
 import com.lusle.android.soon.R;
-import com.lusle.android.soon.Util.CircleTransform;
-import com.lusle.android.soon.Util.Utils;
-import com.lusle.android.soon.adapter.Holder.ReleaseAlarmViewHolder;
-import com.lusle.android.soon.adapter.Listener.OnItemClickListener;
+import com.lusle.android.soon.util.CircleTransform;
+import com.lusle.android.soon.util.Utils;
+import com.lusle.android.soon.adapter.holder.ReleaseAlarmViewHolder;
+import com.lusle.android.soon.adapter.listener.OnItemClickListener;
 import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;

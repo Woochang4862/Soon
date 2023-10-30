@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".View.Main.Setting.ReleaseAlarm.ReleaseAlarmSettingFragment">
+    tools:context=".view.main.setting.release_alarm.ReleaseAlarmSettingFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"

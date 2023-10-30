@@ -3,10 +3,10 @@ package com.lusle.android.soon.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.lusle.android.soon.Model.Schema.Video
+import com.lusle.android.soon.model.schema.Video
 import com.lusle.android.soon.R
-import com.lusle.android.soon.adapter.Holder.ThumbnailViewHolder
-import com.lusle.android.soon.adapter.Listener.OnItemClickListener
+import com.lusle.android.soon.adapter.holder.ThumbnailViewHolder
+import com.lusle.android.soon.adapter.listener.OnItemClickListener
 
 class VideoThumbnailAdapter(private var onItemClickListener: OnItemClickListener) : BaseRecyclerAdapter<RecyclerView.ViewHolder>() {
 
