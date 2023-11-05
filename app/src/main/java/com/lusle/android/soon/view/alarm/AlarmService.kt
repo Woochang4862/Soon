@@ -27,11 +27,7 @@ class AlarmService : Service() {
         return null
     }
 
-    override fun onCreate() {
-        super.onCreate()
-    }
-
-    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         this.intent = intent
         Log.d(TAG, "onStartCommand: called")
         val p: Pair<Int, Notification> = startForegroundService()
@@ -66,10 +62,12 @@ class AlarmService : Service() {
 
                 // 알람 메니저에서 알람 삭제
                 val am = getSystemService(ALARM_SERVICE) as AlarmManager
-                val i = Intent(this, AlarmReceiver::class.java)
+                val i = Intent(this, AlarmReceiver::class.java).apply {
+                    action = "com.lusle.android.soon.ALARM_START"
+                }
                 val pendingIntent =
                     PendingIntent.getBroadcast(applicationContext, alarm.pendingIntentID, i,
-                        PendingIntent.FLAG_MUTABLE)
+                        PendingIntent.FLAG_IMMUTABLE)
                 if (pendingIntent != null)
                     am.cancel(pendingIntent)
 
@@ -119,8 +117,8 @@ class AlarmService : Service() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name: CharSequence = "movie_alarm_channel"
-            val description = "movie_alarm_channel"
+            val name: CharSequence = "Soon - Release Alarm"
+            val description = "Remind your alarm that movie will release \"Soon\"!"
             val importance = NotificationManager.IMPORTANCE_HIGH
             val channel = NotificationChannel(CHANNEL_ID, name, importance)
             channel.description = description
@@ -134,7 +132,7 @@ class AlarmService : Service() {
     }
 
     companion object {
-        private const val CHANNEL_ID = "com.lusle.android.soon"
+        private const val CHANNEL_ID = "com.lusle.android.soon.RELEASE_ALARM"
         val TAG: String = AlarmService::class.java.simpleName
     }
 }

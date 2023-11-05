@@ -38,7 +38,6 @@ import com.lusle.android.soon.util.SubtitleCollapsingToolbarLayout.SubtitleColla
 import com.lusle.android.soon.util.Utils
 import com.lusle.android.soon.view.alarm.AlarmSettingActivity
 import com.lusle.android.soon.view.movie_list.MovieListActivity
-import com.lusle.android.soon.view.TransformationBaseActivity
 import com.lusle.android.soon.view.youtube_player.YoutubePlayerActivity
 import com.lusle.android.soon.adapter.CastListAdapter
 import com.lusle.android.soon.adapter.CompanyListAdapter
@@ -49,6 +48,7 @@ import com.lusle.android.soon.adapter.MovieListAdapter
 import com.lusle.android.soon.adapter.PreviewImageAdapter
 import com.lusle.android.soon.adapter.VideoThumbnailAdapter
 import com.lusle.android.soon.adapter.WatchProviderSectionListAdapter
+import com.lusle.android.soon.view.BaseActivity
 import com.skydoves.transformationlayout.TransformationCompat
 import com.skydoves.transformationlayout.TransformationLayout
 import com.squareup.picasso.Picasso
@@ -58,7 +58,7 @@ import java.util.Calendar
 import java.util.GregorianCalendar
 import java.util.Locale
 
-class DetailActivity : TransformationBaseActivity() {
+class DetailActivity : BaseActivity() {
 
     private var movieId: Int = -1
 

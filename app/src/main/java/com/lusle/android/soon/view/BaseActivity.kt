@@ -6,6 +6,9 @@ import io.github.inflationx.viewpump.ViewPump
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor
 import io.github.inflationx.calligraphy3.CalligraphyConfig
 import com.lusle.android.soon.R
+import com.lusle.android.soon.util.TransformationCompat
+import com.skydoves.transformationlayout.TransformationLayout
+import com.skydoves.transformationlayout.onTransformationEndContainer
 import io.github.inflationx.viewpump.ViewPumpContextWrapper
 
 open class BaseActivity : AppCompatActivity() {
@@ -22,6 +25,7 @@ open class BaseActivity : AppCompatActivity() {
                 )
                 .build()
         )
+        intent?.getParcelableExtra<TransformationLayout.Params>(TransformationCompat.activityTransitionName)?.let{onTransformationEndContainer(it)}
         super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase))
     }
 }

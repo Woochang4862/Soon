@@ -81,32 +81,32 @@ class FirebaseInstanceIDService : FirebaseMessagingService() {
         /**
          * 오레오 버전부터는 Notification Channel 이 없으면 푸시가 생성되지 않는 현상이 있습니다.
          */
-        val channel = "TMM_movie_channel"
+        val channelId = "com.lusle.android.soon.TMM_ALARM"
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channelName = "TMM_movie_channel"
+            val channelName = "Soon - Upcoming Movie Alarm"
             val notificationChannel = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             val channelMessage = NotificationChannel(
-                channel, channelName,
+                channelId, channelName,
                 NotificationManager.IMPORTANCE_DEFAULT
             )
-            channelMessage.description = "채널에 대한 설명."
+            channelMessage.description = "This will inform movies are coming this month."
             channelMessage.enableLights(true)
             channelMessage.enableVibration(true)
             channelMessage.setShowBadge(false)
             channelMessage.vibrationPattern = longArrayOf(100, 200, 100, 200)
             notificationChannel.createNotificationChannel(channelMessage)
-            val notificationBuilder = NotificationCompat.Builder(this, channel)
+            val notificationBuilder = NotificationCompat.Builder(this, channelId)
                 .setSmallIcon(R.drawable.ic_launcher_background)
                 .setContentTitle(title)
                 .setContentText(message)
-                .setChannelId(channel)
+                .setChannelId(channelId)
                 .setAutoCancel(true)
                 .setDefaults(Notification.DEFAULT_SOUND or Notification.DEFAULT_VIBRATE)
                 .setContentIntent(pendingIntent)
             val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.notify(notificationId, notificationBuilder.build())
         } else {
-            val notificationBuilder = NotificationCompat.Builder(this, channel)
+            val notificationBuilder = NotificationCompat.Builder(this, channelId)
                 .setSmallIcon(R.drawable.ic_launcher_background)
                 .setContentTitle(title)
                 .setContentText(message)

@@ -1,34 +1,50 @@
 package com.lusle.android.soon.view.alarm
 
-import android.app.*
+import android.app.AlarmManager
+import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
+import android.app.PendingIntent
+import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
-import android.content.*
+import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
+import android.content.IntentFilter
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Button
+import android.widget.CompoundButton
+import android.widget.DatePicker
+import android.widget.ImageView
+import android.widget.RelativeLayout
+import android.widget.TextView
+import android.widget.TimePicker
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.switchmaterial.SwitchMaterial
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import com.lusle.android.soon.R
 import com.lusle.android.soon.model.schema.Alarm
 import com.lusle.android.soon.model.schema.Movie
-import com.lusle.android.soon.R
+import com.lusle.android.soon.model.source.ReleaseAlarmDataSource
 import com.squareup.picasso.Picasso
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Locale
 
-class AlarmSettingFragment : Fragment(), OnDateSetListener, OnTimeSetListener, View.OnClickListener {
+class AlarmSettingFragment : Fragment(), OnDateSetListener, OnTimeSetListener,
+    View.OnClickListener {
 
     companion object {
         const val KEY_ALARM_ID = "alarm_id"
+        val TAG: String = AlarmSettingFragment::class.java.simpleName
     }
 
     private lateinit var poster: ImageView
@@ -53,7 +69,8 @@ class AlarmSettingFragment : Fragment(), OnDateSetListener, OnTimeSetListener, V
     private lateinit var mOneMinBtn: Button
     private lateinit var pOneMinBtn: Button
     private lateinit var AMPMBtn: Button
-    private val dateFormat = SimpleDateFormat("yyyy년 MM월 dd일",  /*Locale.getDefault()*/Locale.KOREAN)
+    private val dateFormat =
+        SimpleDateFormat("yyyy년 MM월 dd일",  /*Locale.getDefault()*/Locale.KOREAN)
     private val timeFormat = SimpleDateFormat("HH시 mm분")
     private val currentCal = Calendar.getInstance()
     private var active = true
@@ -61,11 +78,18 @@ class AlarmSettingFragment : Fragment(), OnDateSetListener, OnTimeSetListener, V
     private var alarmData: Alarm? = null
     private lateinit var mPrefs: SharedPreferences
     private lateinit var am: AlarmManager
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_alarm_setting, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        /*// 백그라운드에서 실행되는 리시번느 따로 등록이 필요함
+        val receiver = AlarmReceiver()
+        requireActivity().registerReceiver(receiver, IntentFilter("com.lusle.android.soon.ALARM_START"))*/
         super.onViewCreated(view, savedInstanceState)
         mPrefs = requireContext().getSharedPreferences("alarmPref", Context.MODE_PRIVATE)
         am = requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -97,21 +121,29 @@ class AlarmSettingFragment : Fragment(), OnDateSetListener, OnTimeSetListener, V
             movieData = alarmData?.movie
         binding()
         saveBtn.setOnClickListener { save() }
-        closeBtn.setOnClickListener { this.findNavController().navigateUp() }
+        closeBtn.setOnClickListener { activity?.finish() }
         dateSection.setOnClickListener {
-            val datePickerDialog = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP_MR1) {
-                DatePickerDialog(requireContext(), android.R.style.Theme_DeviceDefault_Dialog_Alert, this, currentCal[Calendar.YEAR], currentCal[Calendar.MONTH], currentCal[Calendar.DAY_OF_MONTH])
-            } else {
-                DatePickerDialog(requireContext(), AlertDialog.THEME_DEVICE_DEFAULT_DARK, this, currentCal[Calendar.YEAR], currentCal[Calendar.MONTH], currentCal[Calendar.DAY_OF_MONTH])
-            }
+            val datePickerDialog =
+                DatePickerDialog(
+                    requireContext(),
+                    android.R.style.Theme_DeviceDefault_Dialog_Alert,
+                    this,
+                    currentCal[Calendar.YEAR],
+                    currentCal[Calendar.MONTH],
+                    currentCal[Calendar.DAY_OF_MONTH]
+                )
             datePickerDialog.show()
         }
         timeSection.setOnClickListener {
-            val timePickerDialog = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP_MR1) {
-                TimePickerDialog(requireContext(), android.R.style.Theme_DeviceDefault_Dialog_Alert, this, currentCal[Calendar.HOUR_OF_DAY], currentCal[Calendar.MINUTE], false)
-            } else {
-                TimePickerDialog(requireContext(), AlertDialog.THEME_DEVICE_DEFAULT_DARK, this, currentCal[Calendar.HOUR_OF_DAY], currentCal[Calendar.MINUTE], false)
-            }
+            val timePickerDialog =
+                TimePickerDialog(
+                    requireContext(),
+                    android.R.style.Theme_DeviceDefault_Dialog_Alert,
+                    this,
+                    currentCal[Calendar.HOUR_OF_DAY],
+                    currentCal[Calendar.MINUTE],
+                    false
+                )
             timePickerDialog.show()
         }
         weekBtn.setOnClickListener(this)
@@ -138,70 +170,78 @@ class AlarmSettingFragment : Fragment(), OnDateSetListener, OnTimeSetListener, V
         }
         alarmData?.let {
             alarmData = Alarm(movieData, currentCal.timeInMillis, it.pendingIntentID, active)
-            requireContext().registerReceiver(AlarmReceiver(), IntentFilter())
-            Log.d("####", "save: data to save : $alarmData")
-            val intent = Intent(requireContext(), AlarmReceiver::class.java)
-            intent.putExtra(KEY_ALARM_ID, it.pendingIntentID)
-            intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
-            var pendingIntent = PendingIntent.getBroadcast(requireContext(), it.pendingIntentID, intent, 0)
+            Log.d(TAG, "save: data $it")
+            val intent = Intent(requireContext(), AlarmReceiver::class.java).apply {
+                action = "com.lusle.android.soon.ALARM_START"
+                putExtra(KEY_ALARM_ID, it.pendingIntentID) // 리시버로 들어가는 데이터는 커스텀 클래스는 안됨
+                addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
+            }
+            var pendingIntent = PendingIntent.getBroadcast(
+                requireContext(),
+                it.pendingIntentID,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE
+            )
             if (pendingIntent != null) {
                 am.cancel(pendingIntent)
             }
-            pendingIntent = PendingIntent.getBroadcast(requireContext(), it.pendingIntentID, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-            am[AlarmManager.RTC_WAKEUP, currentCal.timeInMillis] = pendingIntent
-            val type = object : TypeToken<ArrayList<Alarm?>?>() {}.type
-            val json = mPrefs.getString("alarms", "")
-            var alarms = Gson().fromJson<ArrayList<Alarm?>>(json, type)
-            if (alarms == null) alarms = ArrayList()
-            alarms.remove(alarmData)
-            alarms.add(alarmData)
-            val prefsEditor = mPrefs.edit()
-            val _json = Gson().toJson(alarms, type)
-            prefsEditor.putString("alarms", _json)
-            prefsEditor.apply()
-            Log.d("####", "save: intent.getIntExtra : " + intent.getIntExtra(KEY_ALARM_ID, -1))
+            pendingIntent = PendingIntent.getBroadcast(
+                requireContext(),
+                it.pendingIntentID,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+            )
+            am.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                currentCal.timeInMillis,
+                pendingIntent
+            )
+
+            val pref = ReleaseAlarmDataSource(requireContext())
+            val alarms = pref.alarms
+            if (alarms.contains(alarmData))
+                alarms.remove(alarmData)
+            alarms.add(alarmData!!)
+            pref.alarms = alarms
             Toast.makeText(requireContext(), "알림이 설정되었습니다", Toast.LENGTH_SHORT).show()
-            try {
-                this.findNavController().navigateUp()
-            } catch (e: IllegalStateException) {
-                e.printStackTrace()
-                requireActivity().finish()
-            }
-        } ?: {
+            requireActivity().finish()
+        } ?: run {
             alarmData = Alarm(movieData, currentCal.timeInMillis, movieData.hashCode(), active)
             save()
-        }()
+        }
     }
 
     private fun binding() {
         alarmData?.let {
             hiddenSection.visibility = View.VISIBLE
             active = it.isActive
-            Log.d("#####", "binding: " + it.isActive)
+            Log.d(TAG, "binding: " + it.isActive)
             aSwitch.isChecked = active
             aSwitch.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 active = isChecked
-                Log.d("#####", "setOnCheckedChangeListener: $active")
+                Log.d(TAG, "setOnCheckedChangeListener: $active")
             }
             deleteBtn.setOnClickListener { delete() }
         }
         movieData?.let {
-            Picasso.get().load("https://image.tmdb.org/t/p/w500" + it.posterPath).centerInside().fit().error(R.drawable.ic_broken_image).into(poster)
+            Picasso.get().load("https://image.tmdb.org/t/p/w500" + it.posterPath).centerInside()
+                .fit().error(R.drawable.ic_broken_image).into(poster)
             if (it.title != "") title.text = it.title
             val formatD = SimpleDateFormat("yyyy-MM-dd")
             if (it.releaseDate != "") {
                 try {
-                    formatD.parse(it.releaseDate)?.let { date->
+                    formatD.parse(it.releaseDate)?.let { date ->
                         releaseDate.text = dateFormat.format(date)
                         alarmData?.let { alarmData ->
                             currentCal.timeInMillis = alarmData.milliseconds
                             dateTextView.text = dateFormat.format(currentCal.time)
-                        } ?: {
+                        } ?: run {
                             dateTextView.text = dateFormat.format(date)
                             currentCal.time = date
-                            currentCal[Calendar.HOUR_OF_DAY] = Calendar.getInstance()[Calendar.HOUR_OF_DAY]
+                            currentCal[Calendar.HOUR_OF_DAY] =
+                                Calendar.getInstance()[Calendar.HOUR_OF_DAY]
                             currentCal[Calendar.MINUTE] = Calendar.getInstance()[Calendar.MINUTE]
-                        }()
+                        }
                     }
                 } catch (e: ParseException) {
                     e.printStackTrace()
@@ -217,20 +257,22 @@ class AlarmSettingFragment : Fragment(), OnDateSetListener, OnTimeSetListener, V
         alert.setMessage("정말 삭제하시겠습니까?")
         alert.setPositiveButton("Yes") { dialog: DialogInterface, _: Int ->
             alarmData?.let {
-                val intent = Intent(requireContext(), AlarmReceiver::class.java)
-                val pendingIntent = PendingIntent.getBroadcast(requireContext(), it.pendingIntentID, intent, 0)
+                val intent = Intent(requireContext(), AlarmReceiver::class.java).apply {
+                    action = "com.lusle.android.soon.ALARM_START"
+                }
+                val pendingIntent = PendingIntent.getBroadcast(
+                    requireContext(), it.pendingIntentID, intent,
+                    PendingIntent.FLAG_IMMUTABLE
+                )
                 am.cancel(pendingIntent)
-                val type = object : TypeToken<ArrayList<Alarm?>?>() {}.type
-                val json = mPrefs.getString("alarms", "")
-                val alarms = Gson().fromJson<ArrayList<Alarm?>>(json, type)
-                alarms.remove(it)
-                val prefsEditor = mPrefs.edit()
-                val _json = Gson().toJson(alarms, type)
-                prefsEditor.putString("alarms", _json)
-                prefsEditor.apply()
+                val pref = ReleaseAlarmDataSource(requireContext())
+                val alarms = pref.alarms
+                if(alarms.contains(it))
+                    alarms.remove(it)
+                pref.alarms = alarms
                 Toast.makeText(requireContext(), "알림이 삭제되었습니다", Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
-                this.findNavController().navigateUp()
+                requireActivity().finish()
             }
         }
         alert.setNegativeButton("No") { dialog: DialogInterface, _: Int -> dialog.dismiss() }

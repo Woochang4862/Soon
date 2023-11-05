@@ -52,6 +52,7 @@ public class Alarm implements Serializable {
 
     @Override
     public boolean equals(@Nullable Object obj) {
+        if (obj == null) return false;
         boolean isT = false;
         Alarm alarm = (Alarm) obj;
         if (pendingIntentID == alarm.getPendingIntentID()) {

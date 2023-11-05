@@ -2,8 +2,10 @@ package com.lusle.android.soon.view.main
 
 import android.app.AlarmManager
 import android.app.PendingIntent
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -25,25 +27,21 @@ import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.FirebaseApp
 import com.google.firebase.messaging.FirebaseMessaging
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import com.lusle.android.soon.model.schema.Alarm
 import com.lusle.android.soon.R
+import com.lusle.android.soon.model.source.ReleaseAlarmDataSource
+import com.lusle.android.soon.view.BaseActivity
 import com.lusle.android.soon.view.alarm.AlarmReceiver
 import com.lusle.android.soon.view.alarm.AlarmSettingFragment
-import com.lusle.android.soon.view.BaseActivity
 import com.lusle.android.soon.view.search.SearchActivity
 import com.skydoves.transformationlayout.onTransformationStartContainer
-import java.util.ArrayList
 
-//TODO:리펙토링
 class MainActivity : BaseActivity() {
     private val REQUEST_CODE_UPDATE: Int = 200
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var searchFab: FloatingActionButton
     private var currentNavController: LiveData<NavController>? = null
     private var appUpdateManager: AppUpdateManager? = null
-    private var snackbarForProgressBar : Snackbar? = null
+    private var snackbarForProgressBar: Snackbar? = null
 
     companion object {
         val TAG = MainActivity::class.java.simpleName
@@ -53,7 +51,7 @@ class MainActivity : BaseActivity() {
         onTransformationStartContainer()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        if(savedInstanceState == null){
+        if (savedInstanceState == null) {
             setUpBottomNavigationBar()
         }
 
@@ -72,47 +70,59 @@ class MainActivity : BaseActivity() {
                 }
             }
             it.appUpdateInfo.addOnSuccessListener { appUpdateInfo: AppUpdateInfo ->
-                Log.d(TAG, "onSuccess: updateAvailability() : ${appUpdateInfo.updateAvailability()}")
-                Log.d(TAG, "onSuccess: isUpdateTypeAllowed() : ${appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)}")
-                if(appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-                        && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE))
-                {
+                Log.d(
+                    TAG,
+                    "onSuccess: updateAvailability() : ${appUpdateInfo.updateAvailability()}"
+                )
+                Log.d(
+                    TAG,
+                    "onSuccess: isUpdateTypeAllowed() : ${
+                        appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
+                    }"
+                )
+                if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                    && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
+                ) {
                     popupSnackbarForProgressBar()
                     it.startUpdateFlowForResult(
-                            appUpdateInfo,
-                            AppUpdateType.FLEXIBLE,
-                            this,
-                            REQUEST_CODE_UPDATE
+                        appUpdateInfo,
+                        AppUpdateType.FLEXIBLE,
+                        this,
+                        REQUEST_CODE_UPDATE
                     )
                 }
             }
         }
 
-        val preferences = getSharedPreferences("alarmPref", Context.MODE_PRIVATE)
-        val type = object : TypeToken<ArrayList<Alarm>>() {}.type
-        val json = preferences.getString("alarms", "")
-        var alarms = Gson().fromJson<ArrayList<Alarm>>(json, type)
-        if (alarms == null) alarms = ArrayList()
-        for (a in alarms) {
-            /*boolean alarmUp = (PendingIntent.getBroadcast(context, a.getPendingIntentID(),
-                    new Intent(context, AlarmReceiver.class),
-                    PendingIntent.FLAG_NO_CREATE) != null);*/
+        val pref = ReleaseAlarmDataSource(this)
+        for (a in pref.alarms) {
 
             val am = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            val i = Intent(this, AlarmReceiver::class.java)
-            i.putExtra(AlarmSettingFragment.KEY_ALARM_ID, a)
-            i.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
+            val i = Intent(this, AlarmReceiver::class.java).apply {
+                action = "com.lusle.android.soon.ALARM_START"
+                putExtra(AlarmSettingFragment.KEY_ALARM_ID, a)
+                addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
+            }
 
-            var pendingIntent = PendingIntent.getBroadcast(this, a.pendingIntentID, i,
-                PendingIntent.FLAG_MUTABLE)
+            var pendingIntent = PendingIntent.getBroadcast(
+                this,
+                a.pendingIntentID,
+                i,
+                PendingIntent.FLAG_IMMUTABLE
+            )
 
             if (pendingIntent != null) {
                 am.cancel(pendingIntent)
             }
 
-            pendingIntent = PendingIntent.getBroadcast(this, a.pendingIntentID, i, PendingIntent.FLAG_UPDATE_CURRENT)
+            pendingIntent = PendingIntent.getBroadcast(
+                this,
+                a.pendingIntentID,
+                i,
+                PendingIntent.FLAG_UPDATE_CURRENT
+            )
 
-            am[AlarmManager.RTC_WAKEUP, a.milliseconds] = pendingIntent
+            am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, a.milliseconds, pendingIntent)
         }
 
         init()
@@ -121,9 +131,9 @@ class MainActivity : BaseActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == REQUEST_CODE_UPDATE){
-            if(resultCode != RESULT_OK){
-                Log.e("MY_APP", "Update flow failed! Result code: $resultCode")
+        if (requestCode == REQUEST_CODE_UPDATE) {
+            if (resultCode != RESULT_OK) {
+                Log.e(TAG, "Update flow failed! Result code: $resultCode")
                 snackbarForProgressBar?.dismiss()
             }
         }
@@ -147,9 +157,9 @@ class MainActivity : BaseActivity() {
 
     private fun popupSnackbarForCompleteUpdate() {
         Snackbar.make(
-                findViewById(android.R.id.content),
-                "업데이트를 위한 다운로드가 완료되었습니다.",
-                Snackbar.LENGTH_INDEFINITE
+            findViewById(android.R.id.content),
+            "업데이트를 위한 다운로드가 완료되었습니다.",
+            Snackbar.LENGTH_INDEFINITE
         ).apply {
             anchorView = findViewById(R.id.floatingActionButton)
             setAction("재시작") { appUpdateManager?.completeUpdate() }
@@ -159,13 +169,15 @@ class MainActivity : BaseActivity() {
 
     private fun popupSnackbarForProgressBar() {
         Snackbar.make(
-                findViewById(android.R.id.content),
-                "업데이트 중 ... (0%)",
-                Snackbar.LENGTH_INDEFINITE
+            findViewById(android.R.id.content),
+            "업데이트 중 ... (0%)",
+            Snackbar.LENGTH_INDEFINITE
         ).apply {
             snackbarForProgressBar = this
             anchorView = findViewById(R.id.floatingActionButton)
-            (view.findViewById<View>(com.google.android.material.R.id.snackbar_action).parent as ViewGroup).addView(ProgressBar(this@MainActivity))
+            (view.findViewById<View>(com.google.android.material.R.id.snackbar_action).parent as ViewGroup).addView(
+                ProgressBar(this@MainActivity)
+            )
             show()
         }
     }
@@ -178,10 +190,15 @@ class MainActivity : BaseActivity() {
     private fun setUpBottomNavigationBar() {
         bottomNavigationView = findViewById(R.id.navigation_view)
         bottomNavigationView.menu.findItem(R.id.blank).isEnabled = false
-        val navGraphIds = listOf(R.navigation.navigation_home, R.navigation.navigation_company, R.navigation.navigation_genre, R.navigation.navigation_settings)
+        val navGraphIds = listOf(
+            R.navigation.navigation_home,
+            R.navigation.navigation_company,
+            R.navigation.navigation_genre,
+            R.navigation.navigation_settings
+        )
 
         val controller = bottomNavigationView.setupWithNavController(
-                navGraphIds, supportFragmentManager, R.id.nav_host_fragment, intent
+            navGraphIds, supportFragmentManager, R.id.nav_host_fragment, intent
         )
 
         // Whenever the selected controller changes, setup the action bar.
@@ -193,7 +210,7 @@ class MainActivity : BaseActivity() {
         currentNavController = controller
 
         bottomNavigationView.setOnItemReselectedListener {
-            when(it.itemId){
+            when (it.itemId) {
                 R.id.home -> {
                     if (currentNavController != null && currentNavController!!.value != null) {
                         val inflater = currentNavController!!.value!!.navInflater
@@ -202,6 +219,7 @@ class MainActivity : BaseActivity() {
                         currentNavController!!.value!!.graph = graph
                     }
                 }
+
                 R.id.company -> {
                     if (currentNavController != null && currentNavController!!.value != null) {
                         val inflater = currentNavController!!.value!!.navInflater
@@ -210,6 +228,7 @@ class MainActivity : BaseActivity() {
                         currentNavController!!.value!!.graph = graph
                     }
                 }
+
                 R.id.genre -> {
                     if (currentNavController != null && currentNavController!!.value != null) {
                         val inflater = currentNavController!!.value!!.navInflater
@@ -218,6 +237,7 @@ class MainActivity : BaseActivity() {
                         currentNavController!!.value!!.graph = graph
                     }
                 }
+
                 R.id.settings -> {
                     if (currentNavController != null && currentNavController!!.value != null) {
                         val inflater = currentNavController!!.value!!.navInflater

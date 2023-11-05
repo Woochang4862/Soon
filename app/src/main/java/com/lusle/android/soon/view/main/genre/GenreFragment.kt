@@ -107,9 +107,9 @@ class GenreFragment : Fragment() {
 
     }
 
-    override fun onDetach() {
+    override fun onDestroyView() {
         errorSnackBar.dismiss()
-        super.onDetach()
+        super.onDestroyView()
     }
 
     private fun showErrorSnackBar() {
