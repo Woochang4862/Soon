@@ -20,16 +20,14 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_centerVertical="true"
-            android:background="?attr/selectableItemBackgroundBorderless"
             android:layout_marginLeft="10dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_arrow_back_24dp" />
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/activity_search_searchview"
             style="@style/AppSearchView"
-            app:voiceIcon="@drawable/ic_baseline_keyboard_voice_24"
             android:layout_width="wrap_content"
-            app:submitBackground="@null"
             android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
@@ -39,7 +37,9 @@
             app:iconifiedByDefault="false"
             app:queryBackground="@null"
             app:queryHint="검색어"
-            app:searchIcon="@null" />
+            app:searchIcon="@null"
+            app:submitBackground="@null"
+            app:voiceIcon="@drawable/ic_baseline_keyboard_voice_24" />
 
         <ImageView
             android:id="@+id/activity_search_search_btn"
@@ -47,22 +47,37 @@
             android:layout_height="30dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:background="?attr/selectableItemBackgroundBorderless"
             android:layout_marginRight="10dp"
             android:layout_toRightOf="@id/activity_search_searchview"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_search_24dp" />
 
     </RelativeLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/search_result_recyclerview"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:background="@color/light_black"
-        android:paddingStart="@dimen/margin_content_list"
-        android:paddingEnd="@dimen/margin_content_list"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:layout_height="match_parent"
         android:layout_below="@id/activity_search_header"
-        android:layout_height="match_parent"/>
+        android:background="@color/light_black">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/search_result_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="@dimen/margin_content_list"
+            android:paddingTop="10dp"
+            android:paddingEnd="@dimen/margin_content_list"
+            android:paddingBottom="10dp" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/empty_anim_view"
+            android:layout_width="80dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            app:lottie_fileName="lottie/empty_movie.json"
+            app:lottie_loop="true"
+            app:lottie_scale="1" />
+
+    </FrameLayout>
 
 </RelativeLayout>

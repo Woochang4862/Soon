@@ -77,12 +77,7 @@ class DetailViewModel(private val regionCodeRepository: RegionCodeRepository) : 
         try {
             similarMovieResult.value = withContext(Dispatchers.IO) {
                 movieId.value?.let {
-                    val results = movieApi.getSimilarMovie(it, 1).blockingGet().results
-                    if (results.size < 4){
-                        results
-                    } else {
-                        ArrayList(results.subList (0, 4))
-                    }
+                    movieApi.getSimilarMovie(it, 1).blockingGet().results
                 }
             }
         } catch (e:Exception){

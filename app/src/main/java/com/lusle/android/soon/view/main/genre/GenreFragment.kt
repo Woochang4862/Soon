@@ -101,6 +101,7 @@ class GenreFragment : Fragment() {
                 viewModel.fetchGenre()
             } catch (e: GenreNotFoundException) {
                 e.printStackTrace()
+                adapter.onEmpty()
                 showErrorSnackBar()
             }
         }

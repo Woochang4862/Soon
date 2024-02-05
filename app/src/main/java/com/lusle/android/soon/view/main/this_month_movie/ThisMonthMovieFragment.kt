@@ -21,6 +21,7 @@ import com.lusle.android.soon.R
 import com.lusle.android.soon.adapter.decoration.MovieItemDecoration
 import com.lusle.android.soon.adapter.listener.OnEmptyListener
 import com.lusle.android.soon.adapter.MoviePagedListAdapter
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

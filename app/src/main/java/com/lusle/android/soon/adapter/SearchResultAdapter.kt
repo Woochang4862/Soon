@@ -14,7 +14,6 @@ import com.lusle.android.soon.adapter.holder.SectionHeaderViewHolder
 import com.lusle.android.soon.adapter.listener.OnEmptyListener
 import com.lusle.android.soon.adapter.listener.OnItemClickListener
 
-//TODO:예외처리
 class SearchResultAdapter(private val onMovieItemClickListener: OnItemClickListener, private val onSeeAllButtonClickListener: View.OnClickListener, private val onCompanyItemClickListener: OnItemClickListener, private val onEmptyListener: OnEmptyListener) : PagingDataAdapter<UiModel, RecyclerView.ViewHolder>(diffMovieItemCallback) {
 
     private var companyResultViewHolder: CompanyResultViewHolder? = null
@@ -24,7 +23,6 @@ class SearchResultAdapter(private val onMovieItemClickListener: OnItemClickListe
             is UiModel.MovieModel -> R.layout.item_movie_recyclerview
             is UiModel.CompanyResult -> R.layout.section_company_result
             is UiModel.Header -> R.layout.header_section
-            null -> throw IllegalStateException("Unknown view")
             else -> throw IllegalStateException("Unknown view")
         }
     }

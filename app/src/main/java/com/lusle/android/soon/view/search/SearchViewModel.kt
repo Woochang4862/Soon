@@ -1,7 +1,5 @@
 package com.lusle.android.soon.view.search
 
-//TODO:예외처리
-
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

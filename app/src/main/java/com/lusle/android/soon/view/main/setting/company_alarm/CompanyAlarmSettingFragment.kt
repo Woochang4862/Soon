@@ -27,6 +27,9 @@ import com.lusle.android.soon.adapter.listener.OnCheckedChangeListener
 import com.lusle.android.soon.adapter.listener.OnEmptyListener
 import kotlinx.coroutines.launch
 
+//TODO : 알람을 전부 켰을때 아래 항목들의 스위치 전환 안됨
+// TODO : 화면이 리줌됐을때 로딩시 리스트가 같이 보임
+
 class CompanyAlarmSettingFragment : Fragment() {
     enum class SnackBarType {
         TOKEN,

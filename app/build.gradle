@@ -10,8 +10,8 @@ android {
         applicationId "com.lusle.android.soon"
         minSdkVersion 23
         targetSdk 33
-        versionCode 47
-        versionName '3.10.1'
+        versionCode 48
+        versionName '3.10.2'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }

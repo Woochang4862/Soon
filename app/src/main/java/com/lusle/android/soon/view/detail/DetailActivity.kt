@@ -6,6 +6,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.Button
@@ -48,6 +49,7 @@ import com.lusle.android.soon.adapter.MovieListAdapter
 import com.lusle.android.soon.adapter.PreviewImageAdapter
 import com.lusle.android.soon.adapter.VideoThumbnailAdapter
 import com.lusle.android.soon.adapter.WatchProviderSectionListAdapter
+import com.lusle.android.soon.adapter.decoration.CompanyItemDecoration
 import com.lusle.android.soon.view.BaseActivity
 import com.skydoves.transformationlayout.TransformationCompat
 import com.skydoves.transformationlayout.TransformationLayout
@@ -59,8 +61,6 @@ import java.util.GregorianCalendar
 import java.util.Locale
 
 class DetailActivity : BaseActivity() {
-
-    private var movieId: Int = -1
 
     private lateinit var errorSnackbar: Snackbar
     private lateinit var poster: ImageView
@@ -241,7 +241,7 @@ class DetailActivity : BaseActivity() {
 
 
         postponeEnterTransition()
-        movieId = intent.getIntExtra("movie_id", -1)
+        val movieId = intent.getIntExtra("movie_id", -1)
         if (movieId == -1) {
             onException()
         } else {
@@ -292,6 +292,7 @@ class DetailActivity : BaseActivity() {
     }
 
     private fun bind(similarMovies: ArrayList<Movie>) {
+        Log.d(TAG, "bind: called - ${similarMovies}")
         //유사영화
         similarMovieListAdapter = MovieListAdapter(
             { view, position ->
@@ -332,8 +333,9 @@ class DetailActivity : BaseActivity() {
             similarMovieListAdapter.onNotEmpty()
             if (similarMovies.size <= 4) {
                 similarMovieLoadMoreButton.visibility = View.GONE
-            } else {
                 similarMovieListAdapter.list.addAll(similarMovies)
+            } else {
+                similarMovieListAdapter.list.addAll(similarMovies.subList(0,4))
 
                 similarMovieLoadMoreButton.visibility = View.VISIBLE
                 similarMovieLoadMoreButton.setOnClickListener {
@@ -357,6 +359,8 @@ class DetailActivity : BaseActivity() {
         if (creditsResult.crew.isNotEmpty()) {
             crewListAdapter.list.addAll(creditsResult.crew)
         }
+
+        castListAdapter.notifyDataSetChanged()
     }
 
     private fun crewOnEmpty(isEmpty: Boolean) {
@@ -473,6 +477,8 @@ class DetailActivity : BaseActivity() {
         companyLayoutManager = LinearLayoutManager(this)
         companyLayoutManager.orientation = RecyclerView.HORIZONTAL
         companyRecyclerView.layoutManager = companyLayoutManager
+        if (companyRecyclerView.itemDecorationCount == 0)
+            companyRecyclerView.addItemDecoration(CompanyItemDecoration(this, -1, 9f, 0f))
         companyListAdapter = CompanyListAdapter({ _, position ->
             val intent = Intent(this, MovieListActivity::class.java)
             intent.putExtra("keyword", companyListAdapter.getItem(position))
@@ -503,7 +509,10 @@ class DetailActivity : BaseActivity() {
             videoThumbnailAdapter.onEmpty()
         } else {
             videoThumbnailAdapter.list = movieDetail.videos.results
+            videoThumbnailAdapter.notifyDataSetChanged()
         }
+
+        // 개봉일별 알람설정 버튼
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale("KR"))
         val date = sdf.parse(movieDetail.releaseDate)
         date?.let {
@@ -530,6 +539,7 @@ class DetailActivity : BaseActivity() {
             for (backdrop in movieDetail.images.backdrops) previewImages.add(backdrop.filePath)
             for (poster in movieDetail.images.posters) previewImages.add(poster.filePath)
             previewImageAdapter.setList(previewImages)
+            previewImageAdapter.notifyDataSetChanged()
         }
     }
 
@@ -549,6 +559,7 @@ class DetailActivity : BaseActivity() {
     }
 
     companion object {
+        val TAG: String = DetailActivity::class.java.simpleName
         const val KEY_MOVIE_ID = "movie_id"
         fun startActivity(
             context: Context,

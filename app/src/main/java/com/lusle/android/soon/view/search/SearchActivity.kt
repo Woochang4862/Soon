@@ -13,6 +13,7 @@ import android.view.ViewAnimationUtils
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.view.animation.AccelerateInterpolator
 import android.widget.ImageView
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.lifecycleScope
@@ -20,6 +21,7 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.lottie.LottieAnimationView
 import com.google.android.material.snackbar.Snackbar
 import com.lusle.android.soon.model.source.RegionCodeRepository
 import com.lusle.android.soon.SuggestionProvider
@@ -43,8 +45,13 @@ open class SearchActivity : BaseActivity() {
     private lateinit var backBtn: ImageView
     private lateinit var pleaseInputQuerySnackBar: Snackbar
     private lateinit var searchBtn: ImageView
+    private lateinit var emptyAnimView: LottieAnimationView
 
-    private val viewModel by viewModels<SearchViewModel> { SearchViewModelFactory(RegionCodeRepository(this)) }
+    private val viewModel by viewModels<SearchViewModel> {
+        SearchViewModelFactory(
+            RegionCodeRepository(this)
+        )
+    }
     private lateinit var layoutManager: GridLayoutManager
     private lateinit var decoration: MovieItemDecoration
 
@@ -55,6 +62,15 @@ open class SearchActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                unRevealActivity()
+            }
+        })
+
+        //Empty Anim View
+        emptyAnimView = findViewById(R.id.empty_anim_view)
 
         //RecyclerView
         searchResultRecyclerView = findViewById(R.id.search_result_recyclerview)
@@ -77,7 +93,9 @@ open class SearchActivity : BaseActivity() {
             suggestions.saveRecentQuery(query, null)
         }
         rootLayout = findViewById(R.id.rootView)
-        if (savedInstanceState == null && intent.hasExtra(EXTRA_CIRCULAR_REVEAL_X) && intent.hasExtra(EXTRA_CIRCULAR_REVEAL_Y)
+        if (savedInstanceState == null && intent.hasExtra(EXTRA_CIRCULAR_REVEAL_X) && intent.hasExtra(
+                EXTRA_CIRCULAR_REVEAL_Y
+            )
         ) {
             rootLayout.visibility = View.INVISIBLE
             revealX = intent.getIntExtra(EXTRA_CIRCULAR_REVEAL_X, 0)
@@ -118,13 +136,19 @@ open class SearchActivity : BaseActivity() {
                     suggestions.saveRecentQuery(s, null)
                     searchView.clearFocus()
                     viewModel.query.value = s
-                    lifecycleScope.launch {
-                        Log.d(TAG, "onQueryTextSubmit: $s")
-                        clearRecyclerViewOption()
-                        viewModel.clearFlow()
-                        viewModel.flow.collectLatest {
-                            adapter.submitData(it)
+                    try {
+                        lifecycleScope.launch {
+                            Log.d(TAG, "onQueryTextSubmit: $s")
+                            clearRecyclerViewOption()
+                            viewModel.clearFlow()
+                            viewModel.flow.collectLatest {
+                                adapter.submitData(it)
+                            }
                         }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        Log.d(TAG, "onQueryTextSubmit: search error!\n${e.stackTrace}")
+                        adapter.onEmpty()
                     }
                 }
                 return true
@@ -183,13 +207,13 @@ open class SearchActivity : BaseActivity() {
                 intent.putExtra("keyword", adapter.getCompanyItem(position))
                 startActivity(intent)
             },
-            object:OnEmptyListener{
+            object : OnEmptyListener {
                 override fun onEmpty() {
-
+                    setRecyclerEmpty(true)
                 }
 
                 override fun onNotEmpty() {
-
+                    setRecyclerEmpty(false)
                 }
             }
         )
@@ -206,11 +230,25 @@ open class SearchActivity : BaseActivity() {
         searchResultRecyclerView.adapter = adapter
         decoration = MovieItemDecoration(this)
         var i = 0
-        while(i<searchResultRecyclerView.itemDecorationCount){
+        while (i < searchResultRecyclerView.itemDecorationCount) {
             searchResultRecyclerView.removeItemDecorationAt(i)
-            i+=1
+            i += 1
         }
         searchResultRecyclerView.addItemDecoration(decoration)
+    }
+
+    private fun setRecyclerEmpty(isEmpty: Boolean) {
+        if (isEmpty) {
+            searchResultRecyclerView.visibility = View.GONE
+            emptyAnimView.visibility = View.VISIBLE
+            if(!emptyAnimView.isAnimating)
+                emptyAnimView.playAnimation()
+        } else {
+            searchResultRecyclerView.visibility = View.VISIBLE
+            emptyAnimView.visibility = View.GONE
+            if(emptyAnimView.isAnimating)
+                emptyAnimView.cancelAnimation()
+        }
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -250,13 +288,9 @@ open class SearchActivity : BaseActivity() {
         circularReveal.start()
     }
 
-    override fun onBackPressed() {
-        unRevealActivity()
-    }
-
     companion object {
         const val EXTRA_CIRCULAR_REVEAL_X = "EXTRA_CIRCULAR_REVEAL_X"
         const val EXTRA_CIRCULAR_REVEAL_Y = "EXTRA_CIRCULAR_REVEAL_Y"
-        var TAG:String = SearchActivity::class.java.simpleName
+        var TAG: String = SearchActivity::class.java.simpleName
     }
 }

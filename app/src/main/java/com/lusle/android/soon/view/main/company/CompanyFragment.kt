@@ -16,6 +16,7 @@ import com.lusle.android.soon.model.api.MovieApi
 import com.lusle.android.soon.model.source.FavoriteCompanyRepository
 import com.lusle.android.soon.R
 import com.lusle.android.soon.adapter.CompanyListAdapter
+import com.lusle.android.soon.adapter.decoration.CompanyItemDecoration
 import com.lusle.android.soon.adapter.listener.OnEmptyListener
 
 class CompanyFragment : Fragment() {
@@ -87,6 +88,8 @@ class CompanyFragment : Fragment() {
                 setCompanyRecyclerEmpty(false)
             }
         })
+        if (companyList.itemDecorationCount == 0)
+            companyList.addItemDecoration(CompanyItemDecoration(requireActivity(), -1, 9f, 0f))
         companyList.adapter = companyAdapter
         // CompanyEnd
 

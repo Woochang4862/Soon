@@ -43,6 +43,10 @@ class FavoriteCompanyRepository(context: Context) {
         )
     }
 
+    fun saveCompanies(companies:ArrayList<Company>) {
+        pref.edit().putString("favorite_company", Gson().toJson(companies)).apply()
+    }
+
     companion object {
         val TAG = FavoriteCompanyRepository::class.java.simpleName
     }

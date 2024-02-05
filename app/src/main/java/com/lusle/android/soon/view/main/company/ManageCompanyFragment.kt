@@ -1,5 +1,6 @@
 package com.lusle.android.soon.view.main.company
 
+import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
 import android.util.Log
@@ -7,8 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,6 +30,8 @@ import com.lusle.android.soon.model.source.FavoriteCompanyRepository
 import com.lusle.android.soon.R
 import com.lusle.android.soon.util.ItemTouchHelper.SimpleItemTouchHelperCallback
 import com.lusle.android.soon.view.dialog.MovieProgressDialog
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -33,13 +39,14 @@ import retrofit2.Response
 import java.util.*
 
 class ManageCompanyFragment : Fragment(), ManageCompanyListAdapter.OnItemManageListener {
-    private var companyAdapter: ManageCompanyListAdapter? = null
-    private lateinit var errorSnackBar: Snackbar
+    private lateinit var backPressedCallback: OnBackPressedCallback
+    private lateinit var companyAdapter: ManageCompanyListAdapter
+    private var errorSnackBar: Snackbar? = null
     private var undoSnackBar: Snackbar? = null
+    private var checkSaveSnackBar: Snackbar? = null
     private lateinit var companyList: RecyclerView
     private lateinit var saveBtn: TextView
-    private var startList: ArrayList<*>? = null
-    private var mItemTouchHelper: ItemTouchHelper? = null
+    private lateinit var mItemTouchHelper: ItemTouchHelper
 
     private val viewModel by viewModels<CompanyViewModel> {
         CompanyViewModelFactory(
@@ -47,7 +54,28 @@ class ManageCompanyFragment : Fragment(), ManageCompanyListAdapter.OnItemManageL
         )
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        backPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (saveBtn.visibility == View.VISIBLE) {
+                    if (checkSaveSnackBar?.isShown == true) {
+                        findNavController().popBackStack()
+                    }
+                    showCheckSaveSnackBar()
+                } else {
+                    findNavController().popBackStack()
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, backPressedCallback)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_manage_company, container, false)
     }
 
@@ -55,56 +83,67 @@ class ManageCompanyFragment : Fragment(), ManageCompanyListAdapter.OnItemManageL
         super.onViewCreated(view, savedInstanceState)
 
         errorSnackBar = Snackbar.make(requireView(), "즐겨찾기 정보를 불러 올 수 없습니다.", Snackbar.LENGTH_SHORT)
-                .setAnchorView(requireActivity().findViewById(R.id.floatingActionButton))
-                .setGestureInsetBottomIgnored(true)
+            .setAnchorView(requireActivity().findViewById(R.id.floatingActionButton))
+            .setGestureInsetBottomIgnored(true)
 
         companyList = view.findViewById(R.id.activity_favorite_company_recyclerView)
         companyList.layoutManager = LinearLayoutManager(requireContext())
         companyAdapter = ManageCompanyListAdapter(this)
         companyList.adapter = companyAdapter
-        companyList.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
+        companyList.addItemDecoration(
+            DividerItemDecoration(
+                requireContext(),
+                DividerItemDecoration.VERTICAL
+            )
+        )
         val callback: ItemTouchHelper.Callback = SimpleItemTouchHelperCallback(companyAdapter)
         mItemTouchHelper = ItemTouchHelper(callback)
-        mItemTouchHelper?.attachToRecyclerView(companyList)
+        mItemTouchHelper.attachToRecyclerView(companyList)
         saveBtn = view.findViewById(R.id.saveBtn)
-        saveBtn.setOnClickListener { _ : View? ->
+        saveBtn.setOnClickListener { _: View? ->
             val dialog = MovieProgressDialog(requireContext())
             dialog.show()
-            undoSnackBar?.let {
-                if(it.isShown){
-                    it.dismiss()
+            undoSnackBar?.apply {
+                if (isShown) {
+                    dismiss()
                 }
             }
-            val type = object : TypeToken<ArrayList<Company?>?>() {}.type
-            val list = Gson().toJson((companyList.adapter as ManageCompanyListAdapter?)?.list, type)
-            val pref = requireActivity().getSharedPreferences("pref", MODE_PRIVATE)
-            val editor = pref.edit()
-            editor.putString("favorite_company", list)
-            editor.apply()
-            dialog.dismiss()
-            saveBtn.visibility = View.GONE
-            startList = (companyList.adapter as ManageCompanyListAdapter?)?.list
+            lifecycleScope.launch {
+                viewModel.removeCompaniesAlarm()
+                viewModel.saveCompaniesToLocal()
+                dialog.dismiss()
+                saveBtn.visibility = View.GONE
+            }
         }
         companyAdapter?.list?.clear()
         viewModel.favoriteCompanyLiveData.observe(
             viewLifecycleOwner
         ) { favoriteCompany ->
-            Log.d("ManageCompanyFragment", "onViewCreated: $favoriteCompany")
-            favoriteCompany?.let {
-                if (favoriteCompany.isEmpty()) {
-                    companyAdapter?.onEmpty()
-                } else {
-                    companyAdapter?.onNotEmpty()
-                    companyAdapter?.list = favoriteCompany
-                    startList = favoriteCompany
-                    companyAdapter?.notifyDataSetChanged()
+            Log.d(TAG,"onViewCreated: favoriteCompanyLiveData - observe - $favoriteCompany"
+            )
+            companyAdapter?.apply {
+                favoriteCompany?.let {
+                    if (it.isEmpty()) {
+                        onEmpty()
+                    } else {
+                        onNotEmpty()
+                        list = it
+                        notifyDataSetChanged()
+                    }
+                } ?: run {
+                    companyAdapter.onEmpty()
                 }
-            } ?: run {
-                companyAdapter?.onEmpty()
             }
         }
+        viewModel.saveButtonState.observe(viewLifecycleOwner) { isVisible ->
+            Log.d(TAG, "onViewCreated: saveButtonState Changed! - $isVisible")
+            saveBtn.visibility = if (isVisible) View.VISIBLE else View.GONE
+
+        }
+
 
         viewModel.loadFavoriteCompany()
+        viewModel.checkSaveButtonVisibility()
     }
 
     override fun onResume() {
@@ -113,77 +152,77 @@ class ManageCompanyFragment : Fragment(), ManageCompanyListAdapter.OnItemManageL
         viewModel.loadFavoriteCompany()
     }
 
-    /*override fun onBackPressed() {
-        if (saveBtn.visibility == View.VISIBLE) {
-            if (doubleBackToExitPressedOnce) {
-                super.onBackPressed()
-                return
+    private fun showCheckSaveSnackBar(){
+        checkSaveSnackBar = Snackbar.make(
+            requireView(),
+            "변경사항이 저장되지 않았습니다.\n저장을 원하지 않는다면 뒤로가기를 한 번더 눌러주세요.",
+            Snackbar.LENGTH_LONG
+        )
+            .setAction("저장") {
+                saveBtn.performClick()
+                checkSaveSnackBar?.dismiss()
             }
-            DynamicToast.makeWarning(this, "저장하지 않으면 적용이 되지 않습니다. 괜찮다면 한 번더 눌러주세요").show()
-            doubleBackToExitPressedOnce = true
-            Handler().postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
-        } else {
-            finish()
-        }
-    }*/
+            .setAnchorView(requireActivity().findViewById(R.id.floatingActionButton))
+            .setGestureInsetBottomIgnored(true)
+        checkSaveSnackBar!!.show()
+    }
 
     private fun showUndoSnackBar(deletedItem: Company, pos: Int) {
-        undoSnackBar = Snackbar.make(requireView(), deletedItem.name + "이(가) 삭제되었습니다.", Snackbar.LENGTH_INDEFINITE)
-                .setAction("UNDO") {
-                    (companyList.adapter as ManageCompanyListAdapter?)?.insertItem(deletedItem, pos)
-                }
-                .setAnchorView(requireActivity().findViewById(R.id.floatingActionButton))
-                .setGestureInsetBottomIgnored(true)
-        undoSnackBar?.show()
+        undoSnackBar = Snackbar.make(
+            requireView(),
+            deletedItem.name + "이(가) 삭제되었습니다.",
+            Snackbar.LENGTH_INDEFINITE
+        )
+            .setAction("UNDO") {
+                companyAdapter.insertItem(deletedItem, pos)
+            }
+            .setAnchorView(requireActivity().findViewById(R.id.floatingActionButton))
+            .setGestureInsetBottomIgnored(true)
+    undoSnackBar!!.show()
     }
 
-    override fun onPause() {
-        super.onPause()
-        undoSnackBar?.let {
-            if(it.isShown){
-                it.dismiss()
+    override fun onDestroy() {
+        super.onDestroy()
+        undoSnackBar?.apply {
+            if (isShown) {
+                dismiss()
+            }
+        }
+        checkSaveSnackBar?.apply {
+            if (isShown) {
+                dismiss()
             }
         }
     }
 
-    private fun checkSaveBtn() {
-        saveBtn.visibility = if ((companyList.adapter as ManageCompanyListAdapter).list == startList) View.GONE else View.VISIBLE
+    override fun onDetach() {
+        super.onDetach()
+        backPressedCallback.remove()
     }
 
     override fun onDragStarted(viewHolder: RecyclerView.ViewHolder?) {
         if (viewHolder != null) {
-            mItemTouchHelper?.startDrag(viewHolder)
+            mItemTouchHelper.startDrag(viewHolder)
         }
     }
 
     override fun insertItem(item: Company, position: Int) {
-        checkSaveBtn()
+        Log.d(TAG, "insertItem: $item, $position")
+        viewModel.checkSaveButtonVisibility()
     }
 
     override fun onItemDismiss(deletedItem: Company, position: Int) {
+        Log.d(TAG, "onItemDismiss: $deletedItem, $position")
         showUndoSnackBar(deletedItem, position)
-        checkSaveBtn()
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                Log.w("####", "getInstanceId failed", task.exception)
-                return@OnCompleteListener
-            }
-
-            // Get new Instance ID token
-            val token = task.result.toString()
-            val body = HashMap<String, String>()
-            body["company_id"] = deletedItem.id.toString()
-            body["token"] = token
-            ApiClient.retrofit.create(APIInterface::class.java).removeCompanyAlarm(body).enqueue(object : Callback<ResponseBody?> {
-                override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {}
-                override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
-                    t.printStackTrace()
-                }
-            })
-        })
+        viewModel.checkSaveButtonVisibility()
     }
 
     override fun onItemMove(fromPosition: Int, toPosition: Int) {
-        checkSaveBtn()
+        Log.d(TAG, "onItemMove: $fromPosition, $toPosition")
+        viewModel.checkSaveButtonVisibility()
+    }
+
+    companion object {
+        val TAG = ManageCompanyFragment::class.java.simpleName
     }
 }

@@ -23,6 +23,7 @@ import com.lusle.android.soon.adapter.decoration.MovieItemDecoration
 import com.lusle.android.soon.adapter.listener.OnCompanyBookMarkButtonClickListener
 import com.lusle.android.soon.adapter.listener.OnEmptyListener
 import com.lusle.android.soon.adapter.MoviePagedListAdapter
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -117,6 +118,13 @@ class MovieListFragment : Fragment() {
         }
         recyclerView.adapter = adapter
 
+        //load()
+        Log.d(TAG, "onViewCreated: ")
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "onStart: called!")
         load()
     }
 
@@ -140,6 +148,14 @@ class MovieListFragment : Fragment() {
     override fun onDetach() {
         errorSnackBar.dismiss()
         super.onDetach()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        //다이얼로그가 띄워져 있는 상태(showing)인 경우 dismiss() 호출
+        if (movieProgressDialog.isShowing) {
+            movieProgressDialog.dismiss()
+        }
     }
 
     private fun showErrorSnackBar() {
