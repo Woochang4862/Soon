@@ -1,7 +1,5 @@
 package com.lusle.android.soon.view.detail
 
-//TODO:예외처리,일림설정,리펙토링
-
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
