@@ -10,6 +10,7 @@
         android:id="@+id/youtube_player"
         android:layout_width="match_parent"
         android:transitionName="video"
+        app:enableAutomaticInitialization="false"
         android:layout_height="match_parent"/>
 
 </LinearLayout>

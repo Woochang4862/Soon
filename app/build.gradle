@@ -5,13 +5,13 @@ apply plugin: "androidx.navigation.safeargs.kotlin"
 apply plugin: 'com.google.android.gms.oss-licenses-plugin'
 
 android {
-    compileSdkVersion 33
     defaultConfig {
+        compileSdk 34
         applicationId "com.lusle.android.soon"
         minSdkVersion 23
-        targetSdk 33
-        versionCode 48
-        versionName '3.10.2'
+        targetSdk 34
+        versionCode 50
+        versionName '3.10.3'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -24,10 +24,6 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
-    }
-    dexOptions {
-        jumboMode true
-        javaMaxHeapSize "4g"
     }
     kotlinOptions {
         jvmTarget = '11'
@@ -84,7 +80,7 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'io.github.inflationx:calligraphy3:3.1.1'
     implementation 'io.github.inflationx:viewpump:2.0.3'
-    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
+    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0'
     implementation 'androidx.preference:preference-ktx:1.1.1'
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
 
@@ -96,7 +92,7 @@ dependencies {
     implementation "androidx.navigation:navigation-compose:2.4.0-beta01"
 
     // CountryPicker
-    implementation 'io.michaelrocks:libphonenumber-android:8.12.17'
+    implementation 'io.michaelrocks:libphonenumber-android:8.13.28'
 
     //Play Core Library
     implementation 'com.google.android.play:core-ktx:1.8.1'
@@ -110,6 +106,7 @@ dependencies {
     //TransformationLayout
     implementation "com.github.skydoves:transformationlayout:1.1.0"
 
+    implementation "androidx.work:work-runtime-ktx:2.9.0"
 }
 
 apply plugin: 'com.google.gms.google-services'

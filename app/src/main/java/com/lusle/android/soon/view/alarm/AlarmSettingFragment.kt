@@ -189,7 +189,7 @@ class AlarmSettingFragment : Fragment(), OnDateSetListener, OnTimeSetListener,
                 requireContext(),
                 it.pendingIntentID,
                 intent,
-                PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_IMMUTABLE // TODO: UPDATE_CURRENT
             )
             am.setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,

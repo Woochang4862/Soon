@@ -75,7 +75,7 @@ class FirebaseInstanceIDService : FirebaseMessagingService() {
             this,
             notificationId,
             intent,
-            PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_IMMUTABLE // TODO :FLAG_UPDATE_CURRENT
         )
 
         /**

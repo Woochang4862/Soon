@@ -62,7 +62,7 @@ class AlarmReceiver : BroadcastReceiver() {
                         context,
                         alarm.pendingIntentID,
                         i,
-                        PendingIntent.FLAG_UPDATE_CURRENT
+                        PendingIntent.FLAG_IMMUTABLE // TODO : UPDATE_CURRENT
                     )
                     try {
                         am.setExactAndAllowWhileIdle(

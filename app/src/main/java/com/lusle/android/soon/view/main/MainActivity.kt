@@ -119,7 +119,7 @@ class MainActivity : BaseActivity() {
                 this,
                 a.pendingIntentID,
                 i,
-                PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_IMMUTABLE // TODO : CURRENT_UPDATE -> IMMUTABLE
             )
 
             am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, a.milliseconds, pendingIntent)

@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.lusle.android.soon.model.source.RegionCodeRepository
 
 class DetailViewModelProvider(private val regionCodeRepository: RegionCodeRepository) : ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T & Any {
-        return DetailViewModel(regionCodeRepository) as (T & Any)
+    override fun <T : ViewModel> create(modelClass: Class<T>): T{
+        return DetailViewModel(regionCodeRepository) as T
     }
 
 }

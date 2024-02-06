@@ -84,7 +84,7 @@ class AlarmService : Service() {
                 detailActivityIntent.putExtra("movie_id", alarm.movie.id)
                 detailActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 val pi =
-                    PendingIntent.getActivity(this, 111, detailActivityIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+                    PendingIntent.getActivity(this, 111, detailActivityIntent, PendingIntent.FLAG_IMMUTABLE) // TODO : UPDATE_CURRENT
                 val pattern = longArrayOf(0, 1000, 0)
                 val bigText = NotificationCompat.BigTextStyle()
                 bigText.bigText("자세히 보기")
