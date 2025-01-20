@@ -22,15 +22,16 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '11'
+        jvmTarget = '17'
     }
     buildFeatures {
         viewBinding true
     }
+    namespace 'com.lusle.android.soon'
 }
 
 dependencies {
@@ -87,7 +88,7 @@ dependencies {
     // Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:2.3.5"
     implementation "androidx.navigation:navigation-ui-ktx:2.3.5"
-    implementation "androidx.navigation:navigation-dynamic-features-fragment:2.3.5"
+    implementation "androidx.navigation:navigation-dynamic-features-fragment:2.8.5"
     androidTestImplementation "androidx.navigation:navigation-testing:2.3.5"
     implementation "androidx.navigation:navigation-compose:2.4.0-beta01"
 
@@ -95,7 +96,10 @@ dependencies {
     implementation 'io.michaelrocks:libphonenumber-android:8.13.28'
 
     //Play Core Library
-    implementation 'com.google.android.play:core-ktx:1.8.1'
+    implementation 'com.google.android.play:asset-delivery-ktx:2.1.0'
+    implementation 'com.google.android.play:feature-delivery-ktx:2.1.0'
+    implementation 'com.google.android.play:review-ktx:2.0.1'
+    implementation 'com.google.android.play:app-update-ktx:2.1.0'
 
     //License
     implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'

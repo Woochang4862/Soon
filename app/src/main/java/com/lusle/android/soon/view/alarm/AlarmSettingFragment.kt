@@ -12,7 +12,9 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -191,11 +193,26 @@ class AlarmSettingFragment : Fragment(), OnDateSetListener, OnTimeSetListener,
                 intent,
                 PendingIntent.FLAG_IMMUTABLE // TODO: UPDATE_CURRENT
             )
-            am.setExactAndAllowWhileIdle(
-                AlarmManager.RTC_WAKEUP,
-                currentCal.timeInMillis,
-                pendingIntent
-            )
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                if (am.canScheduleExactAlarms()) {
+                    am.setExactAndAllowWhileIdle(
+                        AlarmManager.RTC_WAKEUP,
+                        currentCal.timeInMillis,
+                        pendingIntent
+                    )
+                } else {
+                    Intent().also { intent ->
+                        intent.action = Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
+                        requireContext().startActivity(intent)
+                    }
+                }
+            } else {
+                am.setExactAndAllowWhileIdle(
+                    AlarmManager.RTC_WAKEUP,
+                    currentCal.timeInMillis,
+                    pendingIntent
+                )
+            }
 
             val pref = ReleaseAlarmDataSource(requireContext())
             val alarms = pref.alarms
@@ -267,7 +284,7 @@ class AlarmSettingFragment : Fragment(), OnDateSetListener, OnTimeSetListener,
                 am.cancel(pendingIntent)
                 val pref = ReleaseAlarmDataSource(requireContext())
                 val alarms = pref.alarms
-                if(alarms.contains(it))
+                if (alarms.contains(it))
                     alarms.remove(it)
                 pref.alarms = alarms
                 Toast.makeText(requireContext(), "알림이 삭제되었습니다", Toast.LENGTH_SHORT).show()

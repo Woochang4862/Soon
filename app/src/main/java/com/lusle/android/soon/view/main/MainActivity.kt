@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -48,6 +49,14 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val filter = IntentFilter()
+        filter.addCategory("android.intent.category.DEFAULT")
+        filter.addAction("android.intent.action.BOOT_COMPLETED")
+        filter.addAction("com.lusle.android.soon.ALARM_START")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(AlarmReceiver(), filter, RECEIVER_EXPORTED)
+        }
+
         onTransformationStartContainer()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -122,7 +131,11 @@ class MainActivity : BaseActivity() {
                 PendingIntent.FLAG_IMMUTABLE // TODO : CURRENT_UPDATE -> IMMUTABLE
             )
 
-            am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, a.milliseconds, pendingIntent)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && am.canScheduleExactAlarms()) {
+                am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, a.milliseconds, pendingIntent)
+            } else {
+                am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, a.milliseconds, pendingIntent)
+            }
         }
 
         init()
