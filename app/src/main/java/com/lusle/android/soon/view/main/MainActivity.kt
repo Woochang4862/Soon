@@ -1,5 +1,6 @@
 package com.lusle.android.soon.view.main
 
+import android.Manifest
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
@@ -12,6 +13,7 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.LiveData
@@ -46,6 +48,28 @@ class MainActivity : BaseActivity() {
 
     companion object {
         val TAG = MainActivity::class.java.simpleName
+        const val DENIED = "denied"
+        const val EXPLAINED = "explained"
+    }
+
+    private val registerForActivityResult = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+        val deniedPermissionList = permissions.filter { !it.value }.map { it.key }
+        when {
+            deniedPermissionList.isNotEmpty() -> {
+                val map = deniedPermissionList.groupBy { permission ->
+                    if (shouldShowRequestPermissionRationale(permission)) DENIED else EXPLAINED
+                }
+                map[DENIED]?.let {
+                    // 단순히 권한이 거부 되었을 때
+                }
+                map[EXPLAINED]?.let {
+                    // 권한 요청이 완전히 막혔을 때(주로 앱 상세 창 열기)
+                }
+            }
+            else -> {
+                // 모든 권한이 허가 되었을 때
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,6 +86,12 @@ class MainActivity : BaseActivity() {
         setContentView(R.layout.activity_main)
         if (savedInstanceState == null) {
             setUpBottomNavigationBar()
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerForActivityResult.launch(
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS)
+            )
         }
 
         appUpdateManager = AppUpdateManagerFactory.create(this)
