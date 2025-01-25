@@ -35,7 +35,7 @@
 ### 라이브러리 & API
 - ![Retrofit](https://img.shields.io/badge/Library-Retrofit-yellow)
 - ![Firebase Cloud Messaging](https://img.shields.io/badge/API-Firebase_Cloud_Messaging-yellow)
-- ![Room](https://img.shields.io/badge/Library-Room-yellow)
+- ![LiveData](https://img.shields.io/badge/Library-LiveData-yellow)
 
 ### IDE
 - ![Android Studio](https://img.shields.io/badge/IDE-Android_Studio-blue)
