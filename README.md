@@ -1,47 +1,40 @@
 # Soon
 
-모바일 서비스 프로젝트입니다.
+**"요즘 볼 영화가 없다"** 는 일상의 불편에서 시작해, **2019년부터 혼자 만들고 운영해 온** 상영예정 영화 알림 앱입니다.
+
+[![Google Play](https://img.shields.io/badge/Google_Play-다운로드-3DDC84?style=flat-square&logo=google-play&logoColor=white)](https://play.google.com/store/apps/details?id=com.lusle.android.soon)
+[![시연 영상](https://img.shields.io/badge/YouTube-시연_영상-FF0000?style=flat-square&logo=youtube&logoColor=white)](https://www.youtube.com/shorts/y9WJL-Qq5_U)
 
 ![그래픽 이미지](https://drive.usercontent.google.com/download?id=10iWnyE3Zb5HNakbIpdBIMNzgSNC4kpSr)
 
-## 📘 개요 
+| | |
+|---|---|
+| 기간 | 2019 ~ 현재 (고등학생 때 시작해 지금까지 운영) |
+| 역할 | 1인 풀스택 (Android · 서버 · 인프라) |
+| 서버 저장소 | [soon-server-side](https://github.com/Woochang4862/soon-server-side) |
 
-**Soon**은 영화 정보를 제공하고, 사용자가 관심 있는 영화의 개봉 알림을 받을 수 있는 플랫폼입니다. 이 애플리케이션은 Kotlin과 Android로 개발되었으며, 사용자에게 직관적이고 다양한 기능을 제공합니다. 사용자는 영화의 상세 정보를 탐색하고, 제작사 정보를 확인하며, 알림 서비스를 통해 영화 개봉 여부 및 중요한 정보를 받을 수 있습니다. 이 앱은 Android 플랫폼에서 사용할 수 있습니다.
+## 📘 개요
 
-## 🎥 시연 동영상
+영화의 상세 정보와 제작사 정보를 탐색하고, 관심 있는 영화의 **개봉 알림**을 받을 수 있는 안드로이드 앱입니다.
+서버가 **1분마다 cron으로 영화 정보를 확인**해 변경이 감지되면 푸시 알림을 발송합니다.
 
-- [Soon 시연 영상 보기](https://www.youtube.com/shorts/y9WJL-Qq5_U)
+- **영화 탐색** — 상영예정·인기 영화 목록과 상세 정보
+- **제작사 정보** — 관심 제작사 팔로우
+- **개봉 알림** — 관심 영화의 개봉일 푸시 알림
+- **프로필 관리**
 
-## ⬇️ 다운로드 
+## 🏗️ 아키텍처 & 인프라
 
-- [Google Play에서 다운로드](https://play.google.com/store/apps/details?id=com.lusle.android.soon)
+이 프로젝트가 남긴 건 기능이 아니라 **운영 경험**입니다.
 
-## 📱 사용법 
+- **클라이언트** — Kotlin · Android · MVVM + Jetpack (LiveData, ViewModel). 메모리 누수와 비정상 종료를 추적해 해결
+- **서버** — Node.js · MySQL · Redis
+- **배포** — `docker-compose`로 서비스 묶어 **AWS EC2**에 배포
+- **알림** — cron(1분 주기) → 변경 감지 → Firebase Cloud Messaging 푸시
+- **비용 제약** — 제한된 예산 탓에 EC2 인스턴스를 **여러 번 이전**해야 했고, 그 과정에서 *환경 설정을 자동화해두지 않으면 이전 비용이 매번 처음부터 발생한다*는 것을 배웠습니다
 
-앱을 실행한 후, 다음과 같은 기능을 사용할 수 있습니다:
+## 🛠️ 기술 스택
 
-- **영화 탐색**: 다양한 영화를 탐색하고, 각 영화에 대한 상세 정보를 확인할 수 있습니다.
-- **제작사 정보 확인**: 관심 있는 제작사의 정보를 확인할 수 있습니다.
-- **개봉 알림 설정**: 관심 있는 영화의 개봉 알림을 설정할 수 있습니다.
-- **프로필 관리**: 자신의 프로필을 업데이트하고 관리할 수 있습니다.
+**Client** ![Kotlin](https://img.shields.io/badge/Kotlin-blue) ![Android](https://img.shields.io/badge/Android-blue) ![MVVM](https://img.shields.io/badge/Architecture-MVVM-green) ![Retrofit](https://img.shields.io/badge/Retrofit-yellow) ![LiveData](https://img.shields.io/badge/LiveData-yellow)
 
-## 🛠️ 기술 스택 & Tools
-
-### 공통
-- ![Kotlin](https://img.shields.io/badge/Kotlin-1.5.31-blue)
-- ![Android](https://img.shields.io/badge/Android-11-blue)
-- ![MVVM](https://img.shields.io/badge/Architecture-MVVM-green)
-
-### 라이브러리 & API
-- ![Retrofit](https://img.shields.io/badge/Library-Retrofit-yellow)
-- ![Firebase Cloud Messaging](https://img.shields.io/badge/API-Firebase_Cloud_Messaging-yellow)
-- ![LiveData](https://img.shields.io/badge/Library-LiveData-yellow)
-
-### IDE
-- ![Android Studio](https://img.shields.io/badge/IDE-Android_Studio-blue)
-
-### 도구
-- ![Git](https://img.shields.io/badge/Tools-Git-orange)
-- ![Notion](https://img.shields.io/badge/Tools-Notion-orange)
-- ![Miro](https://img.shields.io/badge/Tools-Miro-orange)
-- ![Figma](https://img.shields.io/badge/Tools-Figma-orange)
+**Server & Infra** ![Node.js](https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=white) ![MySQL](https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white) ![Redis](https://img.shields.io/badge/Redis-DC382D?logo=redis&logoColor=white) ![Docker](https://img.shields.io/badge/docker--compose-2496ED?logo=docker&logoColor=white) ![AWS EC2](https://img.shields.io/badge/AWS_EC2-FF9900?logo=amazonec2&logoColor=white) ![FCM](https://img.shields.io/badge/Firebase_Cloud_Messaging-FFCA28?logo=firebase&logoColor=black)
